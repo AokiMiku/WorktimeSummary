@@ -1,7 +1,6 @@
-using System;
-
 namespace WorktimeSummary.essentials
 {
+    using System;
     using System.Text.RegularExpressions;
 
     public class Time
