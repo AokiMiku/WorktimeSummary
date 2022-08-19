@@ -1,5 +1,6 @@
 ﻿namespace WorktimeSummary
 {
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -11,8 +12,8 @@
     /// </summary>
     public partial class MainWindow
     {
-        private static readonly Brush DefaultRowBackgroundZebra1 = Brushes.DarkGray;
-        private static readonly Brush DefaultRowBackgroundZebra2 = Brushes.DimGray;
+        private static readonly Brush DefaultRowBackgroundZebra1 = new SolidColorBrush(Color.FromArgb(255, 237, 205, 252));
+        private static readonly Brush DefaultRowBackgroundZebra2 = new SolidColorBrush(Color.FromArgb(255, 210, 182, 223));
         private static readonly Brush DefaultRowBackgroundHover = Brushes.SlateGray;
 
         private Brush currentlyHoveredRowBackground;
@@ -46,6 +47,7 @@
                 DataGrid.Children.Add(background);
             }
 
+            int j = 0;
             for (int i = 0; i < 4; i++)
             {
                 Label lbl = new Label
@@ -67,8 +69,9 @@
                 else
                 {
                     lbl.FontWeight = FontWeights.Bold;
-                    Grid.SetColumn(lbl, i + 1);
-                    Grid.SetRow(lbl, 1);
+                    Grid.SetColumn(lbl, i + j++ + 1);
+                    Grid.SetColumnSpan(lbl, 2);
+                    Grid.SetRow(lbl, 2);
                     ((Grid)HeaderRow.Parent).Children.Add(lbl);
                 }
             }
@@ -103,6 +106,12 @@
 
             currentlyHoveredRowBackground = ((Border)sender).Background;
             ((Border)sender).Background = DefaultRowBackgroundHover;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            UserSettings us = new UserSettings();
+            us.ShowDialog();
         }
     }
 }

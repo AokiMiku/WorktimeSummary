@@ -15,6 +15,7 @@ namespace WorktimeSummary.data
         public WorktimesRepository()
         {
             db?.CreateTableAsync<Worktimes>();
+            db?.CreateTableAsync<UserSettings>();
         }
 
         public Worktimes FindById(int id)

@@ -1,6 +1,5 @@
 namespace WorktimeSummary.data
 {
-    using System;
     using essentials;
     using SQLite;
 

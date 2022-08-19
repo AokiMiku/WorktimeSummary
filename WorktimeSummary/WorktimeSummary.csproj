@@ -221,6 +221,11 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="data\UserSettings.cs" />
+        <Compile Include="UserSettings.xaml.cs">
+          <DependentUpon>UserSettings.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="usersettings\Settings.cs" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -237,6 +242,7 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="UserSettings.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs">
@@ -257,12 +263,10 @@
         <None Include="bin\Debug\data\wt.db">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
         <None Include="data\wt.db">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
         <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.2\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
@@ -271,6 +275,23 @@
     <ItemGroup>
         <Folder Include="bin\Debug" />
         <Folder Include="repositories" />
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="ressources\graphics\icons\add.ico" />
+      <Resource Include="ressources\graphics\icons\ApS.ico" />
+      <Resource Include="ressources\graphics\icons\arrow_down.ico" />
+      <Resource Include="ressources\graphics\icons\arrow_up.ico" />
+      <Resource Include="ressources\graphics\icons\cancel.ico" />
+      <Resource Include="ressources\graphics\icons\check.ico" />
+      <Resource Include="ressources\graphics\icons\check_gray.ico" />
+      <Resource Include="ressources\graphics\icons\del.ico" />
+      <Resource Include="ressources\graphics\icons\edit.ico" />
+      <Resource Include="ressources\graphics\icons\login.ico" />
+      <Resource Include="ressources\graphics\icons\logout.ico" />
+      <Resource Include="ressources\graphics\icons\picture.ico" />
+      <Resource Include="ressources\graphics\icons\save.ico" />
+      <Resource Include="ressources\graphics\icons\todo.ico" />
+      <Resource Include="ressources\graphics\icons\wheel.ico" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
