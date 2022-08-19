@@ -222,6 +222,9 @@
             <SubType>Designer</SubType>
         </ApplicationDefinition>
         <Compile Include="data\UserSettings.cs" />
+        <Compile Include="repositories\Repository.cs" />
+        <Compile Include="repositories\UserSettingsRepository.cs" />
+        <Compile Include="repositories\WorktimesRepository.cs" />
         <Compile Include="UserSettings.xaml.cs">
           <DependentUpon>UserSettings.xaml</DependentUpon>
         </Compile>
@@ -236,7 +239,6 @@
         </Compile>
         <Compile Include="controllers\WorktimesController.cs" />
         <Compile Include="data\Worktimes.cs" />
-        <Compile Include="data\WorktimesRepository.cs" />
         <Compile Include="essentials\Time.cs" />
         <Compile Include="MainWindow.xaml.cs">
             <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -274,7 +276,6 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="bin\Debug" />
-        <Folder Include="repositories" />
     </ItemGroup>
     <ItemGroup>
       <Resource Include="ressources\graphics\icons\add.ico" />

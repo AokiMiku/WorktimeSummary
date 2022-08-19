@@ -1,19 +1,19 @@
 ﻿namespace WorktimeSummary
 {
-    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
     using controllers;
+    using userSettings;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
-        private static readonly Brush DefaultRowBackgroundZebra1 = new SolidColorBrush(Color.FromArgb(255, 237, 205, 252));
-        private static readonly Brush DefaultRowBackgroundZebra2 = new SolidColorBrush(Color.FromArgb(255, 210, 182, 223));
+        private static Brush DefaultRowBackgroundZebra1;
+        private static Brush DefaultRowBackgroundZebra2;
         private static readonly Brush DefaultRowBackgroundHover = Brushes.SlateGray;
 
         private Brush currentlyHoveredRowBackground;
@@ -22,6 +22,8 @@
         {
             InitializeComponent();
             WorktimesController dummy = new WorktimesController(this);
+            DefaultRowBackgroundZebra1 = Settings.TableTheme1;
+            DefaultRowBackgroundZebra2 = Settings.TableTheme2;
         }
 
         public void AddRow(string[] values, bool isHeader = false)

@@ -1,26 +1,23 @@
-namespace WorktimeSummary.data
+namespace WorktimeSummary.repositories
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using data;
     using SQLite;
 
-    public class WorktimesRepository
+    public class WorktimesRepository : Repository
     {
-        private readonly SQLiteAsyncConnection db =
-            new SQLiteAsyncConnection(Path.Combine(Environment.CurrentDirectory, "data", "wt.db"));
-
         public WorktimesRepository()
         {
-            db?.CreateTableAsync<Worktimes>();
-            db?.CreateTableAsync<UserSettings>();
+            Db?.CreateTableAsync<Worktimes>();
         }
 
         public Worktimes FindById(int id)
         {
-            AsyncTableQuery<Worktimes> q = db?.Table<Worktimes>().Where(w => w.Id == id);
+            AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Id == id);
             Task<Worktimes> r = q?.ToListAsync().ContinueWith(w => w.Result.First());
             try
             {
@@ -35,7 +32,7 @@ namespace WorktimeSummary.data
 
         public List<Worktimes> FindAll()
         {
-            AsyncTableQuery<Worktimes> q = db?.Table<Worktimes>();
+            AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>();
             Task<List<Worktimes>> r = q?.ToListAsync().ContinueWith(w => w.Result);
             try
             {

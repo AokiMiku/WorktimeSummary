@@ -3,24 +3,73 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:WorktimeSummary"
         mc:Ignorable="d"
-        Title="UserSettings" MinHeight="400" MinWidth="500" Height="0" Width="0">
+        Title="UserSettings" MinHeight="300" MinWidth="400" Height="0" Width="0">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5"/>
-            <RowDefinition/>
-            <RowDefinition Height="5"/>
+            <RowDefinition Height="5" />
+            <RowDefinition />
+            <RowDefinition Height="5" />
         </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="1" Grid.Column="1">
-            
-        </Grid>
-        
+
+        <TabControl Name="SettingsTabs" Grid.Row="1" Grid.Column="1">
+            <TabItem>
+                <TabItem.Header>
+                    <DockPanel>
+                        <Image Source="ressources/graphics/icons/wheel.ico" Height="20" />
+                        <Label Width="3" />
+                        <TextBlock Text="General" />
+                    </DockPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <DockPanel>
+                        <Label Content="Table-Themes: " />
+                        <Label Width="5" />
+                        <ComboBox Name="ThemeSelection" SelectionChanged="ThemeSelection_OnSelectionChanged">
+                            <ComboBoxItem>
+                                <DockPanel HorizontalAlignment="Left">
+                                    <Label Content="Gray " />
+                                    <Border Background="#9F9F9F" Height="15" Width="15" />
+                                    <Label Content=" / " />
+                                    <Border Background="#C6C6C6" Height="15" Width="15" />
+                                </DockPanel>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <DockPanel HorizontalAlignment="Left">
+                                    <Label Content="Purple " />
+                                    <Border Background="#D2B6DF" Height="15" Width="15" />
+                                    <Label Content=" / " />
+                                    <Border Background="#EDCDFC" Height="15" Width="15" />
+                                </DockPanel>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <DockPanel HorizontalAlignment="Left">
+                                    <Label Content="Blue " />
+                                    <Border Background="#B5BEDC" Height="15" Width="15" />
+                                    <Label Content=" / " />
+                                    <Border Background="#CDD8FC" Height="15" Width="15" />
+                                </DockPanel>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <DockPanel HorizontalAlignment="Left">
+                                    <Label Content="Red " />
+                                    <Border Background="#CC8282" Height="15" Width="15" />
+                                    <Label Content=" / " />
+                                    <Border Background="#FFA2A2" Height="15" Width="15" />
+                                </DockPanel>
+                            </ComboBoxItem>
+                        </ComboBox>
+
+                    </DockPanel>
+
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>
