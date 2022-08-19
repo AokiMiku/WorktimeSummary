@@ -9,15 +9,20 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
             <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
+            <RowDefinition Name="HeaderRow" Height="40" />
             <RowDefinition />
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
+        
 
-        <ScrollViewer Grid.Row="1" Grid.Column="1">
+        <ScrollViewer Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
             <Grid Name="DataGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

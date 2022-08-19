@@ -22,6 +22,7 @@ namespace WorktimeSummary.essentials
 
         public Time(string time)
         {
+            // Regex for HH:MM(:SS.mmm)
             const string pattern = @"(?:[01]\d|2[0-3]):(?:[0-5]\d):?(?:[0-5]\d)?\.?\d?\d?\d?";
 
             Match m = Regex.Match(time, pattern);

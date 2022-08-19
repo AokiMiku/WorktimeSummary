@@ -1,7 +1,5 @@
 ﻿namespace WorktimeSummary
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -27,13 +25,13 @@
 
         public void AddRow(string[] values, bool isHeader = false)
         {
-            DataGrid.RowDefinitions.Add(new RowDefinition());
-            RowDefinition row = DataGrid.RowDefinitions[DataGrid.RowDefinitions.Count - 1];
-            row.MinHeight = isHeader ? 40 : 25;
-
             Border background = null;
             if (!isHeader)
             {
+                RowDefinition row;
+                DataGrid.RowDefinitions.Add(row = new RowDefinition());
+                row.MinHeight = 25;
+
                 background = new Border
                 {
                     Background = DataGrid.RowDefinitions.Count % 2 == 0
@@ -52,22 +50,27 @@
             {
                 Label lbl = new Label
                 {
-                    Content = values[i]
+                    Content = values[i],
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Tag = background
                 };
-                if (isHeader)
+
+                if (!isHeader)
+                {
+                    Grid.SetColumn(lbl, i);
+                    Grid.SetRow(lbl, DataGrid.RowDefinitions.Count - 1);
+                    DataGrid.Children.Add(lbl);
+                    lbl.MouseEnter += LblOnMouseEnter;
+                    lbl.MouseLeave += LblOnMouseLeave;
+                }
+                else
                 {
                     lbl.FontWeight = FontWeights.Bold;
+                    Grid.SetColumn(lbl, i + 1);
+                    Grid.SetRow(lbl, 1);
+                    ((Grid)HeaderRow.Parent).Children.Add(lbl);
                 }
-
-                lbl.HorizontalAlignment = HorizontalAlignment.Center;
-                lbl.VerticalAlignment = VerticalAlignment.Center;
-                lbl.Tag = background;
-                lbl.MouseEnter += LblOnMouseEnter;
-                lbl.MouseLeave += LblOnMouseLeave;
-                
-                Grid.SetColumn(lbl, i);
-                Grid.SetRow(lbl, DataGrid.RowDefinitions.Count - 1);
-                DataGrid.Children.Add(lbl);
             }
         }
 
@@ -87,7 +90,7 @@
             {
                 return;
             }
-            
+
             ((Border)sender).Background = currentlyHoveredRowBackground;
         }
 
@@ -97,7 +100,7 @@
             {
                 return;
             }
-            
+
             currentlyHoveredRowBackground = ((Border)sender).Background;
             ((Border)sender).Background = DefaultRowBackgroundHover;
         }
