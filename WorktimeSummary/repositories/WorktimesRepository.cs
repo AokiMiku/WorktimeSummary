@@ -12,7 +12,6 @@ namespace WorktimeSummary.repositories
     {
         public WorktimesRepository()
         {
-            
         }
 
         public Worktimes FindById(int id)

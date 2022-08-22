@@ -6,18 +6,18 @@ namespace WorktimeSummary.userSettings
 
     public static class Settings
     {
-        private static UserSettingsRepository userSettingsRepository;
+        private static readonly UserSettingsRepository UserSettingsRepository;
 
         static Settings()
         {
-            userSettingsRepository = new UserSettingsRepository();
+            UserSettingsRepository = new UserSettingsRepository();
         }
 
         public static string TableThemeTitle
         {
             get
             {
-                UserSettings us = userSettingsRepository.FindByMajorAndMinorKey("General", "TableThemeTitle");
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableThemeTitle");
                 return us == null ? "" : us.SettingValue;
             }
             set
@@ -28,19 +28,20 @@ namespace WorktimeSummary.userSettings
                     SettingKeyMinor = "TableThemeTitle",
                     SettingValue = value
                 };
-                userSettingsRepository.SaveSetting(us);
+                UserSettingsRepository.SaveSetting(us);
             }
         }
-        
+
         public static Brush TableTheme1
         {
             get
             {
-                UserSettings us = userSettingsRepository.FindByMajorAndMinorKey("General", "TableTheme1");
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableTheme1");
                 if (us == null)
                 {
                     return Brushes.White;
                 }
+
                 BrushConverter converter = new BrushConverter();
                 return (Brush)converter.ConvertFromString(us.SettingValue);
             }
@@ -52,19 +53,20 @@ namespace WorktimeSummary.userSettings
                     SettingKeyMinor = "TableTheme1",
                     SettingValue = ((SolidColorBrush)value).Color.ToString()
                 };
-                userSettingsRepository.SaveSetting(us);
+                UserSettingsRepository.SaveSetting(us);
             }
         }
-        
+
         public static Brush TableTheme2
         {
             get
             {
-                UserSettings us = userSettingsRepository.FindByMajorAndMinorKey("General", "TableTheme2");
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableTheme2");
                 if (us == null)
                 {
                     return Brushes.Beige;
                 }
+
                 BrushConverter converter = new BrushConverter();
                 return (Brush)converter.ConvertFromString(us.SettingValue);
             }
@@ -76,7 +78,7 @@ namespace WorktimeSummary.userSettings
                     SettingKeyMinor = "TableTheme2",
                     SettingValue = ((SolidColorBrush)value).Color.ToString()
                 };
-                userSettingsRepository.SaveSetting(us);
+                UserSettingsRepository.SaveSetting(us);
             }
         }
     }

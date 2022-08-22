@@ -8,7 +8,7 @@ namespace WorktimeSummary
 
     public partial class UserSettings : Window
     {
-        public event EventHandler<EventArgs> TableThemeChanged; 
+        public event EventHandler<EventArgs> TableThemeChanged;
 
         public UserSettings()
         {
@@ -47,7 +47,7 @@ namespace WorktimeSummary
                 ((Border)((DockPanel)((ComboBoxItem)((ComboBox)sender).SelectedItem).Content).Children[1]).Background;
             Settings.TableTheme2 =
                 ((Border)((DockPanel)((ComboBoxItem)((ComboBox)sender).SelectedItem).Content).Children[3]).Background;
-            
+
             TableThemeChanged?.Invoke(ThemeSelection, EventArgs.Empty);
         }
     }

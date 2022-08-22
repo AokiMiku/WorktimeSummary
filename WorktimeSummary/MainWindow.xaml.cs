@@ -116,7 +116,7 @@
         {
             defaultRowBackgroundZebra1 = Settings.TableTheme1;
             defaultRowBackgroundZebra2 = Settings.TableTheme2;
-            
+
             for (int i = 0; i < DataGrid.Children.Count; i++)
             {
                 if (!(DataGrid.Children[i] is Border))
