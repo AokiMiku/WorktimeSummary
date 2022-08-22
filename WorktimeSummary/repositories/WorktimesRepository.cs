@@ -12,7 +12,7 @@ namespace WorktimeSummary.repositories
     {
         public WorktimesRepository()
         {
-            Db?.CreateTableAsync<Worktimes>();
+            
         }
 
         public Worktimes FindById(int id)

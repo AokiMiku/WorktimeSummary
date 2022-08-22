@@ -7,24 +7,29 @@ namespace WorktimeSummary.controllers
 
     public class WorktimesController
     {
-        private WorktimesRepository repository = new WorktimesRepository();
-        private MainWindow gui;
+        private readonly WorktimesRepository repository = new WorktimesRepository();
+        private readonly MainWindow gui;
 
         public WorktimesController(MainWindow gui)
         {
             this.gui = gui;
-            this.gui.AddRow(new[] { "Day", "Starting Time", "Worktime", "Break sum" }, true);
+            FillData();
+            this.gui.RepaintTable();
+        }
+
+        private void FillData()
+        {
+            gui.AddRow(new[] { "Day", "Starting Time", "Worktime", "Break sum" }, true);
 
             List<Worktimes> wts = repository.FindAll();
             foreach (Worktimes wt in wts)
             {
-                this.gui.AddRow(new[]
+                gui.AddRow(new[]
                 {
                     wt.Day, wt.StartingTime.ToString(), wt.Worktime.ToString(CultureInfo.CurrentCulture),
                     (wt.Pause / 60).ToString()
                 });
             }
-            this.gui.RepaintTable();
         }
     }
 }

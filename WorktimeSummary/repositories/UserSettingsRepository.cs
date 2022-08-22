@@ -9,7 +9,6 @@ namespace WorktimeSummary.repositories
     {
         public UserSettingsRepository()
         {
-            Db?.CreateTableAsync<UserSettings>();
         }
 
         public data.UserSettings FindById(int id)
@@ -29,7 +28,8 @@ namespace WorktimeSummary.repositories
 
         public data.UserSettings FindByMajorAndMinorKey(string majorKey, string minorKey)
         {
-            AsyncTableQuery<data.UserSettings> q = Db?.Table<data.UserSettings>().Where(us => us.SettingKeyMajor == majorKey && us.SettingKeyMinor == minorKey);
+            AsyncTableQuery<data.UserSettings> q = Db?.Table<data.UserSettings>()
+                .Where(us => us.SettingKeyMajor == majorKey && us.SettingKeyMinor == minorKey);
             Task<data.UserSettings> r = q?.ToListAsync().ContinueWith(us => us.Result.First());
             try
             {
@@ -54,6 +54,5 @@ namespace WorktimeSummary.repositories
                 Db?.UpdateAsync(userSettings);
             }
         }
-        
     }
 }
