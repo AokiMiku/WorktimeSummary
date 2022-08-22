@@ -21,11 +21,14 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
             <RowDefinition Name="HeaderRow" Height="40" />
             <RowDefinition />
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
+
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="YearSelection" Margin="3 0" />
+        <ComboBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="4" Name="MonthSelection" Margin="3 0" />
 
         <Button Grid.Row="1" Grid.Column="8" BorderThickness="0" Background="Transparent" Height="30" Width="30"
                 Click="ButtonBase_OnClick">

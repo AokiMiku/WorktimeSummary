@@ -1,5 +1,6 @@
 namespace WorktimeSummary.userSettings
 {
+    using System;
     using System.Windows.Media;
     using data;
     using repositories;
@@ -77,6 +78,25 @@ namespace WorktimeSummary.userSettings
                     SettingKeyMajor = "General",
                     SettingKeyMinor = "TableTheme2",
                     SettingValue = ((SolidColorBrush)value).Color.ToString()
+                };
+                UserSettingsRepository.SaveSetting(us);
+            }
+        }
+
+        public static string StartingYear
+        {
+            get
+            {
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "StartingYear");
+                return us == null ? "0" : us.SettingValue;
+            }
+            set
+            {
+                UserSettings us = new UserSettings
+                {
+                    SettingKeyMajor = "General",
+                    SettingKeyMinor = "StartingYear",
+                    SettingValue = value
                 };
                 UserSettingsRepository.SaveSetting(us);
             }
