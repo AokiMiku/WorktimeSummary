@@ -12,8 +12,8 @@
     /// </summary>
     public partial class MainWindow
     {
-        private static Brush DefaultRowBackgroundZebra1;
-        private static Brush DefaultRowBackgroundZebra2;
+        private static Brush defaultRowBackgroundZebra1;
+        private static Brush defaultRowBackgroundZebra2;
         private static readonly Brush DefaultRowBackgroundHover = Brushes.SlateGray;
 
         private Brush currentlyHoveredRowBackground;
@@ -21,9 +21,9 @@
         public MainWindow()
         {
             InitializeComponent();
+            defaultRowBackgroundZebra1 = Settings.TableTheme1;
+            defaultRowBackgroundZebra2 = Settings.TableTheme2;
             WorktimesController dummy = new WorktimesController(this);
-            DefaultRowBackgroundZebra1 = Settings.TableTheme1;
-            DefaultRowBackgroundZebra2 = Settings.TableTheme2;
         }
 
         public void AddRow(string[] values, bool isHeader = false)
@@ -35,12 +35,7 @@
                 DataGrid.RowDefinitions.Add(row = new RowDefinition());
                 row.MinHeight = 25;
 
-                background = new Border
-                {
-                    Background = DataGrid.RowDefinitions.Count % 2 == 0
-                        ? DefaultRowBackgroundZebra1
-                        : DefaultRowBackgroundZebra2
-                };
+                background = new Border();
                 background.MouseEnter += BackgroundOnMouseEnter;
                 background.MouseLeave += BackgroundOnMouseLeave;
                 Grid.SetColumn(background, 0);
@@ -113,7 +108,26 @@
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             UserSettings us = new UserSettings();
+            us.TableThemeChanged += (o, args) => RepaintTable();
             us.ShowDialog();
+        }
+
+        public void RepaintTable()
+        {
+            defaultRowBackgroundZebra1 = Settings.TableTheme1;
+            defaultRowBackgroundZebra2 = Settings.TableTheme2;
+            
+            for (int i = 0; i < DataGrid.Children.Count; i++)
+            {
+                if (!(DataGrid.Children[i] is Border))
+                {
+                    continue;
+                }
+
+                ((Border)DataGrid.Children[i]).Background = Grid.GetRow(DataGrid.Children[i]) % 2 == 0
+                    ? defaultRowBackgroundZebra1
+                    : defaultRowBackgroundZebra2;
+            }
         }
     }
 }

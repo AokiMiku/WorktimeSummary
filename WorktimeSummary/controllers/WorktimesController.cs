@@ -17,11 +17,14 @@ namespace WorktimeSummary.controllers
 
             List<Worktimes> wts = repository.FindAll();
             foreach (Worktimes wt in wts)
+            {
                 this.gui.AddRow(new[]
                 {
                     wt.Day, wt.StartingTime.ToString(), wt.Worktime.ToString(CultureInfo.CurrentCulture),
                     (wt.Pause / 60).ToString()
                 });
+            }
+            this.gui.RepaintTable();
         }
     }
 }

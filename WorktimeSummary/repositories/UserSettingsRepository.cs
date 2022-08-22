@@ -50,6 +50,7 @@ namespace WorktimeSummary.repositories
             }
             else
             {
+                userSettings.Id = FindByMajorAndMinorKey(userSettings.SettingKeyMajor, userSettings.SettingKeyMinor).Id;
                 Db?.UpdateAsync(userSettings);
             }
         }

@@ -63,7 +63,7 @@ namespace WorktimeSummary.userSettings
                 UserSettings us = userSettingsRepository.FindByMajorAndMinorKey("General", "TableTheme2");
                 if (us == null)
                 {
-                    return Brushes.White;
+                    return Brushes.Beige;
                 }
                 BrushConverter converter = new BrushConverter();
                 return (Brush)converter.ConvertFromString(us.SettingValue);
