@@ -102,7 +102,8 @@ namespace WorktimeSummary.controllers
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
                     gui.AddRow(new[]
                     {
-                        wt.Day, wt.StartingTime.ToString(), wt.Worktime.ToString("##.######", CultureInfo.CurrentCulture),
+                        wt.Day, wt.StartingTime.ToString(),
+                        wt.Worktime.ToString("##.######", CultureInfo.CurrentCulture),
                         (wt.Pause / 60).ToString()
                     });
                     sumWorktime += wt.Worktime;
@@ -116,7 +117,8 @@ namespace WorktimeSummary.controllers
                     });
                 }
 
-                if ("2".Equals(currentlySelectedMonth) && i == 28)
+                if ("2".Equals(currentlySelectedMonth) && ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29) || 
+                                                           (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 28)))
                 {
                     break;
                 }

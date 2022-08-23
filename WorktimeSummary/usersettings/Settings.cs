@@ -1,6 +1,7 @@
 namespace WorktimeSummary.userSettings
 {
     using System;
+    using System.Security.Cryptography;
     using System.Windows.Media;
     using data;
     using repositories;
@@ -100,6 +101,21 @@ namespace WorktimeSummary.userSettings
                 };
                 UserSettingsRepository.SaveSetting(us);
             }
+        }
+
+        public static bool IsLeapYear(int year)
+        {
+            if (year % 4 == 0 && year % 100 != 0)
+            {
+                return true;
+            }
+
+            if (year % 100 == 0)
+            {
+                return year % 400 == 0;
+            }
+
+            return false;
         }
     }
 }
