@@ -1,7 +1,9 @@
 ﻿namespace WorktimeSummary
 {
+    using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
     using controllers;
@@ -26,25 +28,38 @@
             WorktimesController dummy = new WorktimesController(this);
         }
 
-        public void AddRow(string[] values, bool isHeader = false)
+        public void AddHeader(string[] values)
         {
-            Border background = null;
-            if (!isHeader)
+            for (int i = 0, j = 0; i < 4; i++)
             {
-                RowDefinition row;
-                DataGrid.RowDefinitions.Add(row = new RowDefinition());
-                row.MinHeight = 25;
-
-                background = new Border();
-                background.MouseEnter += BackgroundOnMouseEnter;
-                background.MouseLeave += BackgroundOnMouseLeave;
-                Grid.SetColumn(background, 0);
-                Grid.SetRow(background, DataGrid.RowDefinitions.Count - 1);
-                Grid.SetColumnSpan(background, DataGrid.ColumnDefinitions.Count);
-                DataGrid.Children.Add(background);
+                Label lbl = new Label
+                {
+                    Content = values[i],
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.Bold
+                };
+                Grid.SetColumn(lbl, i + j++ + 1);
+                Grid.SetColumnSpan(lbl, 2);
+                Grid.SetRow(lbl, 2);
+                ((Grid)HeaderRow.Parent).Children.Add(lbl);
             }
+        }
 
-            int j = 0;
+        public void AddRow(string[] values)
+        {
+            RowDefinition row;
+            DataGrid.RowDefinitions.Add(row = new RowDefinition());
+            row.MinHeight = 25;
+
+            Border background = new Border();
+            background.MouseEnter += BackgroundOnMouseEnter;
+            background.MouseLeave += BackgroundOnMouseLeave;
+            Grid.SetColumn(background, 0);
+            Grid.SetRow(background, DataGrid.RowDefinitions.Count - 1);
+            Grid.SetColumnSpan(background, DataGrid.ColumnDefinitions.Count);
+            DataGrid.Children.Add(background);
+
             for (int i = 0; i < 4; i++)
             {
                 Label lbl = new Label
@@ -55,23 +70,43 @@
                     Tag = background
                 };
 
-                if (!isHeader)
-                {
-                    Grid.SetColumn(lbl, i);
-                    Grid.SetRow(lbl, DataGrid.RowDefinitions.Count - 1);
-                    DataGrid.Children.Add(lbl);
-                    lbl.MouseEnter += LblOnMouseEnter;
-                    lbl.MouseLeave += LblOnMouseLeave;
-                }
-                else
-                {
-                    lbl.FontWeight = FontWeights.Bold;
-                    Grid.SetColumn(lbl, i + j++ + 1);
-                    Grid.SetColumnSpan(lbl, 2);
-                    Grid.SetRow(lbl, 2);
-                    ((Grid)HeaderRow.Parent).Children.Add(lbl);
-                }
+                Grid.SetColumn(lbl, i);
+                Grid.SetRow(lbl, DataGrid.RowDefinitions.Count - 1);
+                DataGrid.Children.Add(lbl);
+                lbl.MouseEnter += LblOnMouseEnter;
+                lbl.MouseLeave += LblOnMouseLeave;
             }
+        }
+
+        private List<Label> sumLabels = new List<Label>();
+        
+        public void AddSumRow(string[] values)
+        {
+            for (int i = 0, j = 0; i < 4; i++)
+            {
+                Label lbl = new Label
+                {
+                    Content = values[i],
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.Bold
+                };
+                Grid.SetColumn(lbl, i + j++ + 1);
+                Grid.SetColumnSpan(lbl, 2);
+                Grid.SetRow(lbl, 4);
+                ((Grid)SumRow.Parent).Children.Add(lbl);
+                sumLabels.Add(lbl);
+            }
+        }
+
+        public void ClearSumRow()
+        {
+            foreach (Label lbl in sumLabels)
+            {
+                ((Grid)SumRow.Parent).Children.Remove(lbl);
+            }
+
+            sumLabels.Clear();
         }
 
         private void LblOnMouseLeave(object sender, MouseEventArgs e)

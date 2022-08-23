@@ -80,7 +80,7 @@ namespace WorktimeSummary.controllers
 
         private void CreateHeader()
         {
-            gui.AddRow(new[] { "Day", "Starting Time", "Worktime", "Break sum" }, true);
+            gui.AddHeader(new[] { "Day", "Starting Time", "Worktime", "Break sum" });
         }
 
         private void FillData()
@@ -92,18 +92,21 @@ namespace WorktimeSummary.controllers
             }
 
             string dayStartString = $"{currentlySelectedYear}-{currentlySelectedMonth.PadLeft(2, '0')}";
+            double sumWorktime = 0;
+            int sumPause = 0;
             for (int i = 1; i <= 31; i++)
             {
-                
                 string day = dayStartString + $"-{i.ToString().PadLeft(2, '0')}";
                 if (wts.Count(w => w.Day.Equals(day)) != 0)
                 {
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
                     gui.AddRow(new[]
                     {
-                        wt.Day, wt.StartingTime.ToString(), wt.Worktime.ToString(CultureInfo.CurrentCulture),
+                        wt.Day, wt.StartingTime.ToString(), wt.Worktime.ToString("##.######", CultureInfo.CurrentCulture),
                         (wt.Pause / 60).ToString()
                     });
+                    sumWorktime += wt.Worktime;
+                    sumPause += wt.Pause;
                 }
                 else
                 {
@@ -112,7 +115,7 @@ namespace WorktimeSummary.controllers
                         day, 0.ToString(), 0.ToString(), 0.ToString()
                     });
                 }
-                
+
                 if ("2".Equals(currentlySelectedMonth) && i == 28)
                 {
                     break;
@@ -124,12 +127,19 @@ namespace WorktimeSummary.controllers
                     break;
                 }
             }
+
+            gui.AddSumRow(new[]
+            {
+                "All: ", "", sumWorktime.ToString("##.#####", CultureInfo.CurrentCulture),
+                ((double)sumPause / 3600).ToString("##.#####", CultureInfo.CurrentCulture)
+            });
         }
 
         private void ClearData()
         {
             gui.DataGrid.Children.Clear();
             gui.DataGrid.RowDefinitions.Clear();
+            gui.ClearSumRow();
         }
     }
 }
