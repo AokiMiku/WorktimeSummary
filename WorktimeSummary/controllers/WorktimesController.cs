@@ -107,8 +107,8 @@ namespace WorktimeSummary.controllers
                     gui.AddRow(new[]
                     {
                         wt.Day, wt.StartingTime.ToString(),
-                        wt.Worktime.ToString("#.######", CultureInfo.CurrentCulture),
-                        (wt.Pause / 60).ToString(), differenceToday.ToString("#.#####", CultureInfo.CurrentCulture)
+                        wt.Worktime.ToString("0.######", CultureInfo.CurrentCulture),
+                        (wt.Pause / 60).ToString(), differenceToday.ToString("0.#####", CultureInfo.CurrentCulture)
                     });
                     sumWorktime += wt.Worktime;
                     sumPause += wt.Pause;
@@ -137,9 +137,9 @@ namespace WorktimeSummary.controllers
 
             gui.AddSumRow(new[]
             {
-                "All: ", "", sumWorktime.ToString("#.#####", CultureInfo.CurrentCulture),
-                ((double)sumPause / 3600).ToString("#.#####", CultureInfo.CurrentCulture),
-                differencesInDailyHours.ToString("#.#####", CultureInfo.CurrentCulture)
+                "All: ", "", sumWorktime.ToString("0.#####", CultureInfo.CurrentCulture),
+                ((double)sumPause / 3600).ToString("0.#####", CultureInfo.CurrentCulture),
+                differencesInDailyHours.ToString("0.#####", CultureInfo.CurrentCulture)
             });
         }
 
