@@ -14,11 +14,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
             <RowDefinition />
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="40" />
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <TabControl Name="SettingsTabs" Grid.Row="1" Grid.Column="1">
+        <TabControl Grid.Row="1" Grid.Column="1">
             <TabItem>
                 <TabItem.Header>
                     <DockPanel>
@@ -75,14 +75,23 @@
                             <TextBox Name="HoursPerWeek" HorizontalAlignment="Right" Width="200" Margin="3" />
                         </DockPanel>
                     </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
+                        <DockPanel>
+                            <Label Content="Show weekends:" />
+                            <CheckBox Name="ShowWeekends" Margin="0 0 90 0" HorizontalAlignment="Right"
+                                      VerticalAlignment="Center" />
+                        </DockPanel>
+                    </Border>
                 </StackPanel>
             </TabItem>
+
         </TabControl>
-    
-        <Button Grid.Row="2" Grid.Column="1" Name="Save" Margin="3" HorizontalAlignment="Right" MinWidth="100" Click="Save_OnClick" >
+
+        <Button Grid.Row="2" Grid.Column="1" Name="Save" Margin="3" HorizontalAlignment="Right" MinWidth="100"
+                Click="Save_OnClick">
             <DockPanel>
                 <Image Source="ressources/graphics/icons/save.ico" Height="30" />
-                <Label Content="Save"/>
+                <Label Content="Save" />
             </DockPanel>
         </Button>
     </Grid>

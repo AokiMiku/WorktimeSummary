@@ -98,6 +98,15 @@ namespace WorktimeSummary.controllers
             double differencesInDailyHours = 0;
             for (int i = 1; i <= 31; i++)
             {
+                if (!Settings.ShowWeekends)
+                {
+                    DateTime d = new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i);
+                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        continue;
+                    }
+                }
+
                 string day = dayStartString + $"-{i.ToString().PadLeft(2, '0')}";
                 if (wts.Count(w => w.Day.Equals(day)) != 0)
                 {

@@ -21,6 +21,7 @@ namespace WorktimeSummary
         private void LoadSettings()
         {
             HoursPerWeek.Text = Settings.WorkhoursPerWeek.ToString(CultureInfo.CurrentCulture);
+            ShowWeekends.IsChecked = Settings.ShowWeekends;
         }
 
         private void SelectCorrectThemeComboBoxItem()
@@ -61,6 +62,8 @@ namespace WorktimeSummary
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
             Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
+            Settings.ShowWeekends = ShowWeekends.IsChecked == true;
+            Close();
         }
     }
 }

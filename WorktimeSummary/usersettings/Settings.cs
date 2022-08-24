@@ -1,8 +1,6 @@
 namespace WorktimeSummary.userSettings
 {
-    using System;
     using System.Globalization;
-    using System.Security.Cryptography;
     using System.Windows.Media;
     using data;
     using repositories;
@@ -16,6 +14,17 @@ namespace WorktimeSummary.userSettings
             UserSettingsRepository = new UserSettingsRepository();
         }
 
+        private static void Save(string majorKey, string minorKey, string value)
+        {
+            UserSettings us = new UserSettings
+            {
+                SettingKeyMajor = $"{majorKey}",
+                SettingKeyMinor = $"{minorKey}",
+                SettingValue = value
+            };
+            UserSettingsRepository.SaveSetting(us);
+        }
+
         public static string TableThemeTitle
         {
             get
@@ -23,16 +32,7 @@ namespace WorktimeSummary.userSettings
                 UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableThemeTitle");
                 return us == null ? "" : us.SettingValue;
             }
-            set
-            {
-                UserSettings us = new UserSettings
-                {
-                    SettingKeyMajor = "General",
-                    SettingKeyMinor = "TableThemeTitle",
-                    SettingValue = value
-                };
-                UserSettingsRepository.SaveSetting(us);
-            }
+            set => Save("General", "TableThemeTitle", value);
         }
 
         public static Brush TableTheme1
@@ -48,16 +48,7 @@ namespace WorktimeSummary.userSettings
                 BrushConverter converter = new BrushConverter();
                 return (Brush)converter.ConvertFromString(us.SettingValue);
             }
-            set
-            {
-                UserSettings us = new UserSettings
-                {
-                    SettingKeyMajor = "General",
-                    SettingKeyMinor = "TableTheme1",
-                    SettingValue = ((SolidColorBrush)value).Color.ToString()
-                };
-                UserSettingsRepository.SaveSetting(us);
-            }
+            set => Save("General", "TableTheme1", ((SolidColorBrush)value).Color.ToString());
         }
 
         public static Brush TableTheme2
@@ -73,16 +64,7 @@ namespace WorktimeSummary.userSettings
                 BrushConverter converter = new BrushConverter();
                 return (Brush)converter.ConvertFromString(us.SettingValue);
             }
-            set
-            {
-                UserSettings us = new UserSettings
-                {
-                    SettingKeyMajor = "General",
-                    SettingKeyMinor = "TableTheme2",
-                    SettingValue = ((SolidColorBrush)value).Color.ToString()
-                };
-                UserSettingsRepository.SaveSetting(us);
-            }
+            set => Save("General", "TableTheme2", ((SolidColorBrush)value).Color.ToString());
         }
 
         public static string StartingYear
@@ -92,16 +74,7 @@ namespace WorktimeSummary.userSettings
                 UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "StartingYear");
                 return us == null ? "0" : us.SettingValue;
             }
-            set
-            {
-                UserSettings us = new UserSettings
-                {
-                    SettingKeyMajor = "General",
-                    SettingKeyMinor = "StartingYear",
-                    SettingValue = value
-                };
-                UserSettingsRepository.SaveSetting(us);
-            }
+            set => Save("General", "StartingYear", value);
         }
 
         public static bool IsLeapYear(int year)
@@ -126,16 +99,17 @@ namespace WorktimeSummary.userSettings
                 UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "WorkhoursPerWeek");
                 return us == null ? 0 : float.Parse(us.SettingValue);
             }
-            set
+            set => Save("General", "WorkhoursPerWeek", value.ToString(CultureInfo.CurrentCulture));
+        }
+
+        public static bool ShowWeekends
+        {
+            get
             {
-                UserSettings us = new UserSettings
-                {
-                    SettingKeyMajor = "General",
-                    SettingKeyMinor = "WorkhoursPerWeek",
-                    SettingValue = value.ToString(CultureInfo.CurrentCulture)
-                };
-                UserSettingsRepository.SaveSetting(us);
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "ShowWeekends");
+                return us != null && bool.Parse(us.SettingValue);
             }
+            set => Save("General", "ShowWeekends", value.ToString(CultureInfo.CurrentCulture));
         }
     }
 }
