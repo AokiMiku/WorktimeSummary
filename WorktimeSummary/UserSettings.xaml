@@ -85,6 +85,35 @@
                 </StackPanel>
             </TabItem>
 
+            <TabItem>
+                <TabItem.Header>
+                    <DockPanel>
+                        <Image Source="ressources/graphics/icons/wheel.ico" Height="20" />
+                        <Label Width="3" />
+                        <TextBlock Text="Schedules" />
+                    </DockPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <DockPanel>
+                        <Label Content="Disable/Enable Auto-Refresh:" />
+                        <CheckBox Name="EnableAutoRefresh" Margin="0 0 90 0" HorizontalAlignment="Right"
+                                  VerticalAlignment="Center" Checked="EnableAutoRefresh_OnChecked" Unchecked="EnableAutoRefresh_OnUnchecked" />
+                    </DockPanel>
+                    <DockPanel Name="AutoRefreshPanel">
+                        <Label Content="Auto-Refresh the table every" />
+                        <ComboBox Margin="3" Name="AutoRefresh" Width="50">
+                            <Label Content="1" />
+                            <Label Content="2" />
+                            <Label Content="5" />
+                            <Label Content="10" />
+                            <Label Content="15" />
+                            <Label Content="30" />
+                            <Label Content="60" />
+                        </ComboBox>
+                        <Label Content="minute(s)." />
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
         </TabControl>
 
         <Button Grid.Row="2" Grid.Column="1" Name="Save" Margin="3" HorizontalAlignment="Right" MinWidth="100"

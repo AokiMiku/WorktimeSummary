@@ -6,6 +6,7 @@ namespace WorktimeSummary.controllers
     using System.Linq;
     using System.Security.Cryptography;
     using System.Windows.Controls;
+    using System.Windows.Threading;
     using data;
     using repositories;
     using userSettings;
@@ -18,6 +19,8 @@ namespace WorktimeSummary.controllers
         private string currentlySelectedYear = "";
         private string currentlySelectedMonth = "";
 
+        private DispatcherTimer autoRefresh;
+
         public WorktimesController(MainWindow gui)
         {
             this.gui = gui;
@@ -26,6 +29,22 @@ namespace WorktimeSummary.controllers
             FillYearAndMonthSelections();
             CreateHeader();
             this.gui.RepaintTable();
+            if (Settings.AutoRefreshEnabled)
+            {
+                autoRefresh = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMinutes(Settings.AutoRefreshEveryXMinutes)
+                };
+                autoRefresh.Tick += AutoRefresh;
+                autoRefresh.Start();
+            }
+        }
+
+        private void AutoRefresh(object sender, EventArgs e)
+        {
+            ClearData();
+            FillData();
+            gui.RepaintTable();
         }
 
         private void FillYearAndMonthSelections()

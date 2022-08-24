@@ -111,5 +111,25 @@ namespace WorktimeSummary.userSettings
             }
             set => Save("General", "ShowWeekends", value.ToString(CultureInfo.CurrentCulture));
         }
+
+        public static bool AutoRefreshEnabled
+        {
+            get
+            {
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("Schedules", "AutoRefreshEnabled");
+                return us != null && bool.Parse(us.SettingValue);
+            }
+            set => Save("Schedules", "AutoRefreshEnabled", value.ToString());
+        }
+
+        public static int AutoRefreshEveryXMinutes
+        {
+            get
+            {
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("Schedules", "AutoRefreshEveryXMinutes");
+                return us == null ? 0 : int.Parse(us.SettingValue);
+            }
+            set => Save("Schedules", "AutoRefreshEveryXMinutes", value.ToString());
+        }
     }
 }

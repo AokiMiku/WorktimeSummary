@@ -3,6 +3,7 @@ using System.Windows;
 namespace WorktimeSummary
 {
     using System;
+    using System.Linq;
     using System.Globalization;
     using System.Windows.Controls;
     using userSettings;
@@ -22,6 +23,19 @@ namespace WorktimeSummary
         {
             HoursPerWeek.Text = Settings.WorkhoursPerWeek.ToString(CultureInfo.CurrentCulture);
             ShowWeekends.IsChecked = Settings.ShowWeekends;
+            EnableAutoRefresh.IsChecked = Settings.AutoRefreshEnabled;
+            AutoRefreshPanel.IsEnabled = EnableAutoRefresh.IsChecked == true;
+            for (int i = 0; i < AutoRefresh.Items.Count; i++)
+            {
+                if (!int.Parse(((Label)AutoRefresh.Items[i]).Content.ToString())
+                        .Equals(Settings.AutoRefreshEveryXMinutes))
+                {
+                    continue;
+                }
+
+                AutoRefresh.SelectedIndex = i;
+                break;
+            }
         }
 
         private void SelectCorrectThemeComboBoxItem()
@@ -59,10 +73,26 @@ namespace WorktimeSummary
             TableThemeChanged?.Invoke(ThemeSelection, EventArgs.Empty);
         }
 
+        private void EnableAutoRefresh_OnChecked(object sender, RoutedEventArgs e)
+        {
+            AutoRefreshPanel.IsEnabled = true;
+        }
+
+        private void EnableAutoRefresh_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            AutoRefreshPanel.IsEnabled = false;
+        }
+
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
             Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
             Settings.ShowWeekends = ShowWeekends.IsChecked == true;
+            Settings.AutoRefreshEnabled = EnableAutoRefresh.IsChecked == true;
+            if (EnableAutoRefresh.IsChecked == true)
+            {
+                Settings.AutoRefreshEveryXMinutes = int.Parse(((Label)AutoRefresh.SelectedItem).Content.ToString());
+            }
+
             Close();
         }
     }
