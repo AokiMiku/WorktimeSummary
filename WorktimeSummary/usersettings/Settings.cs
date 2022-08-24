@@ -1,6 +1,7 @@
 namespace WorktimeSummary.userSettings
 {
     using System;
+    using System.Globalization;
     using System.Security.Cryptography;
     using System.Windows.Media;
     using data;
@@ -116,6 +117,25 @@ namespace WorktimeSummary.userSettings
             }
 
             return false;
+        }
+
+        public static float WorkhoursPerWeek
+        {
+            get
+            {
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "WorkhoursPerWeek");
+                return us == null ? 0 : float.Parse(us.SettingValue);
+            }
+            set
+            {
+                UserSettings us = new UserSettings
+                {
+                    SettingKeyMajor = "General",
+                    SettingKeyMinor = "WorkhoursPerWeek",
+                    SettingValue = value.ToString(CultureInfo.CurrentCulture)
+                };
+                UserSettingsRepository.SaveSetting(us);
+            }
         }
     }
 }

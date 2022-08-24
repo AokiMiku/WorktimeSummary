@@ -3,6 +3,7 @@ using System.Windows;
 namespace WorktimeSummary
 {
     using System;
+    using System.Globalization;
     using System.Windows.Controls;
     using userSettings;
 
@@ -14,6 +15,12 @@ namespace WorktimeSummary
         {
             InitializeComponent();
             SelectCorrectThemeComboBoxItem();
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            HoursPerWeek.Text = Settings.WorkhoursPerWeek.ToString(CultureInfo.CurrentCulture);
         }
 
         private void SelectCorrectThemeComboBoxItem()
@@ -49,6 +56,11 @@ namespace WorktimeSummary
                 ((Border)((DockPanel)((ComboBoxItem)((ComboBox)sender).SelectedItem).Content).Children[3]).Background;
 
             TableThemeChanged?.Invoke(ThemeSelection, EventArgs.Empty);
+        }
+
+        private void Save_OnClick(object sender, RoutedEventArgs e)
+        {
+            Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
         }
     }
 }

@@ -80,7 +80,7 @@ namespace WorktimeSummary.controllers
 
         private void CreateHeader()
         {
-            gui.AddHeader(new[] { "Day", "Starting Time", "Worktime", "Break sum" });
+            gui.AddHeader(new[] { "Day", "Starting Time", "Worktime", "Break Sum", "Daily Hours" });
         }
 
         private void FillData()
@@ -94,17 +94,21 @@ namespace WorktimeSummary.controllers
             string dayStartString = $"{currentlySelectedYear}-{currentlySelectedMonth.PadLeft(2, '0')}";
             double sumWorktime = 0;
             int sumPause = 0;
+            float dailyHoursToWork = Settings.WorkhoursPerWeek / 5;
+            double differencesInDailyHours = 0;
             for (int i = 1; i <= 31; i++)
             {
                 string day = dayStartString + $"-{i.ToString().PadLeft(2, '0')}";
                 if (wts.Count(w => w.Day.Equals(day)) != 0)
                 {
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
+                    double differenceToday = (wt.Worktime - wt.Pause / 3600d - dailyHoursToWork) * 60d;
+                    differencesInDailyHours += differenceToday;
                     gui.AddRow(new[]
                     {
                         wt.Day, wt.StartingTime.ToString(),
-                        wt.Worktime.ToString("##.######", CultureInfo.CurrentCulture),
-                        (wt.Pause / 60).ToString()
+                        wt.Worktime.ToString("#.######", CultureInfo.CurrentCulture),
+                        (wt.Pause / 60).ToString(), differenceToday.ToString("#.#####", CultureInfo.CurrentCulture)
                     });
                     sumWorktime += wt.Worktime;
                     sumPause += wt.Pause;
@@ -117,8 +121,9 @@ namespace WorktimeSummary.controllers
                     });
                 }
 
-                if ("2".Equals(currentlySelectedMonth) && ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29) || 
-                                                           (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 28)))
+                if ("2".Equals(currentlySelectedMonth) &&
+                    ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29) ||
+                     (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 28)))
                 {
                     break;
                 }
@@ -132,8 +137,9 @@ namespace WorktimeSummary.controllers
 
             gui.AddSumRow(new[]
             {
-                "All: ", "", sumWorktime.ToString("##.#####", CultureInfo.CurrentCulture),
-                ((double)sumPause / 3600).ToString("##.#####", CultureInfo.CurrentCulture)
+                "All: ", "", sumWorktime.ToString("#.#####", CultureInfo.CurrentCulture),
+                ((double)sumPause / 3600).ToString("#.#####", CultureInfo.CurrentCulture),
+                differencesInDailyHours.ToString("#.#####", CultureInfo.CurrentCulture)
             });
         }
 

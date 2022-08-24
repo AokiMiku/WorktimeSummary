@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
             <RowDefinition />
+            <RowDefinition Height="40"/>
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
@@ -27,49 +28,62 @@
                     </DockPanel>
                 </TabItem.Header>
                 <StackPanel>
-                    <DockPanel>
-                        <Label Content="Table-Themes: " />
-                        <Label Width="5" />
-                        <ComboBox Name="ThemeSelection" SelectionChanged="ThemeSelection_OnSelectionChanged">
-                            <ComboBoxItem>
-                                <DockPanel HorizontalAlignment="Left">
-                                    <Label Content="Gray " />
-                                    <Border Background="#9F9F9F" Height="15" Width="15" />
-                                    <Label Content=" / " />
-                                    <Border Background="#C6C6C6" Height="15" Width="15" />
-                                </DockPanel>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <DockPanel HorizontalAlignment="Left">
-                                    <Label Content="Purple " />
-                                    <Border Background="#D2B6DF" Height="15" Width="15" />
-                                    <Label Content=" / " />
-                                    <Border Background="#EDCDFC" Height="15" Width="15" />
-                                </DockPanel>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <DockPanel HorizontalAlignment="Left">
-                                    <Label Content="Blue " />
-                                    <Border Background="#B5BEDC" Height="15" Width="15" />
-                                    <Label Content=" / " />
-                                    <Border Background="#CDD8FC" Height="15" Width="15" />
-                                </DockPanel>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <DockPanel HorizontalAlignment="Left">
-                                    <Label Content="Red " />
-                                    <Border Background="#CC8282" Height="15" Width="15" />
-                                    <Label Content=" / " />
-                                    <Border Background="#FFA2A2" Height="15" Width="15" />
-                                </DockPanel>
-                            </ComboBoxItem>
-                        </ComboBox>
-
-                    </DockPanel>
-
+                    <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
+                        <DockPanel>
+                            <Label Content="Table-Themes: " />
+                            <ComboBox Margin="3" Name="ThemeSelection"
+                                      SelectionChanged="ThemeSelection_OnSelectionChanged" HorizontalAlignment="Right"
+                                      Width="200">
+                                <ComboBoxItem>
+                                    <DockPanel HorizontalAlignment="Left">
+                                        <Label Content="Gray " />
+                                        <Border Background="#9F9F9F" Height="15" Width="15" />
+                                        <Label Content=" / " />
+                                        <Border Background="#C6C6C6" Height="15" Width="15" />
+                                    </DockPanel>
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <DockPanel HorizontalAlignment="Left">
+                                        <Label Content="Purple " />
+                                        <Border Background="#D2B6DF" Height="15" Width="15" />
+                                        <Label Content=" / " />
+                                        <Border Background="#EDCDFC" Height="15" Width="15" />
+                                    </DockPanel>
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <DockPanel HorizontalAlignment="Left">
+                                        <Label Content="Blue " />
+                                        <Border Background="#B5BEDC" Height="15" Width="15" />
+                                        <Label Content=" / " />
+                                        <Border Background="#CDD8FC" Height="15" Width="15" />
+                                    </DockPanel>
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <DockPanel HorizontalAlignment="Left">
+                                        <Label Content="Red " />
+                                        <Border Background="#CC8282" Height="15" Width="15" />
+                                        <Label Content=" / " />
+                                        <Border Background="#FFA2A2" Height="15" Width="15" />
+                                    </DockPanel>
+                                </ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
+                        <DockPanel>
+                            <Label Content="Hours per week:" />
+                            <TextBox Name="HoursPerWeek" HorizontalAlignment="Right" Width="200" Margin="3" />
+                        </DockPanel>
+                    </Border>
                 </StackPanel>
             </TabItem>
         </TabControl>
-
+    
+        <Button Grid.Row="2" Grid.Column="1" Name="Save" Margin="3" HorizontalAlignment="Right" MinWidth="100" Click="Save_OnClick" >
+            <DockPanel>
+                <Image Source="ressources/graphics/icons/save.ico" Height="30" />
+                <Label Content="Save"/>
+            </DockPanel>
+        </Button>
     </Grid>
 </Window>

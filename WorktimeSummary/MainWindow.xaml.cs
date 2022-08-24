@@ -19,6 +19,7 @@
         private static readonly Brush DefaultRowBackgroundHover = Brushes.SlateGray;
 
         private Brush currentlyHoveredRowBackground;
+        private List<Label> sumLabels = new List<Label>();
 
         public MainWindow()
         {
@@ -30,7 +31,7 @@
 
         public void AddHeader(string[] values)
         {
-            for (int i = 0, j = 0; i < 4; i++)
+            for (int i = 0, j = 0; i < values.Length; i++)
             {
                 Label lbl = new Label
                 {
@@ -60,7 +61,7 @@
             Grid.SetColumnSpan(background, DataGrid.ColumnDefinitions.Count);
             DataGrid.Children.Add(background);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 Label lbl = new Label
                 {
@@ -78,11 +79,9 @@
             }
         }
 
-        private List<Label> sumLabels = new List<Label>();
-        
         public void AddSumRow(string[] values)
         {
-            for (int i = 0, j = 0; i < 4; i++)
+            for (int i = 0, j = 0; i < values.Length; i++)
             {
                 Label lbl = new Label
                 {

@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="ApS Util - WorktimeSummary" MinHeight="400" MinWidth="400" Height="0" Width="0"
+        Title="ApS Util - WorktimeSummary" MinHeight="400" MinWidth="500" Height="0" Width="0"
         Icon="ressources/graphics/icons/ApS.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -31,14 +33,15 @@
         <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="YearSelection" Margin="3 0" />
         <ComboBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="4" Name="MonthSelection" Margin="3 0" />
 
-        <Button Grid.Row="1" Grid.Column="8" BorderThickness="0" Background="Transparent" Height="30" Width="30"
+        <Button Grid.Row="1" Grid.Column="10" BorderThickness="0" Background="Transparent" Height="30" Width="30"
                 Click="ButtonBase_OnClick">
             <Image Source="ressources/graphics/icons/wheel.ico" />
         </Button>
 
-        <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="9">
+        <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="11">
             <Grid Name="DataGrid">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
