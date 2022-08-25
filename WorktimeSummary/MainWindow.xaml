@@ -23,15 +23,20 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Name="HeaderRow" Height="40" />
             <RowDefinition />
             <RowDefinition Name="SumRow" Height="40" />
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="YearSelection" Margin="3 0" />
-        <ComboBox Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="4" Name="MonthSelection" Margin="3 0" />
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Name="YearSelection" Margin="3 0" />
+        <ComboBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" Name="MonthSelection" Margin="3 0" />
+        <StackPanel Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Label Padding="5 0" Content="Last Refresh:" />
+            <Label Name="LastRefresh" Padding="5 0" Content="00:00:00" />
+        </StackPanel>
 
         <Button Grid.Row="1" Grid.Column="10" BorderThickness="0" Background="Transparent" Height="30" Width="30"
                 Click="ButtonBase_OnClick">

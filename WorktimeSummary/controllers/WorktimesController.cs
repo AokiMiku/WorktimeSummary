@@ -19,8 +19,6 @@ namespace WorktimeSummary.controllers
         private string currentlySelectedYear = "";
         private string currentlySelectedMonth = "";
 
-        private DispatcherTimer autoRefresh;
-
         public WorktimesController(MainWindow gui)
         {
             this.gui = gui;
@@ -29,9 +27,10 @@ namespace WorktimeSummary.controllers
             FillYearAndMonthSelections();
             CreateHeader();
             this.gui.RepaintTable();
+            gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);
             if (Settings.AutoRefreshEnabled)
             {
-                autoRefresh = new DispatcherTimer
+                DispatcherTimer autoRefresh = new DispatcherTimer
                 {
                     Interval = TimeSpan.FromMinutes(Settings.AutoRefreshEveryXMinutes)
                 };
@@ -45,6 +44,7 @@ namespace WorktimeSummary.controllers
             ClearData();
             FillData();
             gui.RepaintTable();
+            gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);;
         }
 
         private void FillYearAndMonthSelections()
@@ -67,10 +67,10 @@ namespace WorktimeSummary.controllers
                 }
             }
 
-            DateTime january = DateTime.Now.AddMonths(-DateTime.Now.Month);
             for (int m = 1; m <= 12; m++)
             {
-                Label lblMonth = new Label { Content = january.AddMonths(m).Month };
+                Label lblMonth = new Label { Content = new DateTime(DateTime.Now.Year, m, 1)
+                    .ToString("MMMM", CultureInfo.InvariantCulture), Tag = m};
                 gui.MonthSelection.Items.Add(lblMonth);
                 if (m.Equals(DateTime.Now.Month))
                 {
@@ -82,7 +82,7 @@ namespace WorktimeSummary.controllers
         private void MonthSelectionOnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentlySelectedMonth =
-                ((Label)((ComboBox)sender).SelectedItem).Content.ToString();
+                ((Label)((ComboBox)sender).SelectedItem).Tag.ToString();
             ClearData();
             FillData();
             gui.RepaintTable();
