@@ -26,6 +26,7 @@ namespace WorktimeSummary.controllers
             this.gui.MonthSelection.SelectionChanged += MonthSelectionOnSelectionChanged;
             this.gui.Refresh.Click += (sender, args) => Refresh();
             FillYearAndMonthSelections();
+            CreateHeader();
             Refresh();
             gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);
             if (Settings.AutoRefreshEnabled)
