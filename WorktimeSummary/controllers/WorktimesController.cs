@@ -24,9 +24,9 @@ namespace WorktimeSummary.controllers
             this.gui = gui;
             this.gui.YearSelection.SelectionChanged += YearSelectionOnSelectionChanged;
             this.gui.MonthSelection.SelectionChanged += MonthSelectionOnSelectionChanged;
+            this.gui.Refresh.Click += (sender, args) => Refresh();
             FillYearAndMonthSelections();
-            CreateHeader();
-            this.gui.RepaintTable();
+            Refresh();
             gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);
             if (Settings.AutoRefreshEnabled)
             {
@@ -41,10 +41,15 @@ namespace WorktimeSummary.controllers
 
         private void AutoRefresh(object sender, EventArgs e)
         {
+            Refresh();
+        }
+
+        private void Refresh()
+        {
             ClearData();
             FillData();
             gui.RepaintTable();
-            gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);;
+            gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);
         }
 
         private void FillYearAndMonthSelections()
@@ -83,18 +88,14 @@ namespace WorktimeSummary.controllers
         {
             currentlySelectedMonth =
                 ((Label)((ComboBox)sender).SelectedItem).Tag.ToString();
-            ClearData();
-            FillData();
-            gui.RepaintTable();
+            Refresh();
         }
 
         private void YearSelectionOnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentlySelectedYear =
                 ((Label)((ComboBox)sender).SelectedItem).Content.ToString();
-            ClearData();
-            FillData();
-            gui.RepaintTable();
+            Refresh();
         }
 
         private void CreateHeader()
