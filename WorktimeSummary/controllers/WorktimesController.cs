@@ -74,8 +74,12 @@ namespace WorktimeSummary.controllers
 
             for (int m = 1; m <= 12; m++)
             {
-                Label lblMonth = new Label { Content = new DateTime(DateTime.Now.Year, m, 1)
-                    .ToString("MMMM", CultureInfo.InvariantCulture), Tag = m};
+                Label lblMonth = new Label
+                {
+                    Content = new DateTime(DateTime.Now.Year, m, 1)
+                        .ToString("MMMM", CultureInfo.InvariantCulture),
+                    Tag = m
+                };
                 gui.MonthSelection.Items.Add(lblMonth);
                 if (m.Equals(DateTime.Now.Month))
                 {
@@ -116,6 +120,7 @@ namespace WorktimeSummary.controllers
             int sumPause = 0;
             float dailyHoursToWork = Settings.WorkhoursPerWeek / 5;
             double differencesInDailyHours = 0;
+            const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
                 if (!Settings.ShowWeekends)
@@ -136,8 +141,9 @@ namespace WorktimeSummary.controllers
                     gui.AddRow(new[]
                     {
                         wt.Day, wt.StartingTime.ToString(),
-                        wt.Worktime.ToString("0.######", CultureInfo.CurrentCulture),
-                        (wt.Pause / 60).ToString(), differenceToday.ToString("0.#####", CultureInfo.CurrentCulture)
+                        wt.Worktime.ToString(format, CultureInfo.CurrentCulture),
+                        (wt.Pause / 60f).ToString(format, CultureInfo.CurrentCulture),
+                        differenceToday.ToString(format, CultureInfo.CurrentCulture)
                     });
                     sumWorktime += wt.Worktime;
                     sumPause += wt.Pause;
@@ -166,9 +172,9 @@ namespace WorktimeSummary.controllers
 
             gui.AddSumRow(new[]
             {
-                "All: ", "", sumWorktime.ToString("0.#####", CultureInfo.CurrentCulture),
-                ((double)sumPause / 3600).ToString("0.#####", CultureInfo.CurrentCulture),
-                differencesInDailyHours.ToString("0.#####", CultureInfo.CurrentCulture)
+                "All: ", "", sumWorktime.ToString(format, CultureInfo.CurrentCulture),
+                ((double)sumPause / 3600).ToString(format, CultureInfo.CurrentCulture),
+                differencesInDailyHours.ToString(format, CultureInfo.CurrentCulture)
             });
         }
 
