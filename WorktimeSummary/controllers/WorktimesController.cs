@@ -8,6 +8,7 @@ namespace WorktimeSummary.controllers
     using System.Windows.Controls;
     using System.Windows.Threading;
     using data;
+    using essentials;
     using repositories;
     using userSettings;
 
@@ -15,8 +16,8 @@ namespace WorktimeSummary.controllers
     {
         private readonly WorktimesRepository repository = new WorktimesRepository();
         private readonly MainWindow gui;
-        private const int IndexSickLeave = 5;
-        private const int IndexVacation = 6;
+        private const int IndexSickLeave = 6;
+        private const int IndexVacation = 7;
 
         private string currentlySelectedYear = "";
         private string currentlySelectedMonth = "";
@@ -108,7 +109,7 @@ namespace WorktimeSummary.controllers
         private void CreateHeader()
         {
             gui.AddHeader(new[]
-                { "Day", "Starting Time", "Worktime", "Break Sum", "Daily Hours", "Sick Leave", "Vacation" });
+                { "Day", "Starting Time", "Worktime", "Break Sum", "Ending Time", "Daily OT Minutes", "Sick Leave", "Vacation" });
         }
 
         private void FillData()
@@ -153,6 +154,7 @@ namespace WorktimeSummary.controllers
                         wt.StartingTime.ToString(),
                         wt.Worktime.ToString(format, CultureInfo.CurrentCulture),
                         (wt.Pause / 60f).ToString(format, CultureInfo.CurrentCulture),
+                        wt.StartingTime.AddSeconds((int)(wt.Worktime * 3600)).ToString(),
                         differenceToday.ToString(format, CultureInfo.CurrentCulture),
                         wt.IsSickLeave.ToString(),
                         wt.IsVacation.ToString()
@@ -193,6 +195,7 @@ namespace WorktimeSummary.controllers
             {
                 "All: ", "", sumWorktime.ToString(format, CultureInfo.CurrentCulture),
                 ((double)sumPause / 3600).ToString(format, CultureInfo.CurrentCulture),
+                "",
                 differencesInDailyHours.ToString(format, CultureInfo.CurrentCulture)
             });
         }
@@ -224,7 +227,7 @@ namespace WorktimeSummary.controllers
         {
             List<UIElement> elements = gui.AddRow(new[]
             {
-                day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(), false.ToString()
+                day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(), false.ToString()
             });
             foreach (UIElement uiElement in elements)
             {

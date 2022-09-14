@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="ApS Util - WorktimeSummary" MinHeight="500" MinWidth="650" Height="0" Width="0"
+        Title="ApS Util - WorktimeSummary" MinHeight="400" MinWidth="900" Height="900" Width="0"
         Icon="ressources/graphics/icons/ApS.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -53,9 +55,10 @@
             <Image Source="ressources/graphics/icons/wheel.ico" />
         </Button>
 
-        <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="15">
+        <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="17">
             <Grid Name="DataGrid">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
