@@ -4,7 +4,7 @@ namespace WorktimeSummary.controllers
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Security.Cryptography;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Threading;
     using data;
@@ -15,6 +15,8 @@ namespace WorktimeSummary.controllers
     {
         private readonly WorktimesRepository repository = new WorktimesRepository();
         private readonly MainWindow gui;
+        private const int IndexSickLeave = 5;
+        private const int IndexVacation = 6;
 
         private string currentlySelectedYear = "";
         private string currentlySelectedMonth = "";
@@ -105,7 +107,8 @@ namespace WorktimeSummary.controllers
 
         private void CreateHeader()
         {
-            gui.AddHeader(new[] { "Day", "Starting Time", "Worktime", "Break Sum", "Daily Hours" });
+            gui.AddHeader(new[]
+                { "Day", "Starting Time", "Worktime", "Break Sum", "Daily Hours", "Sick Leave", "Vacation" });
         }
 
         private void FillData()
@@ -137,24 +140,39 @@ namespace WorktimeSummary.controllers
                 if (wts.Count(w => w.Day.Equals(day)) != 0)
                 {
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
-                    double differenceToday = (wt.Worktime - wt.Pause / 3600d - dailyHoursToWork) * 60d;
-                    differencesInDailyHours += differenceToday;
-                    gui.AddRow(new[]
+                    double differenceToday = 0;
+                    if (!wt.IsVacation && !wt.IsSickLeave)
                     {
-                        wt.Day, wt.StartingTime.ToString(),
+                        differenceToday = (wt.Worktime - wt.Pause / 3600d - dailyHoursToWork) * 60d;
+                    }
+                    differencesInDailyHours += differenceToday;
+                    
+                    List<UIElement> elements = gui.AddRow(new[]
+                    {
+                        wt.Day,
+                        wt.StartingTime.ToString(),
                         wt.Worktime.ToString(format, CultureInfo.CurrentCulture),
                         (wt.Pause / 60f).ToString(format, CultureInfo.CurrentCulture),
-                        differenceToday.ToString(format, CultureInfo.CurrentCulture)
+                        differenceToday.ToString(format, CultureInfo.CurrentCulture),
+                        wt.IsSickLeave.ToString(),
+                        wt.IsVacation.ToString()
                     });
-                    sumWorktime += wt.Worktime;
-                    sumPause += wt.Pause;
+                    foreach (UIElement uiElement in elements)
+                    {
+                        if (uiElement is CheckBox box)
+                        {
+                            box.Click += CheckBoxOnClick;
+                        }
+                    }
+                    if (!wt.IsVacation && !wt.IsSickLeave)
+                    {
+                        sumWorktime += wt.Worktime;
+                        sumPause += wt.Pause;
+                    }
                 }
                 else
                 {
-                    gui.AddRow(new[]
-                    {
-                        day, 0.ToString(), 0.ToString(), 0.ToString()
-                    });
+                    AddEmptyRow(day);
                 }
 
                 if ("2".Equals(currentlySelectedMonth) &&
@@ -177,6 +195,44 @@ namespace WorktimeSummary.controllers
                 ((double)sumPause / 3600).ToString(format, CultureInfo.CurrentCulture),
                 differencesInDailyHours.ToString(format, CultureInfo.CurrentCulture)
             });
+        }
+
+        private void CheckBoxOnClick(object sender, RoutedEventArgs e)
+        {
+            CheckBox box = (CheckBox)sender;
+            switch (int.Parse(box.Tag.ToString().Substring(0, 1)))
+            {
+                case IndexSickLeave:
+                {
+                    Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
+                    wt.IsSickLeave = (box.IsChecked == true);
+                    repository.Save(wt);
+                    break;
+                }
+                case IndexVacation:
+                {
+                    Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
+                    wt.IsVacation = (box.IsChecked == true);
+                    repository.Save(wt);
+                    break;
+                }
+            }
+            Refresh();
+        }
+
+        private void AddEmptyRow(string day)
+        {
+            List<UIElement> elements = gui.AddRow(new[]
+            {
+                day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(), false.ToString()
+            });
+            foreach (UIElement uiElement in elements)
+            {
+                if (uiElement is CheckBox box)
+                {
+                    box.Click += CheckBoxOnClick;
+                }
+            }
         }
 
         private void ClearData()

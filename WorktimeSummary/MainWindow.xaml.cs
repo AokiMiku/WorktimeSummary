@@ -1,9 +1,9 @@
 ﻿namespace WorktimeSummary
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
     using controllers;
@@ -19,7 +19,7 @@
         private static readonly Brush DefaultRowBackgroundHover = Brushes.SlateGray;
 
         private Brush currentlyHoveredRowBackground;
-        private List<Label> sumLabels = new List<Label>();
+        private readonly List<Label> sumLabels = new List<Label>();
 
         public MainWindow()
         {
@@ -47,8 +47,14 @@
             }
         }
 
-        public void AddRow(string[] values)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns>List of created UIElements</returns>
+        public List<UIElement> AddRow(string[] values)
         {
+            List<UIElement> elements = new List<UIElement>();
             RowDefinition row;
             DataGrid.RowDefinitions.Add(row = new RowDefinition());
             row.MinHeight = 25;
@@ -63,20 +69,46 @@
 
             for (int i = 0; i < values.Length; i++)
             {
-                Label lbl = new Label
+                UIElement addToRow;
+                if (values[i].ToLower().Equals("false") || values[i].ToLower().Equals("true"))
                 {
-                    Content = values[i],
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Tag = background
-                };
+                    CheckBox chk = new CheckBox
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Tag = i + ":" +values[0],
+                        IsChecked = bool.Parse(values[i])
+                    };
+                    chk.Click += ChkOnClick;
+                    addToRow = chk;
+                }
+                else
+                {
+                    Label lbl = new Label
+                    {
+                        Content = values[i],
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Tag = background
+                    };
+                    addToRow = lbl;
+                }
 
-                Grid.SetColumn(lbl, i);
-                Grid.SetRow(lbl, DataGrid.RowDefinitions.Count - 1);
-                DataGrid.Children.Add(lbl);
-                lbl.MouseEnter += LblOnMouseEnter;
-                lbl.MouseLeave += LblOnMouseLeave;
+                Grid.SetColumn(addToRow, i);
+                Grid.SetRow(addToRow, DataGrid.RowDefinitions.Count - 1);
+                DataGrid.Children.Add(addToRow);
+                addToRow.MouseEnter += LblOnMouseEnter;
+                addToRow.MouseLeave += LblOnMouseLeave;
+                elements.Add(addToRow);
             }
+
+            return elements;
+        }
+
+        private void ChkOnClick(object sender, RoutedEventArgs e)
+        {
+            int i = int.Parse(((CheckBox)sender).Tag.ToString().Substring(0, 1));
+            
         }
 
         public void AddSumRow(string[] values)
@@ -110,12 +142,22 @@
 
         private void LblOnMouseLeave(object sender, MouseEventArgs e)
         {
-            BackgroundOnMouseLeave(((Label)sender).Tag, e);
+            FrameworkElement element = (FrameworkElement)sender;
+            if (!(element.Tag is Border))
+            {
+                return;
+            }
+            BackgroundOnMouseLeave(element.Tag, e);
         }
 
         private void LblOnMouseEnter(object sender, MouseEventArgs e)
         {
-            BackgroundOnMouseEnter(((Label)sender).Tag, e);
+            FrameworkElement element = (FrameworkElement)sender;
+            if (!(element.Tag is Border))
+            {
+                return;
+            }
+            BackgroundOnMouseEnter(element.Tag, e);
         }
 
         private void BackgroundOnMouseLeave(object sender, MouseEventArgs e)

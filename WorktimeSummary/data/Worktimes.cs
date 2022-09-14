@@ -1,5 +1,6 @@
 namespace WorktimeSummary.data
 {
+    using System;
     using essentials;
     using SQLite;
 
@@ -21,10 +22,27 @@ namespace WorktimeSummary.data
 
         [Column("starting_time")] public string StartingTimeString { get; set; }
 
-        public Time StartingTime
+        [Column("is_sick_leave")] public bool IsSickLeave { get; set; }
+
+        [Column("is_vacation")] public bool IsVacation { get; set; }
+
+        [Ignore] public Time StartingTime
         {
             get => new Time(StartingTimeString);
             set => StartingTimeString = value.ToString();
+        }
+
+        public static Worktimes DefaultData(string day)
+        {
+            return new Worktimes
+            {
+                Day = day,
+                StartingTime = new Time(),
+                IsSickLeave = false,
+                IsVacation = false,
+                Pause = 0,
+                Worktime = 0
+            };
         }
     }
 }

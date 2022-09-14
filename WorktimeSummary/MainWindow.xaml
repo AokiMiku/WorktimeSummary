@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="ApS Util - WorktimeSummary" MinHeight="400" MinWidth="500" Height="0" Width="0"
+        Title="ApS Util - WorktimeSummary" MinHeight="500" MinWidth="650" Height="0" Width="0"
         Icon="ressources/graphics/icons/ApS.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -30,25 +34,30 @@
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Name="YearSelection" Margin="3 0" />
-        <ComboBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" Name="MonthSelection" Margin="3 0" />
-        <Button Name="Refresh" Grid.Row="1" Grid.Column="7" BorderThickness="0" Background="Transparent" Height="30" Width="30">
-            <Image Source="ressources/graphics/icons/refresh.ico"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Name="YearSelection"
+                  Margin="3 0" />
+        <ComboBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Center" Name="MonthSelection"
+                  Margin="3 0" />
+        <Button Name="Refresh" Grid.Row="1" Grid.Column="10" BorderThickness="0" Background="Transparent" Height="30"
+                Width="30">
+            <Image Source="ressources/graphics/icons/refresh.ico" />
         </Button>
-        <StackPanel Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+        <StackPanel Grid.Row="1" Grid.Column="11" Grid.ColumnSpan="3" HorizontalAlignment="Center"
                     VerticalAlignment="Center">
             <Label Padding="5 0" Content="Last Refresh:" />
             <Label Name="LastRefresh" Padding="5 0" Content="00:00:00" />
         </StackPanel>
 
-        <Button Grid.Row="1" Grid.Column="10" BorderThickness="0" Background="Transparent" Height="30" Width="30"
+        <Button Grid.Row="1" Grid.Column="14" BorderThickness="0" Background="Transparent" Height="30" Width="30"
                 Click="ButtonBase_OnClick">
             <Image Source="ressources/graphics/icons/wheel.ico" />
         </Button>
 
-        <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="11">
+        <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="15">
             <Grid Name="DataGrid">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />

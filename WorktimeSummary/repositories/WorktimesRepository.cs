@@ -10,10 +10,6 @@ namespace WorktimeSummary.repositories
 
     public class WorktimesRepository : Repository
     {
-        public WorktimesRepository()
-        {
-        }
-
         public Worktimes FindById(int id)
         {
             AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Id == id);
@@ -68,6 +64,38 @@ namespace WorktimeSummary.repositories
             {
                 Console.WriteLine(e);
                 return null;
+            }
+        }
+
+        public Worktimes FindByDay(string day)
+        {
+            AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Day.Equals(day));
+            Task<Worktimes> r = q?.ToListAsync().ContinueWith(w => w.Result.First());
+            try
+            {
+                return r?.Result;
+            }
+            catch (AggregateException e)
+            {
+                Console.WriteLine(e);
+                return Worktimes.DefaultData(day);
+            }
+        }
+
+        public void Save(Worktimes worktimes)
+        {
+            if (FindByDay(worktimes.Day) == null || FindByDay(worktimes.Day).Id == 0)
+            {
+                Db?.InsertAsync(worktimes);
+            }
+            else
+            {
+                worktimes.Id = FindByDay(worktimes.Day).Id;
+                Task<int> updateAsync = Db?.UpdateAsync(worktimes);
+                if (updateAsync?.Result > 0)
+                {
+                    Console.Out.WriteLine("Success");
+                }
             }
         }
     }
