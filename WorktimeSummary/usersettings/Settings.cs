@@ -126,7 +126,8 @@ namespace WorktimeSummary.userSettings
         {
             get
             {
-                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("Schedules", "AutoRefreshEveryXMinutes");
+                UserSettings us =
+                    UserSettingsRepository.FindByMajorAndMinorKey("Schedules", "AutoRefreshEveryXMinutes");
                 return us == null ? 0 : int.Parse(us.SettingValue);
             }
             set => Save("Schedules", "AutoRefreshEveryXMinutes", value.ToString());

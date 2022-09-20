@@ -26,7 +26,8 @@ namespace WorktimeSummary.data
 
         [Column("is_vacation")] public bool IsVacation { get; set; }
 
-        [Ignore] public Time StartingTime
+        [Ignore]
+        public Time StartingTime
         {
             get => new Time(StartingTimeString);
             set => StartingTimeString = value.ToString();

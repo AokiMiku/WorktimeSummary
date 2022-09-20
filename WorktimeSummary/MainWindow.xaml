@@ -30,6 +30,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
             <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
             <RowDefinition Name="HeaderRow" Height="40" />
             <RowDefinition />
             <RowDefinition Name="SumRow" Height="40" />
@@ -55,7 +56,16 @@
             <Image Source="ressources/graphics/icons/wheel.ico" />
         </Button>
 
-        <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="17">
+        <Button Grid.Row="2" Grid.Column="3" BorderThickness="0" Background="Transparent" Height="30" Width="50"
+                Click="ButtonMonthLeft_OnClick" HorizontalAlignment="Right">
+            <Image Source="ressources/graphics/icons/arrow_left.ico" />
+        </Button>
+        <Button Grid.Row="2" Grid.Column="5" BorderThickness="0" Background="Transparent" Height="30" Width="50"
+                Click="ButtonMonthRight_OnClick" HorizontalAlignment="Left">
+            <Image Source="ressources/graphics/icons/arrow_right.ico" />
+        </Button>
+
+        <ScrollViewer Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="17">
             <Grid Name="DataGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

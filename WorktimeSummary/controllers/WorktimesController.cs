@@ -109,7 +109,10 @@ namespace WorktimeSummary.controllers
         private void CreateHeader()
         {
             gui.AddHeader(new[]
-                { "Day", "Starting Time", "Worktime", "Break Sum", "Ending Time", "Daily OT Minutes", "Sick Leave", "Vacation" });
+            {
+                "Day", "Starting Time", "Worktime", "Break Sum", "Ending Time", "Daily OT Minutes", "Sick Leave",
+                "Vacation"
+            });
         }
 
         private void FillData()
@@ -128,6 +131,19 @@ namespace WorktimeSummary.controllers
             const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
+                if ("2".Equals(currentlySelectedMonth) &&
+                    ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29) ||
+                     (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 28)))
+                {
+                    break;
+                }
+
+                if (i == 30 && ("4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
+                                "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth)))
+                {
+                    break;
+                }
+
                 if (!Settings.ShowWeekends)
                 {
                     DateTime d = new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i);
@@ -146,8 +162,9 @@ namespace WorktimeSummary.controllers
                     {
                         differenceToday = (wt.Worktime - wt.Pause / 3600d - dailyHoursToWork) * 60d;
                     }
+
                     differencesInDailyHours += differenceToday;
-                    
+
                     List<UIElement> elements = gui.AddRow(new[]
                     {
                         wt.Day,
@@ -166,6 +183,7 @@ namespace WorktimeSummary.controllers
                             box.Click += CheckBoxOnClick;
                         }
                     }
+
                     if (!wt.IsVacation && !wt.IsSickLeave)
                     {
                         sumWorktime += wt.Worktime;
@@ -175,19 +193,6 @@ namespace WorktimeSummary.controllers
                 else
                 {
                     AddEmptyRow(day);
-                }
-
-                if ("2".Equals(currentlySelectedMonth) &&
-                    ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29) ||
-                     (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 28)))
-                {
-                    break;
-                }
-
-                if (i == 30 && ("4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
-                                "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth)))
-                {
-                    break;
                 }
             }
 
@@ -208,18 +213,19 @@ namespace WorktimeSummary.controllers
                 case IndexSickLeave:
                 {
                     Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
-                    wt.IsSickLeave = (box.IsChecked == true);
+                    wt.IsSickLeave = box.IsChecked == true;
                     repository.Save(wt);
                     break;
                 }
                 case IndexVacation:
                 {
                     Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
-                    wt.IsVacation = (box.IsChecked == true);
+                    wt.IsVacation = box.IsChecked == true;
                     repository.Save(wt);
                     break;
                 }
             }
+
             Refresh();
         }
 
@@ -227,7 +233,8 @@ namespace WorktimeSummary.controllers
         {
             List<UIElement> elements = gui.AddRow(new[]
             {
-                day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(), false.ToString()
+                day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(),
+                false.ToString()
             });
             foreach (UIElement uiElement in elements)
             {

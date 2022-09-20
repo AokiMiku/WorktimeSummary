@@ -1,6 +1,5 @@
 ﻿namespace WorktimeSummary
 {
-    using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
@@ -42,7 +41,7 @@
                 };
                 Grid.SetColumn(lbl, i + j++ + 1);
                 Grid.SetColumnSpan(lbl, 2);
-                Grid.SetRow(lbl, 2);
+                Grid.SetRow(lbl, 3);
                 ((Grid)HeaderRow.Parent).Children.Add(lbl);
             }
         }
@@ -76,10 +75,9 @@
                     {
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Tag = i + ":" +values[0],
+                        Tag = i + ":" + values[0],
                         IsChecked = bool.Parse(values[i])
                     };
-                    chk.Click += ChkOnClick;
                     addToRow = chk;
                 }
                 else
@@ -105,12 +103,6 @@
             return elements;
         }
 
-        private void ChkOnClick(object sender, RoutedEventArgs e)
-        {
-            int i = int.Parse(((CheckBox)sender).Tag.ToString().Substring(0, 1));
-            
-        }
-
         public void AddSumRow(string[] values)
         {
             for (int i = 0, j = 0; i < values.Length; i++)
@@ -124,7 +116,7 @@
                 };
                 Grid.SetColumn(lbl, i + j++ + 1);
                 Grid.SetColumnSpan(lbl, 2);
-                Grid.SetRow(lbl, 4);
+                Grid.SetRow(lbl, 5);
                 ((Grid)SumRow.Parent).Children.Add(lbl);
                 sumLabels.Add(lbl);
             }
@@ -147,6 +139,7 @@
             {
                 return;
             }
+
             BackgroundOnMouseLeave(element.Tag, e);
         }
 
@@ -157,6 +150,7 @@
             {
                 return;
             }
+
             BackgroundOnMouseEnter(element.Tag, e);
         }
 
@@ -203,6 +197,44 @@
                 ((Border)DataGrid.Children[i]).Background = Grid.GetRow(DataGrid.Children[i]) % 2 == 0
                     ? defaultRowBackgroundZebra1
                     : defaultRowBackgroundZebra2;
+            }
+        }
+
+        private void ButtonMonthLeft_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MonthSelection.SelectedIndex > 0)
+            {
+                MonthSelection.SelectedIndex--;
+            }
+            else
+            {
+                SelectNextYear(false);
+            }
+        }
+
+        private void ButtonMonthRight_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MonthSelection.SelectedIndex < MonthSelection.Items.Count - 1)
+            {
+                MonthSelection.SelectedIndex++;
+            }
+            else
+            {
+                SelectNextYear(true);
+            }
+        }
+
+        private void SelectNextYear(bool changeYearSelectionForward)
+        {
+            if (changeYearSelectionForward && YearSelection.SelectedIndex < YearSelection.Items.Count - 1)
+            {
+                YearSelection.SelectedIndex++;
+                MonthSelection.SelectedIndex = 0;
+            }
+            else if (!changeYearSelectionForward && YearSelection.SelectedIndex > 0)
+            {
+                YearSelection.SelectedIndex--;
+                MonthSelection.SelectedIndex = MonthSelection.Items.Count - 1;
             }
         }
     }

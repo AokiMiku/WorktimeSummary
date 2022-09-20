@@ -97,7 +97,8 @@
                     <DockPanel>
                         <Label Content="Disable/Enable Auto-Refresh:" />
                         <CheckBox Name="EnableAutoRefresh" Margin="0 0 90 0" HorizontalAlignment="Right"
-                                  VerticalAlignment="Center" Checked="EnableAutoRefresh_OnChecked" Unchecked="EnableAutoRefresh_OnUnchecked" />
+                                  VerticalAlignment="Center" Checked="EnableAutoRefresh_OnChecked"
+                                  Unchecked="EnableAutoRefresh_OnUnchecked" />
                     </DockPanel>
                     <DockPanel Name="AutoRefreshPanel">
                         <Label Content="Auto-Refresh the table every" />
