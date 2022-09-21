@@ -133,26 +133,14 @@ namespace WorktimeSummary.controllers
             const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
-                if ("2".Equals(currentlySelectedMonth) &&
-                    ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 30) ||
-                     (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29)))
+                if (IsLastDayOfMonth(i))
                 {
                     break;
                 }
 
-                if (i == 31 && ("4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
-                                "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth)))
+                if (SkipWeekends(i))
                 {
-                    break;
-                }
-
-                if (!Settings.ShowWeekends)
-                {
-                    DateTime d = new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i);
-                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 string day = dayStartString + $"-{i.ToString().PadLeft(2, '0')}";
@@ -204,6 +192,30 @@ namespace WorktimeSummary.controllers
                 "",
                 differencesInDailyHours.ToString(format, CultureInfo.CurrentCulture)
             });
+        }
+
+        private bool SkipWeekends(int i)
+        {
+            if (Settings.ShowWeekends)
+            {
+                return false;
+            }
+
+            DateTime d = new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i);
+            return d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday;
+        }
+
+        private bool IsLastDayOfMonth(int dayOfMonth)
+        {
+            if ("2".Equals(currentlySelectedMonth) &&
+                ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && dayOfMonth == 30) ||
+                 (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && dayOfMonth == 29)))
+            {
+                return true;
+            }
+
+            return dayOfMonth == 31 && ("4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
+                                        "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth));
         }
 
         private void CheckBoxOnClick(object sender, RoutedEventArgs e)
