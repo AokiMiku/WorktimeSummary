@@ -132,13 +132,13 @@ namespace WorktimeSummary.controllers
             for (int i = 1; i <= 31; i++)
             {
                 if ("2".Equals(currentlySelectedMonth) &&
-                    ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29) ||
-                     (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 28)))
+                    ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 30) ||
+                     (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && i == 29)))
                 {
                     break;
                 }
 
-                if (i == 30 && ("4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
+                if (i == 31 && ("4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
                                 "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth)))
                 {
                     break;
