@@ -8,6 +8,8 @@ namespace WorktimeSummary.controllers
     using System.Windows.Controls;
     using System.Windows.Threading;
     using data;
+    using essentials;
+    using Nager.Date;
     using repositories;
     using userSettings;
 
@@ -23,6 +25,7 @@ namespace WorktimeSummary.controllers
 
         public WorktimesController(MainWindow gui)
         {
+            DateSystem.LicenseKey = "LostTimeIsNeverFoundAgain";
             this.gui = gui;
             this.gui.YearSelection.SelectionChanged += YearSelectionOnSelectionChanged;
             this.gui.MonthSelection.SelectionChanged += MonthSelectionOnSelectionChanged;
@@ -110,7 +113,7 @@ namespace WorktimeSummary.controllers
             gui.AddHeader(new[]
             {
                 "Day", "Starting Time", "Worktime", "Break Sum", "Ending Time", "Daily OT Minutes", "Sick Leave",
-                "Vacation"
+                "Vacation", "Public Holiday"
             });
         }
 
@@ -157,12 +160,16 @@ namespace WorktimeSummary.controllers
                 {
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
                     double differenceToday = 0;
-                    if (!wt.IsVacation && !wt.IsSickLeave)
+                    bool isPublicHoliday = DateSystem.IsPublicHoliday(wt.Day.ToDateTime(), CountryCode.DE);
+                    if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
                     {
                         differenceToday = (wt.Worktime - wt.Pause / 3600d - dailyHoursToWork) * 60d;
+                        sumWorktime += wt.Worktime;
+                        sumPause += wt.Pause;
                     }
 
                     differencesInDailyHours += differenceToday;
+
 
                     List<UIElement> elements = gui.AddRow(new[]
                     {
@@ -173,7 +180,8 @@ namespace WorktimeSummary.controllers
                         wt.StartingTime.AddSeconds((int)(wt.Worktime * 3600)).ToString(),
                         differenceToday.ToString(format, CultureInfo.CurrentCulture),
                         wt.IsSickLeave.ToString(),
-                        wt.IsVacation.ToString()
+                        wt.IsVacation.ToString(),
+                        isPublicHoliday.ToString()
                     });
                     foreach (UIElement uiElement in elements)
                     {
@@ -181,12 +189,6 @@ namespace WorktimeSummary.controllers
                         {
                             box.Click += CheckBoxOnClick;
                         }
-                    }
-
-                    if (!wt.IsVacation && !wt.IsSickLeave)
-                    {
-                        sumWorktime += wt.Worktime;
-                        sumPause += wt.Pause;
                     }
                 }
                 else
@@ -233,7 +235,7 @@ namespace WorktimeSummary.controllers
             List<UIElement> elements = gui.AddRow(new[]
             {
                 day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(),
-                false.ToString()
+                false.ToString(), DateSystem.IsPublicHoliday(day.ToDateTime(), CountryCode.DE).ToString()
             });
             foreach (UIElement uiElement in elements)
             {

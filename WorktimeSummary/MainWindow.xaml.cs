@@ -30,7 +30,7 @@
 
         public void AddHeader(string[] values)
         {
-            for (int i = 0, j = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 Label lbl = new Label
                 {
@@ -39,9 +39,9 @@
                     VerticalAlignment = VerticalAlignment.Center,
                     FontWeight = FontWeights.Bold
                 };
-                Grid.SetColumn(lbl, i + j++ + 1);
-                Grid.SetColumnSpan(lbl, 2);
-                Grid.SetRow(lbl, 3);
+                Grid.SetColumn(lbl, i);
+                // Grid.SetColumnSpan(lbl, 2);
+                Grid.SetRow(lbl, 0);
                 ((Grid)HeaderRow.Parent).Children.Add(lbl);
             }
         }
@@ -104,7 +104,7 @@
 
         public void AddSumRow(string[] values)
         {
-            for (int i = 0, j = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 Label lbl = new Label
                 {
@@ -113,9 +113,9 @@
                     VerticalAlignment = VerticalAlignment.Center,
                     FontWeight = FontWeights.Bold
                 };
-                Grid.SetColumn(lbl, i + j++ + 1);
-                Grid.SetColumnSpan(lbl, 2);
-                Grid.SetRow(lbl, 5);
+                Grid.SetColumn(lbl, i);
+                // Grid.SetColumnSpan(lbl, 2);
+                Grid.SetRow(lbl, 2);
                 ((Grid)SumRow.Parent).Children.Add(lbl);
                 sumLabels.Add(lbl);
             }

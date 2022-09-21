@@ -66,6 +66,9 @@
             <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
         </Reference>
         <Reference Include="mscorlib"/>
+        <Reference Include="Nager.Date, Version=1.36.2.0, Culture=neutral, processorArchitecture=MSIL">
+            <HintPath>..\packages\Nager.Date.1.36.2\lib\net472\Nager.Date.dll</HintPath>
+        </Reference>
         <Reference Include="SQLite-net, Version=1.8.116.0, Culture=neutral, processorArchitecture=MSIL">
             <HintPath>..\packages\sqlite-net-pcl.1.8.116\lib\netstandard2.0\SQLite-net.dll</HintPath>
         </Reference>
@@ -223,6 +226,7 @@
             <SubType>Designer</SubType>
         </ApplicationDefinition>
         <Compile Include="data\UserSettings.cs"/>
+        <Compile Include="essentials\Extensions.cs"/>
         <Compile Include="repositories\Repository.cs"/>
         <Compile Include="repositories\UserSettingsRepository.cs"/>
         <Compile Include="repositories\WorktimesRepository.cs"/>
