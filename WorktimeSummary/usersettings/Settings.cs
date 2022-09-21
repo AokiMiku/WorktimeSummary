@@ -14,17 +14,6 @@ namespace WorktimeSummary.userSettings
             UserSettingsRepository = new UserSettingsRepository();
         }
 
-        private static void Save(string majorKey, string minorKey, string value)
-        {
-            UserSettings us = new UserSettings
-            {
-                SettingKeyMajor = $"{majorKey}",
-                SettingKeyMinor = $"{minorKey}",
-                SettingValue = value
-            };
-            UserSettingsRepository.SaveSetting(us);
-        }
-
         public static string TableThemeTitle
         {
             get
@@ -77,21 +66,6 @@ namespace WorktimeSummary.userSettings
             set => Save("General", "StartingYear", value);
         }
 
-        public static bool IsLeapYear(int year)
-        {
-            if (year % 4 == 0 && year % 100 != 0)
-            {
-                return true;
-            }
-
-            if (year % 100 == 0)
-            {
-                return year % 400 == 0;
-            }
-
-            return false;
-        }
-
         public static float WorkhoursPerWeek
         {
             get
@@ -131,6 +105,32 @@ namespace WorktimeSummary.userSettings
                 return us == null ? 0 : int.Parse(us.SettingValue);
             }
             set => Save("Schedules", "AutoRefreshEveryXMinutes", value.ToString());
+        }
+
+        private static void Save(string majorKey, string minorKey, string value)
+        {
+            UserSettings us = new UserSettings
+            {
+                SettingKeyMajor = $"{majorKey}",
+                SettingKeyMinor = $"{minorKey}",
+                SettingValue = value
+            };
+            UserSettingsRepository.SaveSetting(us);
+        }
+
+        public static bool IsLeapYear(int year)
+        {
+            if (year % 4 == 0 && year % 100 != 0)
+            {
+                return true;
+            }
+
+            if (year % 100 == 0)
+            {
+                return year % 400 == 0;
+            }
+
+            return false;
         }
     }
 }

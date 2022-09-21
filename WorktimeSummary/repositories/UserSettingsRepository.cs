@@ -3,18 +3,15 @@ namespace WorktimeSummary.repositories
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using data;
     using SQLite;
 
     public class UserSettingsRepository : Repository
     {
-        public UserSettingsRepository()
+        public UserSettings FindById(int id)
         {
-        }
-
-        public data.UserSettings FindById(int id)
-        {
-            AsyncTableQuery<data.UserSettings> q = Db?.Table<data.UserSettings>().Where(us => us.Id == id);
-            Task<data.UserSettings> r = q?.ToListAsync().ContinueWith(us => us.Result.First());
+            AsyncTableQuery<UserSettings> q = Db?.Table<UserSettings>().Where(us => us.Id == id);
+            Task<UserSettings> r = q?.ToListAsync().ContinueWith(us => us.Result.First());
             try
             {
                 return r?.Result;
@@ -26,11 +23,11 @@ namespace WorktimeSummary.repositories
             }
         }
 
-        public data.UserSettings FindByMajorAndMinorKey(string majorKey, string minorKey)
+        public UserSettings FindByMajorAndMinorKey(string majorKey, string minorKey)
         {
-            AsyncTableQuery<data.UserSettings> q = Db?.Table<data.UserSettings>()
+            AsyncTableQuery<UserSettings> q = Db?.Table<UserSettings>()
                 .Where(us => us.SettingKeyMajor == majorKey && us.SettingKeyMinor == minorKey);
-            Task<data.UserSettings> r = q?.ToListAsync().ContinueWith(us => us.Result.First());
+            Task<UserSettings> r = q?.ToListAsync().ContinueWith(us => us.Result.First());
             try
             {
                 return r?.Result;
@@ -42,7 +39,7 @@ namespace WorktimeSummary.repositories
             }
         }
 
-        public void SaveSetting(data.UserSettings userSettings)
+        public void SaveSetting(UserSettings userSettings)
         {
             if (FindByMajorAndMinorKey(userSettings.SettingKeyMajor, userSettings.SettingKeyMinor) == null)
             {

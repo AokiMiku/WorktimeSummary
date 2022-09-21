@@ -8,19 +8,18 @@ namespace WorktimeSummary.controllers
     using System.Windows.Controls;
     using System.Windows.Threading;
     using data;
-    using essentials;
     using repositories;
     using userSettings;
 
     public class WorktimesController
     {
-        private readonly WorktimesRepository repository = new WorktimesRepository();
-        private readonly MainWindow gui;
         private const int IndexSickLeave = 6;
         private const int IndexVacation = 7;
+        private readonly MainWindow gui;
+        private readonly WorktimesRepository repository = new WorktimesRepository();
+        private string currentlySelectedMonth = "";
 
         private string currentlySelectedYear = "";
-        private string currentlySelectedMonth = "";
 
         public WorktimesController(MainWindow gui)
         {

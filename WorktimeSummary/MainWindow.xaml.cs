@@ -9,16 +9,16 @@
     using userSettings;
 
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
         private static Brush defaultRowBackgroundZebra1;
         private static Brush defaultRowBackgroundZebra2;
         private static readonly Brush DefaultRowBackgroundHover = Brushes.SlateGray;
+        private readonly List<Label> sumLabels = new List<Label>();
 
         private Brush currentlyHoveredRowBackground;
-        private readonly List<Label> sumLabels = new List<Label>();
 
         public MainWindow()
         {
@@ -47,7 +47,6 @@
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="values"></param>
         /// <returns>List of created UIElements</returns>

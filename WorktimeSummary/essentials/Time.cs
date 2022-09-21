@@ -5,12 +5,6 @@ namespace WorktimeSummary.essentials
 
     public class Time
     {
-        public int Milliseconds { get; set; }
-        public int Seconds { get; set; }
-        public int Minutes { get; set; }
-        public int Hours { get; set; }
-
-
         public Time(int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0)
         {
             Hours = hours;
@@ -55,6 +49,11 @@ namespace WorktimeSummary.essentials
                 throw new ArgumentException($"No valid time-string: {time}!");
             }
         }
+
+        public int Milliseconds { get; set; }
+        public int Seconds { get; set; }
+        public int Minutes { get; set; }
+        public int Hours { get; set; }
 
         public Time Add(Time other)
         {

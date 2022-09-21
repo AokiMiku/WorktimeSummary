@@ -1,23 +1,21 @@
-using System.Windows;
-
 namespace WorktimeSummary
 {
     using System;
-    using System.Linq;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Controls;
     using userSettings;
 
     public partial class UserSettings : Window
     {
-        public event EventHandler<EventArgs> TableThemeChanged;
-
         public UserSettings()
         {
             InitializeComponent();
             SelectCorrectThemeComboBoxItem();
             LoadSettings();
         }
+
+        public event EventHandler<EventArgs> TableThemeChanged;
 
         private void LoadSettings()
         {
