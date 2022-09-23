@@ -158,8 +158,7 @@ namespace WorktimeSummary.controllers
 
                     differencesInDailyHours += differenceToday;
 
-
-                    List<UIElement> elements = gui.AddRow(new[]
+                    List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day),new[]
                     {
                         wt.Day,
                         wt.StartingTime.ToString(),
@@ -192,6 +191,18 @@ namespace WorktimeSummary.controllers
                 "",
                 differencesInDailyHours.ToString(format, CultureInfo.CurrentCulture)
             });
+        }
+
+        private bool IsDayToday(string day)
+        {
+            return day.ToDateTime().Equals(DateTime.Today);
+            // bool ret = false;
+            // DateTime d = day.ToDateTime();
+            // DateTime today = DateTime.Today;
+            // if ()
+            // {
+            //     
+            // }
         }
 
         private bool SkipWeekends(int i)
@@ -244,7 +255,7 @@ namespace WorktimeSummary.controllers
 
         private void AddEmptyRow(string day)
         {
-            List<UIElement> elements = gui.AddRow(new[]
+            List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
             {
                 day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(),
                 false.ToString(), DateSystem.IsPublicHoliday(day.ToDateTime(), CountryCode.DE).ToString()

@@ -48,9 +48,10 @@
 
         /// <summary>
         /// </summary>
+        /// <param name="bold">If the texts of the current row should be bold.</param>
         /// <param name="values"></param>
         /// <returns>List of created UIElements</returns>
-        public List<UIElement> AddRow(string[] values)
+        public List<UIElement> AddRow(bool bold, string[] values)
         {
             List<UIElement> elements = new List<UIElement>();
             RowDefinition row;
@@ -88,6 +89,10 @@
                         VerticalAlignment = VerticalAlignment.Center,
                         Tag = background
                     };
+                    if (bold)
+                    {
+                        lbl.FontWeight = FontWeights.Bold;
+                    }
                     addToRow = lbl;
                 }
 

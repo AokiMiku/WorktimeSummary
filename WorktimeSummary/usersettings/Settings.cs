@@ -85,6 +85,17 @@ namespace WorktimeSummary.userSettings
             }
             set => Save("General", "ShowWeekends", value.ToString(CultureInfo.CurrentCulture));
         }
+        
+        public static bool CurrentDayBold
+        {
+            get
+            {
+                UserSettings us =
+                    UserSettingsRepository.FindByMajorAndMinorKey("General", "CurrentDayBold");
+                return us != null && bool.Parse(us.SettingValue);
+            }
+            set => Save("General", "CurrentDayBold", value.ToString());
+        }
 
         public static bool AutoRefreshEnabled
         {

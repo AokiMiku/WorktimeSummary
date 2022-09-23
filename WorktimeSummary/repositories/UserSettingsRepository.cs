@@ -27,7 +27,10 @@ namespace WorktimeSummary.repositories
         {
             AsyncTableQuery<UserSettings> q = Db?.Table<UserSettings>()
                 .Where(us => us.SettingKeyMajor == majorKey && us.SettingKeyMinor == minorKey);
-            Task<UserSettings> r = q?.ToListAsync().ContinueWith(us => us.Result.First());
+            Task<UserSettings> r = null;
+            
+                r = q?.ToListAsync().ContinueWith(us => us.Result.FirstOrDefault());
+            
             try
             {
                 return r?.Result;
