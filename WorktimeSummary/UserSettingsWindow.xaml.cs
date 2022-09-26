@@ -34,6 +34,17 @@ namespace WorktimeSummary
                 AutoRefresh.SelectedIndex = i;
                 break;
             }
+            for (int i = 0; i < AutoSave.Items.Count; i++)
+            {
+                if (!int.Parse(((Label)AutoSave.Items[i]).Content.ToString())
+                        .Equals(Settings.AutoSaveEveryXMinutes))
+                {
+                    continue;
+                }
+
+                AutoSave.SelectedIndex = i;
+                break;
+            }
         }
 
         private void SelectCorrectThemeComboBoxItem()
@@ -92,7 +103,7 @@ namespace WorktimeSummary
             }
 
             Settings.CurrentDayBold = CurrentDayBold.IsChecked == true;
-
+            Settings.AutoSaveEveryXMinutes = int.Parse(((Label)AutoSave.SelectedItem).Content.ToString());
             Close();
         }
     }

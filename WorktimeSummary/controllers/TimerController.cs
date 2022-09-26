@@ -1,11 +1,13 @@
 namespace WorktimeSummary.controllers
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Threading;
     using data;
     using essentials;
     using repositories;
+    using userSettings;
 
     public class TimerController
     {
@@ -14,7 +16,6 @@ namespace WorktimeSummary.controllers
         private readonly WorktimesRepository repository = WorktimesRepository.Instance;
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly TimerWindow timerWindow;
-        private Time breakStartingTime;
         private Worktimes worktimes;
 
         public TimerController(TimerWindow timerWindow)
@@ -25,6 +26,7 @@ namespace WorktimeSummary.controllers
             this.timerWindow.Start.Click += StartOnClick;
             this.timerWindow.Break.Click += BreakOnClick;
             this.timerWindow.Stop.Click += StopOnClick;
+            this.timerWindow.Closing += TimerWindowOnClosing;
         }
 
         private bool IsBreak { get; set; }
@@ -32,6 +34,14 @@ namespace WorktimeSummary.controllers
         private bool Break30Minutes { get; set; }
 
         private bool Break45Minutes { get; set; }
+
+        private void TimerWindowOnClosing(object sender, CancelEventArgs e)
+        {
+            if (timer.IsEnabled)
+            {
+                Stop();
+            }
+        }
 
         private void StartOnClick(object sender, RoutedEventArgs e)
         {
@@ -73,6 +83,14 @@ namespace WorktimeSummary.controllers
             timerWindow.WorktimeTime.Content = HourDecimalToTimeString(worktimes.Worktime);
             timerWindow.BreakDecimal.Content = (worktimes.Pause / 3600d).ToString("0.00000");
             timerWindow.BreakTime.Content = HourDecimalToTimeString(worktimes.Pause / 3600d);
+
+            if (Settings.AutoSaveEveryXMinutes <= 0 ||
+                worktimes.WorktimeInSeconds % (Settings.AutoSaveEveryXMinutes * 60) != 0)
+            {
+                return;
+            }
+
+            repository.Save(worktimes);
         }
 
         private string HourDecimalToTimeString(double worktimesWorktime)
@@ -122,15 +140,6 @@ namespace WorktimeSummary.controllers
 
         private void BreakToggle()
         {
-            // if (!IsBreak)
-            // {
-            //     breakStartingTime = Time.Now();
-            // }
-            // else
-            // {
-            //     worktimes.Pause += (Time.Now() - breakStartingTime).Seconds;
-            // }
-
             IsBreak = !IsBreak;
         }
 

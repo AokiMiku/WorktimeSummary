@@ -247,7 +247,7 @@
         {
             TimerWindow tw = new TimerWindow();
             TimerController dummy = new TimerController(tw);
-            tw.ShowDialog();
+            tw.Show();
         }
     }
 }

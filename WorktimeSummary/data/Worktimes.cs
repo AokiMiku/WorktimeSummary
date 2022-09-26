@@ -1,6 +1,5 @@
 namespace WorktimeSummary.data
 {
-    using System.Runtime.Remoting.Messaging;
     using essentials;
     using SQLite;
 
@@ -32,7 +31,7 @@ namespace WorktimeSummary.data
             get => (long)(Worktime * 3600);
             set => Worktime = value / 3600d;
         }
-        
+
         [Ignore]
         public Time StartingTime
         {
