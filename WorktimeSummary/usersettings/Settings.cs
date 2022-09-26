@@ -84,13 +84,33 @@ namespace WorktimeSummary.userSettings
 
         public static int AutoRefreshEveryXMinutes
         {
-            get => int.Parse(Get("Schedules", "AutoRefreshEveryXMinutes"));
+            get
+            {
+                try
+                {
+                    return int.Parse(Get("Schedules", "AutoRefreshEveryXMinutes"));
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
             set => Save("Schedules", "AutoRefreshEveryXMinutes", value.ToString());
         }
 
         public static int AutoSaveEveryXMinutes
         {
-            get => int.Parse(Get("Schedules", "AutoSaveEveryXMinutes"));
+            get
+            {
+                try
+                {
+                    return int.Parse(Get("Schedules", "AutoSaveEveryXMinutes"));
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
             set => Save("Schedules", "AutoSaveEveryXMinutes", value.ToString());
         }
 
