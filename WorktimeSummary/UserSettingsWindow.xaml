@@ -120,6 +120,19 @@
                         </ComboBox>
                         <Label Content="minute(s)." />
                     </DockPanel>
+                    <DockPanel>
+                        <Label Content="Auto-Save working time every" />
+                        <ComboBox Margin="3" Name="AutoSave" Width="50">
+                            <Label Content="1" />
+                            <Label Content="2" />
+                            <Label Content="5" />
+                            <Label Content="10" />
+                            <Label Content="15" />
+                            <Label Content="30" />
+                            <Label Content="60" />
+                        </ComboBox>
+                        <Label Content="minute(s)." />
+                    </DockPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

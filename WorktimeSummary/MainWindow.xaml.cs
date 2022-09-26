@@ -93,6 +93,7 @@
                     {
                         lbl.FontWeight = FontWeights.Bold;
                     }
+
                     addToRow = lbl;
                 }
 
@@ -179,7 +180,7 @@
             ((Border)sender).Background = DefaultRowBackgroundHover;
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void UserSettings_OnClick(object sender, RoutedEventArgs e)
         {
             UserSettingsWindow us = new UserSettingsWindow();
             us.TableThemeChanged += (o, args) => RepaintTable();
@@ -240,6 +241,13 @@
                 YearSelection.SelectedIndex--;
                 MonthSelection.SelectedIndex = MonthSelection.Items.Count - 1;
             }
+        }
+
+        private void LaunchTimer_OnClick(object sender, RoutedEventArgs e)
+        {
+            TimerWindow tw = new TimerWindow();
+            TimerController dummy = new TimerController(tw);
+            tw.ShowDialog();
         }
     }
 }

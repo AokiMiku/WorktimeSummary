@@ -9,6 +9,12 @@ namespace WorktimeSummary.repositories
 
     public class WorktimesRepository : Repository
     {
+        private WorktimesRepository()
+        {
+        }
+
+        public static WorktimesRepository Instance { get; } = new WorktimesRepository();
+
         public Worktimes FindById(int id)
         {
             AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Id == id);
@@ -64,6 +70,12 @@ namespace WorktimeSummary.repositories
                 Console.WriteLine(e);
                 return null;
             }
+        }
+
+        public Worktimes FindToday()
+        {
+            DateTime today = DateTime.Today;
+            return FindByDay($"{today.Year:0000}-{today.Month:00}-{today.Day:00}");
         }
 
         public Worktimes FindByDay(string day)

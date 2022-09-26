@@ -120,5 +120,36 @@ namespace WorktimeSummary.essentials
                   $":{Minutes.ToString().PadLeft(2, '0')}" +
                   $":{Seconds.ToString().PadLeft(2, '0')}";
         }
+
+        public static Time Now()
+        {
+            DateTime now = DateTime.Now;
+            return new Time(now.Hour, now.Minute, now.Second, now.Millisecond);
+        }
+
+        public DateTime ToDateTime()
+        {
+            return new DateTime(0, 0, 0, Hours, Minutes, Seconds, Milliseconds);
+        }
+
+        public static Time operator +(Time left, Time right)
+        {
+            return left.Add(right);
+        }
+
+        public static Time operator -(Time left, Time right)
+        {
+            Time difference = left;
+            difference.Hours -= right.Hours;
+            difference.Minutes -= right.Minutes;
+            difference.Seconds -= right.Seconds;
+            difference.Milliseconds -= right.Milliseconds;
+            return difference;
+        }
+
+        public double ToSeconds()
+        {
+            return Hours * 3600d + Minutes * 60d + Seconds + Milliseconds / 1000d;
+        }
     }
 }

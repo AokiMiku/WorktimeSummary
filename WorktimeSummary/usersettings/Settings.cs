@@ -16,11 +16,7 @@ namespace WorktimeSummary.userSettings
 
         public static string TableThemeTitle
         {
-            get
-            {
-                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableThemeTitle");
-                return us == null ? "" : us.SettingValue;
-            }
+            get => Get("General", "TableThemeTitle");
             set => Save("General", "TableThemeTitle", value);
         }
 
@@ -58,64 +54,50 @@ namespace WorktimeSummary.userSettings
 
         public static string StartingYear
         {
-            get
-            {
-                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "StartingYear");
-                return us == null ? "0" : us.SettingValue;
-            }
+            get => Get("General", "StartingYear");
             set => Save("General", "StartingYear", value);
         }
 
         public static float WorkhoursPerWeek
         {
-            get
-            {
-                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "WorkhoursPerWeek");
-                return us == null ? 0 : float.Parse(us.SettingValue);
-            }
+            get => float.Parse(Get("General", "WorkhoursPerWeek"));
             set => Save("General", "WorkhoursPerWeek", value.ToString(CultureInfo.CurrentCulture));
         }
 
         public static bool ShowWeekends
         {
-            get
-            {
-                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "ShowWeekends");
-                return us != null && bool.Parse(us.SettingValue);
-            }
+            get => bool.Parse(Get("General", "ShowWeekends"));
             set => Save("General", "ShowWeekends", value.ToString(CultureInfo.CurrentCulture));
         }
-        
+
         public static bool CurrentDayBold
         {
-            get
-            {
-                UserSettings us =
-                    UserSettingsRepository.FindByMajorAndMinorKey("General", "CurrentDayBold");
-                return us != null && bool.Parse(us.SettingValue);
-            }
+            get => bool.Parse(Get("General", "CurrentDayBold"));
             set => Save("General", "CurrentDayBold", value.ToString());
         }
 
         public static bool AutoRefreshEnabled
         {
-            get
-            {
-                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("Schedules", "AutoRefreshEnabled");
-                return us != null && bool.Parse(us.SettingValue);
-            }
+            get => bool.Parse(Get("Schedules", "AutoRefreshEnabled"));
             set => Save("Schedules", "AutoRefreshEnabled", value.ToString());
         }
 
         public static int AutoRefreshEveryXMinutes
         {
-            get
-            {
-                UserSettings us =
-                    UserSettingsRepository.FindByMajorAndMinorKey("Schedules", "AutoRefreshEveryXMinutes");
-                return us == null ? 0 : int.Parse(us.SettingValue);
-            }
+            get => int.Parse(Get("Schedules", "AutoRefreshEveryXMinutes"));
             set => Save("Schedules", "AutoRefreshEveryXMinutes", value.ToString());
+        }
+
+        public static int AutoSaveEveryXMinutes
+        {
+            get => int.Parse(Get("Schedules", "AutoSaveEveryXMinutes"));
+            set => Save("Schedules", "AutoSaveEveryXMinutes", value.ToString());
+        }
+
+        private static string Get(string majorKey, string minorKey)
+        {
+            UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey(majorKey, minorKey);
+            return us == null ? "" : us.SettingValue;
         }
 
         private static void Save(string majorKey, string minorKey, string value)
@@ -128,6 +110,7 @@ namespace WorktimeSummary.userSettings
             };
             UserSettingsRepository.SaveSetting(us);
         }
+
 
         public static bool IsLeapYear(int year)
         {

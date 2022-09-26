@@ -90,6 +90,7 @@ namespace WorktimeSummary
             {
                 Settings.AutoRefreshEveryXMinutes = int.Parse(((Label)AutoRefresh.SelectedItem).Content.ToString());
             }
+
             Settings.CurrentDayBold = CurrentDayBold.IsChecked == true;
 
             Close();

@@ -18,7 +18,7 @@ namespace WorktimeSummary.controllers
         private const int IndexSickLeave = 6;
         private const int IndexVacation = 7;
         private readonly MainWindow gui;
-        private readonly WorktimesRepository repository = new WorktimesRepository();
+        private readonly WorktimesRepository repository = WorktimesRepository.Instance;
         private string currentlySelectedMonth = "";
 
         private string currentlySelectedYear = "";
@@ -158,7 +158,7 @@ namespace WorktimeSummary.controllers
 
                     differencesInDailyHours += differenceToday;
 
-                    List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day),new[]
+                    List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
                     {
                         wt.Day,
                         wt.StartingTime.ToString(),

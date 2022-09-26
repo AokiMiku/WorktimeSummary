@@ -30,6 +30,10 @@
                   Margin="3 0" />
         <ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" Name="MonthSelection"
                   Margin="3 0" />
+        <Button Grid.Row="1" Grid.Column="4" Height="25" Background="Transparent" BorderThickness="0"
+                Click="LaunchTimer_OnClick">
+            Launch Timer
+        </Button>
         <DockPanel Grid.Row="1" Grid.Column="7">
             <Button Name="Refresh" BorderThickness="0" Background="Transparent" Height="30"
                     Width="30">
@@ -43,7 +47,7 @@
         </DockPanel>
 
         <Button Grid.Row="1" Grid.Column="8" BorderThickness="0" Background="Transparent" Height="30" Width="30"
-                Click="ButtonBase_OnClick">
+                Click="UserSettings_OnClick">
             <Image Source="ressources/graphics/icons/wheel.ico" />
         </Button>
 

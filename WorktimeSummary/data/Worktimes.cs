@@ -1,5 +1,6 @@
 namespace WorktimeSummary.data
 {
+    using System.Runtime.Remoting.Messaging;
     using essentials;
     using SQLite;
 
@@ -25,6 +26,13 @@ namespace WorktimeSummary.data
 
         [Column("is_vacation")] public bool IsVacation { get; set; }
 
+        [Ignore]
+        public long WorktimeInSeconds
+        {
+            get => (long)(Worktime * 3600);
+            set => Worktime = value / 3600d;
+        }
+        
         [Ignore]
         public Time StartingTime
         {
