@@ -6,9 +6,9 @@ namespace WorktimeSummary
     using System.Windows.Controls;
     using userSettings;
 
-    public partial class UserSettings : Window
+    public partial class UserSettingsWindow : Window
     {
-        public UserSettings()
+        public UserSettingsWindow()
         {
             InitializeComponent();
             SelectCorrectThemeComboBoxItem();

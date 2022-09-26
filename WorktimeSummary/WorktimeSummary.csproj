@@ -226,12 +226,15 @@
             <SubType>Designer</SubType>
         </ApplicationDefinition>
         <Compile Include="data\UserSettings.cs" />
+        <Compile Include="TimerWindow.xaml.cs">
+          <DependentUpon>TimerWindow.xaml</DependentUpon>
+        </Compile>
         <Compile Include="utilities\Extensions.cs" />
         <Compile Include="repositories\Repository.cs" />
         <Compile Include="repositories\UserSettingsRepository.cs" />
         <Compile Include="repositories\WorktimesRepository.cs" />
-        <Compile Include="UserSettings.xaml.cs">
-            <DependentUpon>UserSettings.xaml</DependentUpon>
+        <Compile Include="UserSettingsWindow.xaml.cs">
+            <DependentUpon>UserSettingsWindow.xaml</DependentUpon>
         </Compile>
         <Compile Include="usersettings\Settings.cs" />
         <Page Include="MainWindow.xaml">
@@ -249,7 +252,8 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Page Include="UserSettings.xaml" />
+        <Page Include="TimerWindow.xaml" />
+        <Page Include="UserSettingsWindow.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs">

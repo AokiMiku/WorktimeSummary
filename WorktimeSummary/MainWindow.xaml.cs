@@ -181,7 +181,7 @@
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            UserSettings us = new UserSettings();
+            UserSettingsWindow us = new UserSettingsWindow();
             us.TableThemeChanged += (o, args) => RepaintTable();
             us.ShowDialog();
         }
