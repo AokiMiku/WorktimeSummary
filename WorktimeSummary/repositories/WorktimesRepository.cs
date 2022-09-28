@@ -45,6 +45,54 @@ namespace WorktimeSummary.repositories
             }
         }
 
+        public int CountSickDaysForYear(string year)
+        {
+            if (string.IsNullOrEmpty(year))
+            {
+                return 0;
+            }
+
+            Task<int> q = Db?.Table<Worktimes>().Where(w => w.Day.StartsWith(year) && w.IsSickLeave).CountAsync();
+            try
+            {
+                if (q != null)
+                {
+                    return q.Result;
+                }
+            }
+            catch (AggregateException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return 0;
+        }
+
+        public int CountVacationDaysForYear(string year)
+        {
+            if (string.IsNullOrEmpty(year))
+            {
+                return 0;
+            }
+
+            Task<int> q = Db?.Table<Worktimes>().Where(w => w.Day.StartsWith(year) && w.IsVacation).CountAsync();
+            try
+            {
+                if (q != null)
+                {
+                    return q.Result;
+                }
+            }
+            catch (AggregateException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return 0;
+        }
+
         public List<Worktimes> FindAllByYearAndMonth(int year, int month)
         {
             return FindAllByYearAndMonth(year.ToString(), month.ToString());

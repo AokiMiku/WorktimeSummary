@@ -57,6 +57,7 @@
             RowDefinition row;
             DataGrid.RowDefinitions.Add(row = new RowDefinition());
             row.MinHeight = 25;
+            row.MaxHeight = 40;
 
             Border background = new Border();
             background.MouseEnter += BackgroundOnMouseEnter;
@@ -245,9 +246,12 @@
 
         private void LaunchTimer_OnClick(object sender, RoutedEventArgs e)
         {
-            TimerWindow tw = new TimerWindow();
-            TimerController dummy = new TimerController(tw);
-            tw.Show();
+            new TimerWindow().Show();
+        }
+
+        private void OpenOverview_OnClick(object sender, RoutedEventArgs e)
+        {
+            new OverviewWindow().Show();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace WorktimeSummary.controllers
     using System.Windows;
     using System.Windows.Threading;
     using data;
-    using essentials;
+    using utilities;
     using repositories;
     using userSettings;
 

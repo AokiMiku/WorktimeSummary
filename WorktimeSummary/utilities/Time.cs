@@ -1,4 +1,4 @@
-namespace WorktimeSummary.essentials
+namespace WorktimeSummary.utilities
 {
     using System;
     using System.Text.RegularExpressions;

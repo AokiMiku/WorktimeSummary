@@ -8,7 +8,7 @@ namespace WorktimeSummary.controllers
     using System.Windows.Controls;
     using System.Windows.Threading;
     using data;
-    using essentials;
+    using utilities;
     using Nager.Date;
     using repositories;
     using userSettings;
@@ -196,13 +196,6 @@ namespace WorktimeSummary.controllers
         private bool IsDayToday(string day)
         {
             return day.ToDateTime().Equals(DateTime.Today);
-            // bool ret = false;
-            // DateTime d = day.ToDateTime();
-            // DateTime today = DateTime.Today;
-            // if ()
-            // {
-            //     
-            // }
         }
 
         private bool SkipWeekends(int i)

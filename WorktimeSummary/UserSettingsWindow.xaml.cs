@@ -35,6 +35,8 @@ namespace WorktimeSummary
                 break;
             }
 
+            CurrentDayBold.IsChecked = Settings.CurrentDayBold;
+
             for (int i = 0; i < AutoSave.Items.Count; i++)
             {
                 if (!int.Parse(((Label)AutoSave.Items[i]).Content.ToString())

@@ -1,6 +1,6 @@
 namespace WorktimeSummary.data
 {
-    using essentials;
+    using utilities;
     using SQLite;
 
     [Table("worktimes")]
