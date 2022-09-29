@@ -1,8 +1,8 @@
 namespace WorktimeSummary.repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using data;
     using SQLite;
 
@@ -10,13 +10,13 @@ namespace WorktimeSummary.repositories
     {
         public UserSettings FindById(int id)
         {
-            AsyncTableQuery<UserSettings> q = Db?.Table<UserSettings>().Where(us => us.Id == id);
-            Task<UserSettings> r = q?.ToListAsync().ContinueWith(us => us.Result.First());
+            TableQuery<UserSettings> q = Db?.Table<UserSettings>().Where(us => us.Id == id);
+            List<UserSettings> r = q?.ToList();
             try
             {
-                return r?.Result;
+                return r.First();
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 return null;
@@ -25,17 +25,15 @@ namespace WorktimeSummary.repositories
 
         public UserSettings FindByMajorAndMinorKey(string majorKey, string minorKey)
         {
-            AsyncTableQuery<UserSettings> q = Db?.Table<UserSettings>()
+            TableQuery<UserSettings> q = Db?.Table<UserSettings>()
                 .Where(us => us.SettingKeyMajor == majorKey && us.SettingKeyMinor == minorKey);
-            Task<UserSettings> r = null;
-
-            r = q?.ToListAsync().ContinueWith(us => us.Result.FirstOrDefault());
+            UserSettings r = q?.ToList().FirstOrDefault();
 
             try
             {
-                return r?.Result;
+                return r;
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 return null;
@@ -46,12 +44,12 @@ namespace WorktimeSummary.repositories
         {
             if (FindByMajorAndMinorKey(userSettings.SettingKeyMajor, userSettings.SettingKeyMinor) == null)
             {
-                Db?.InsertAsync(userSettings);
+                Db?.Insert(userSettings);
             }
             else
             {
                 userSettings.Id = FindByMajorAndMinorKey(userSettings.SettingKeyMajor, userSettings.SettingKeyMinor).Id;
-                Db?.UpdateAsync(userSettings);
+                Db?.Update(userSettings);
             }
         }
     }

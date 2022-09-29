@@ -1,7 +1,7 @@
 namespace WorktimeSummary.data
 {
-    using utilities;
     using SQLite;
+    using utilities;
 
     [Table("worktimes")]
     public class Worktimes

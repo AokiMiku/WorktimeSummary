@@ -16,7 +16,17 @@ namespace WorktimeSummary.userSettings
 
         public static string TableThemeTitle
         {
-            get => Get("General", "TableThemeTitle");
+            get
+            {
+                UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableThemeTitle");
+                if (us != null)
+                {
+                    return us.SettingValue;
+                }
+
+                TableThemeTitle = "Gray";
+                return TableThemeTitle;
+            }
             set => Save("General", "TableThemeTitle", value);
         }
 
@@ -25,13 +35,13 @@ namespace WorktimeSummary.userSettings
             get
             {
                 UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableTheme1");
-                if (us == null)
+                if (us != null)
                 {
-                    return Brushes.White;
+                    return (Brush)new BrushConverter().ConvertFromString(us.SettingValue);
                 }
 
-                BrushConverter converter = new BrushConverter();
-                return (Brush)converter.ConvertFromString(us.SettingValue);
+                TableTheme1 = (Brush)new BrushConverter().ConvertFromString("#9F9F9F");
+                return TableTheme1;
             }
             set => Save("General", "TableTheme1", ((SolidColorBrush)value).Color.ToString());
         }
@@ -41,13 +51,13 @@ namespace WorktimeSummary.userSettings
             get
             {
                 UserSettings us = UserSettingsRepository.FindByMajorAndMinorKey("General", "TableTheme2");
-                if (us == null)
+                if (us != null)
                 {
-                    return Brushes.Beige;
+                    return (Brush)new BrushConverter().ConvertFromString(us.SettingValue);
                 }
 
-                BrushConverter converter = new BrushConverter();
-                return (Brush)converter.ConvertFromString(us.SettingValue);
+                TableTheme2 = (Brush)new BrushConverter().ConvertFromString("#C6C6C6");
+                return TableTheme2;
             }
             set => Save("General", "TableTheme2", ((SolidColorBrush)value).Color.ToString());
         }

@@ -61,7 +61,7 @@ namespace WorktimeSummary
                 for (int i = 0; i < ThemeSelection.Items.Count; i++)
                 {
                     if (((Label)((DockPanel)((ComboBoxItem)ThemeSelection.Items[i]).Content).Children[0]).Content
-                        .ToString() != Settings.TableThemeTitle)
+                        .ToString().Trim() != Settings.TableThemeTitle.Trim())
                     {
                         continue;
                     }

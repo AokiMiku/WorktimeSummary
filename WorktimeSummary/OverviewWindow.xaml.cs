@@ -9,10 +9,10 @@ namespace WorktimeSummary
 
     public partial class OverviewWindow : Window
     {
-        private Brush currentlyHoveredRowBackground;
         private static Brush defaultRowBackgroundZebra1;
         private static Brush defaultRowBackgroundZebra2;
         private static readonly Brush DefaultRowBackgroundHover = Brushes.SlateGray;
+        private Brush currentlyHoveredRowBackground;
 
         public OverviewWindow()
         {
@@ -21,7 +21,7 @@ namespace WorktimeSummary
             defaultRowBackgroundZebra2 = Settings.TableTheme2;
             OverviewController dummy = new OverviewController(this);
         }
-        
+
         public void AddHeader(string[] values)
         {
             for (int i = 0; i < values.Length; i++)
@@ -73,7 +73,7 @@ namespace WorktimeSummary
                 addToRow.MouseLeave += LblOnMouseLeave;
             }
         }
-        
+
         public void RepaintTable()
         {
             defaultRowBackgroundZebra1 = Settings.TableTheme1;

@@ -5,9 +5,9 @@ namespace WorktimeSummary.controllers
     using System.Windows;
     using System.Windows.Threading;
     using data;
-    using utilities;
     using repositories;
     using userSettings;
+    using utilities;
 
     public class TimerController
     {

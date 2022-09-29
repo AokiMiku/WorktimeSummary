@@ -7,13 +7,13 @@ namespace WorktimeSummary.repositories
 
     public class Repository
     {
-        protected static readonly SQLiteAsyncConnection Db =
-            new SQLiteAsyncConnection(Path.Combine(Environment.CurrentDirectory, "data", "wt.db"));
+        protected static readonly SQLiteConnection Db =
+            new SQLiteConnection(Path.Combine(Environment.CurrentDirectory, "data", "wt.db"));
 
         static Repository()
         {
-            Db?.CreateTableAsync<Worktimes>();
-            Db?.CreateTableAsync<UserSettings>();
+            Db?.CreateTable<Worktimes>();
+            Db?.CreateTable<UserSettings>();
         }
     }
 }

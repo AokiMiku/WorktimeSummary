@@ -3,7 +3,6 @@ namespace WorktimeSummary.repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using data;
     using SQLite;
 
@@ -17,13 +16,13 @@ namespace WorktimeSummary.repositories
 
         public Worktimes FindById(int id)
         {
-            AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Id == id);
-            Task<Worktimes> r = q?.ToListAsync().ContinueWith(w => w.Result.First());
+            TableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Id == id);
+            List<Worktimes> r = q?.ToList();
             try
             {
-                return r?.Result;
+                return r?.First();
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 return null;
@@ -32,13 +31,13 @@ namespace WorktimeSummary.repositories
 
         public List<Worktimes> FindAll()
         {
-            AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>();
-            Task<List<Worktimes>> r = q?.ToListAsync().ContinueWith(w => w.Result);
+            TableQuery<Worktimes> q = Db?.Table<Worktimes>();
+            List<Worktimes> r = q?.ToList();
             try
             {
-                return r?.Result;
+                return r;
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 return null;
@@ -52,15 +51,15 @@ namespace WorktimeSummary.repositories
                 return 0;
             }
 
-            Task<int> q = Db?.Table<Worktimes>().Where(w => w.Day.StartsWith(year) && w.IsSickLeave).CountAsync();
+            int? q = Db?.Table<Worktimes>()?.Count(w => w.Day.StartsWith(year) && w.IsSickLeave);
             try
             {
                 if (q != null)
                 {
-                    return q.Result;
+                    return (int)q;
                 }
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 throw;
@@ -76,15 +75,15 @@ namespace WorktimeSummary.repositories
                 return 0;
             }
 
-            Task<int> q = Db?.Table<Worktimes>().Where(w => w.Day.StartsWith(year) && w.IsVacation).CountAsync();
+            int? q = Db?.Table<Worktimes>()?.Count(w => w.Day.StartsWith(year) && w.IsVacation);
             try
             {
                 if (q != null)
                 {
-                    return q.Result;
+                    return (int)q;
                 }
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 throw;
@@ -106,14 +105,14 @@ namespace WorktimeSummary.repositories
             }
 
             string currentWhere = $"{year}-{month.PadLeft(2, '0')}";
-            AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>()
+            TableQuery<Worktimes> q = Db?.Table<Worktimes>()
                 .Where(w => w.Day.StartsWith(currentWhere));
-            Task<List<Worktimes>> r = q?.ToListAsync().ContinueWith(w => w.Result);
+            List<Worktimes> r = q?.ToList();
             try
             {
-                return r?.Result;
+                return r;
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 return null;
@@ -128,13 +127,13 @@ namespace WorktimeSummary.repositories
 
         public Worktimes FindByDay(string day)
         {
-            AsyncTableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Day.Equals(day));
-            Task<Worktimes> r = q?.ToListAsync().ContinueWith(w => w.Result.First());
+            TableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Day.Equals(day));
+            List<Worktimes> r = q?.ToList();
             try
             {
-                return r?.Result;
+                return r?.First();
             }
-            catch (AggregateException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine(e);
                 return Worktimes.DefaultData(day);
@@ -145,13 +144,13 @@ namespace WorktimeSummary.repositories
         {
             if (FindByDay(worktimes.Day) == null || FindByDay(worktimes.Day).Id == 0)
             {
-                Db?.InsertAsync(worktimes);
+                Db?.Insert(worktimes);
             }
             else
             {
                 worktimes.Id = FindByDay(worktimes.Day).Id;
-                Task<int> updateAsync = Db?.UpdateAsync(worktimes);
-                if (updateAsync?.Result > 0)
+                int? updateAsync = Db?.Update(worktimes);
+                if (updateAsync > 0)
                 {
                     Console.Out.WriteLine("Success");
                 }

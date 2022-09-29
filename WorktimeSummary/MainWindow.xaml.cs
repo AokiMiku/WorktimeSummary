@@ -1,5 +1,6 @@
 ﻿namespace WorktimeSummary
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
@@ -184,11 +185,11 @@
         private void UserSettings_OnClick(object sender, RoutedEventArgs e)
         {
             UserSettingsWindow us = new UserSettingsWindow();
-            us.TableThemeChanged += (o, args) => RepaintTable();
+            us.TableThemeChanged += RepaintTable;
             us.ShowDialog();
         }
 
-        public void RepaintTable()
+        public void RepaintTable(object sender, EventArgs e)
         {
             defaultRowBackgroundZebra1 = Settings.TableTheme1;
             defaultRowBackgroundZebra2 = Settings.TableTheme2;

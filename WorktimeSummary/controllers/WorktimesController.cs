@@ -8,10 +8,10 @@ namespace WorktimeSummary.controllers
     using System.Windows.Controls;
     using System.Windows.Threading;
     using data;
-    using utilities;
     using Nager.Date;
     using repositories;
     using userSettings;
+    using utilities;
 
     public class WorktimesController
     {
@@ -54,15 +54,15 @@ namespace WorktimeSummary.controllers
         {
             ClearData();
             FillData();
-            gui.RepaintTable();
+            gui.RepaintTable(null, null);
             gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);
         }
 
         private void FillYearAndMonthSelections()
         {
-            if ("0".Equals(Settings.StartingYear))
+            if ("0".Equals(Settings.StartingYear) || string.IsNullOrEmpty(Settings.StartingYear))
             {
-                Worktimes w = repository.FindById(1);
+                Worktimes w = repository.FindById(1) ?? repository.FindToday();
                 Settings.StartingYear = w.Day.Substring(0, 4);
             }
 

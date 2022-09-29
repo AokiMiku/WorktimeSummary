@@ -3,40 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:WorktimeSummary"
         mc:Ignorable="d"
         Title="ApS Util - Overview" MinHeight="250" MinWidth="600" Height="0" Width="0">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5"/>
-            <RowDefinition/>
-            <RowDefinition Height="5"/>
+            <RowDefinition Height="5" />
+            <RowDefinition />
+            <RowDefinition Height="5" />
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Name="HeaderRow" Height="40"/>
-                <RowDefinition/>
+                <RowDefinition Name="HeaderRow" Height="40" />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            
+
             <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
                 <Grid Name="DataGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                 </Grid>
             </ScrollViewer>

@@ -2,7 +2,6 @@ namespace WorktimeSummary.controllers
 {
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Numerics;
     using data;
     using Nager.Date;
     using repositories;
@@ -11,8 +10,8 @@ namespace WorktimeSummary.controllers
 
     public class OverviewController
     {
-        private OverviewWindow overviewWindow;
         private readonly WorktimesRepository repository = WorktimesRepository.Instance;
+        private readonly OverviewWindow overviewWindow;
 
         public OverviewController(OverviewWindow overviewWindow)
         {
@@ -23,7 +22,6 @@ namespace WorktimeSummary.controllers
             });
             FillData();
             this.overviewWindow.RepaintTable();
-
         }
 
         private void FillData()
@@ -44,22 +42,23 @@ namespace WorktimeSummary.controllers
                     int index = i;
                     while (i < days.Count && days[i].Day.StartsWith(currentYear))
                     {
-                        if (!days[i].IsVacation && !days[i].IsSickLeave && !DateSystem.IsPublicHoliday(days[i].Day.ToDateTime(), CountryCode.DE))
+                        if (!days[i].IsVacation && !days[i].IsSickLeave &&
+                            !DateSystem.IsPublicHoliday(days[i].Day.ToDateTime(), CountryCode.DE))
                         {
                             minutesOT += (days[i].Worktime - days[i].Pause / 3600d - dailyHoursToWork) * 60d;
-                            
                         }
+
                         i++;
                     }
 
                     i = index;
                     overviewWindow.AddRow(new[]
                     {
-                        currentYear, daysSick.ToString(), daysVacation.ToString(), minutesOT.ToString(CultureInfo.CurrentCulture)
+                        currentYear, daysSick.ToString(), daysVacation.ToString(),
+                        minutesOT.ToString(CultureInfo.CurrentCulture)
                     });
                     minutesOT = 0;
                 }
-                
             }
         }
     }
