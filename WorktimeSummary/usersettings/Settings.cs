@@ -1,5 +1,6 @@
 namespace WorktimeSummary.userSettings
 {
+    using System;
     using System.Globalization;
     using System.Windows.Media;
     using data;
@@ -70,58 +71,83 @@ namespace WorktimeSummary.userSettings
 
         public static float WorkhoursPerWeek
         {
-            get => float.Parse(Get("General", "WorkhoursPerWeek"));
+            get => GetAsFloat("General", "WorkhoursPerWeek");
             set => Save("General", "WorkhoursPerWeek", value.ToString(CultureInfo.CurrentCulture));
         }
 
         public static bool ShowWeekends
         {
-            get => bool.Parse(Get("General", "ShowWeekends"));
+            get => GetAsBool("General", "ShowWeekends");
             set => Save("General", "ShowWeekends", value.ToString(CultureInfo.CurrentCulture));
         }
 
         public static bool CurrentDayBold
         {
-            get => bool.Parse(Get("General", "CurrentDayBold"));
+            get => GetAsBool("General", "CurrentDayBold");
             set => Save("General", "CurrentDayBold", value.ToString());
         }
 
         public static bool AutoRefreshEnabled
         {
-            get => bool.Parse(Get("Schedules", "AutoRefreshEnabled"));
+            get => GetAsBool("Schedules", "AutoRefreshEnabled");
             set => Save("Schedules", "AutoRefreshEnabled", value.ToString());
         }
 
         public static int AutoRefreshEveryXMinutes
         {
-            get
-            {
-                try
-                {
-                    return int.Parse(Get("Schedules", "AutoRefreshEveryXMinutes"));
-                }
-                catch
-                {
-                    return 0;
-                }
-            }
+            get => GetAsInt("Schedules", "AutoRefreshEveryXMinutes");
             set => Save("Schedules", "AutoRefreshEveryXMinutes", value.ToString());
         }
 
         public static int AutoSaveEveryXMinutes
         {
-            get
-            {
-                try
-                {
-                    return int.Parse(Get("Schedules", "AutoSaveEveryXMinutes"));
-                }
-                catch
-                {
-                    return 0;
-                }
-            }
+            get => GetAsInt("Schedules", "AutoSaveEveryXMinutes");
             set => Save("Schedules", "AutoSaveEveryXMinutes", value.ToString());
+        }
+
+        private static float GetAsFloat(string majorKey, string minorKey)
+        {
+            string get = Get(majorKey, minorKey);
+            if (string.IsNullOrEmpty(get))
+            {
+                return 0;
+            }
+
+            try
+            {
+                return float.Parse(get);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return 0;
+            }
+        }
+
+        private static int GetAsInt(string majorKey, string minorKey)
+        {
+            return (int)GetAsFloat(majorKey, minorKey);
+        }
+
+        private static bool GetAsBool(string majorKey, string minorKey)
+        {
+            string get = Get(majorKey, minorKey);
+            if (string.IsNullOrEmpty(get))
+            {
+                return false;
+            }
+
+            try
+            {
+                return bool.Parse(get);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
         }
 
         private static string Get(string majorKey, string minorKey)
