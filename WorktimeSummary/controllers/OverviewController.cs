@@ -27,38 +27,38 @@ namespace WorktimeSummary.controllers
         private void FillData()
         {
             List<Worktimes> days = repository.FindAll();
-            int daysSick = 0;
-            int daysVacation = 0;
-            double minutesOT = 0;
+            double minutesOt = 0;
             string currentYear = "y";
             float dailyHoursToWork = Settings.WorkhoursPerWeek / 5;
             for (int i = 0; i < days.Count; i++)
             {
-                if (!days[i].Day.StartsWith(currentYear))
+                if (days[i].Day.StartsWith(currentYear))
                 {
-                    currentYear = days[i].Day.Substring(0, 4);
-                    daysSick = repository.CountSickDaysForYear(currentYear);
-                    daysVacation = repository.CountVacationDaysForYear(currentYear);
-                    int index = i;
-                    while (i < days.Count && days[i].Day.StartsWith(currentYear))
-                    {
-                        if (!days[i].IsVacation && !days[i].IsSickLeave &&
-                            !DateSystem.IsPublicHoliday(days[i].Day.ToDateTime(), CountryCode.DE))
-                        {
-                            minutesOT += (days[i].Worktime - days[i].Pause / 3600d - dailyHoursToWork) * 60d;
-                        }
+                    continue;
+                }
 
-                        i++;
+                currentYear = days[i].Day.Substring(0, 4);
+                int daysSick = repository.CountSickDaysForYear(currentYear);
+                int daysVacation = repository.CountVacationDaysForYear(currentYear);
+                int index = i;
+                while (i < days.Count && days[i].Day.StartsWith(currentYear))
+                {
+                    if (!days[i].IsVacation && !days[i].IsSickLeave &&
+                        !DateSystem.IsPublicHoliday(days[i].Day.ToDateTime(), CountryCode.DE))
+                    {
+                        minutesOt += (days[i].Worktime - days[i].Pause / 3600d - dailyHoursToWork) * 60d;
                     }
 
-                    i = index;
-                    overviewWindow.AddRow(new[]
-                    {
-                        currentYear, daysSick.ToString(), daysVacation.ToString(),
-                        minutesOT.ToString(CultureInfo.CurrentCulture)
-                    });
-                    minutesOT = 0;
+                    i++;
                 }
+
+                i = index;
+                overviewWindow.AddRow(new[]
+                {
+                    currentYear, daysSick.ToString(), daysVacation.ToString(),
+                    minutesOt.ToString(CultureInfo.CurrentCulture)
+                });
+                minutesOt = 0;
             }
         }
     }
