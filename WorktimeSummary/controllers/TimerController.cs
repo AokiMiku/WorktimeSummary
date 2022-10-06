@@ -14,9 +14,12 @@ namespace WorktimeSummary.controllers
         private const string DefaultStringForTimes = "00:00:00";
         private const string DefaultStringForTimeDecimals = "0.00000";
         private readonly WorktimesRepository repository = WorktimesRepository.Instance;
+        private readonly IssuesRepository issuesRepository = IssuesRepository.Instance;
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly TimerWindow timerWindow;
         private Worktimes worktimes;
+        private Issues issue;
+        private bool issueTracking;
 
         public TimerController(TimerWindow timerWindow)
         {
@@ -27,6 +30,61 @@ namespace WorktimeSummary.controllers
             this.timerWindow.Break.Click += BreakOnClick;
             this.timerWindow.Stop.Click += StopOnClick;
             this.timerWindow.Closing += TimerWindowOnClosing;
+            this.timerWindow.ToggleIssueTracking.Click += ToggleIssueTrackingOnClick;
+            this.timerWindow.AddOneFunctionPoint.Click += AddOneFunctionPointOnClick;
+        }
+
+        private void AddOneFunctionPointOnClick(object sender, RoutedEventArgs e)
+        {
+            if (issue == null)
+            {
+                return;
+            }
+
+            AddOneFunctionPoint();
+        }
+
+        private void AddOneFunctionPoint()
+        {
+            if (string.IsNullOrEmpty(timerWindow.IssueNumber.Text) || issue == null)
+            {
+                return;
+            }
+            
+            issue.FunctionPoints++;
+            timerWindow.IssueFunctionPoints.Content = issue.FunctionPoints;
+        }
+
+        private void ToggleIssueTrackingOnClick(object sender, RoutedEventArgs e)
+        {
+            ToggleIssueTracking();
+        }
+
+        private void ToggleIssueTracking()
+        {
+            if (string.IsNullOrEmpty(timerWindow.IssueNumber.Text))
+            {
+                return;
+            }
+            
+            if (issue == null)
+            {
+                issue = new Issues();
+            }
+
+            issue.IssueNumber = timerWindow.IssueNumber.Text;
+            if (issuesRepository.FindByIssueNumber(issue.IssueNumber) != null)
+            {
+                issue = issuesRepository.FindByIssueNumber(issue.IssueNumber);
+                timerWindow.IssueFunctionPoints.Content = issue.FunctionPoints;
+            }
+
+            if (issueTracking)
+            {
+                issuesRepository.Save(issue);
+            }
+
+            issueTracking = !issueTracking;
         }
 
         private bool IsBreak { get; set; }
@@ -66,6 +124,15 @@ namespace WorktimeSummary.controllers
             }
             else
             {
+                if (issueTracking)
+                {
+                    issue.Seconds++;
+                    if (issue.Seconds % 30 * 60 == 0)
+                    {
+                        AddOneFunctionPoint();
+                    }
+                }
+                
                 if (!Break45Minutes && worktimes.WorktimeInSeconds - worktimes.Pause > 9 * 3600)
                 {
                     worktimes.Pause = Math.Max(45 * 60, worktimes.Pause);
@@ -147,6 +214,10 @@ namespace WorktimeSummary.controllers
         {
             timer.Stop();
             repository.Save(worktimes);
+            if (issueTracking)
+            {
+                ToggleIssueTracking();
+            }
         }
     }
 }

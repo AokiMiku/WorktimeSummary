@@ -24,6 +24,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -41,8 +42,35 @@
             <Label Name="BreakTime" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center">00:00:00</Label>
             <Label Grid.Row="3" Grid.Column="0">Est. Ending Time :</Label>
             <Label Name="EstEndingTime" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center">00:00:00</Label>
-
+            
             <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+                <TextBox Name="IssueNumber" Width="150" Height="30" />
+                <Label Name="IssueFunctionPoints" 
+                       VerticalAlignment="Center" 
+                       HorizontalContentAlignment="Center"
+                       MinWidth="50"
+                       Margin="5">
+                    0
+                </Label>
+                <Button Name="ToggleIssueTracking"
+                        VerticalAlignment="Center"
+                        Width="80" MinHeight="40"
+                        Margin="5"
+                        >
+                    <TextBlock TextWrapping="WrapWithOverflow">
+                        Toggle Issue Tracking
+                    </TextBlock>
+                </Button>
+                <Button Name="AddOneFunctionPoint"
+                    VerticalAlignment="Center"
+                    Width="30" MinHeight="40"
+                    Margin="5"
+                    BorderThickness="0">
+                    +1
+                </Button>
+            </DockPanel>
+
+            <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
                 <Button
                     Name="Start"
                     VerticalAlignment="Center"

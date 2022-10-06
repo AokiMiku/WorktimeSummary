@@ -14,6 +14,7 @@ namespace WorktimeSummary.repositories
         {
             Db?.CreateTable<Worktimes>();
             Db?.CreateTable<UserSettings>();
+            Db?.CreateTable<Issues>();
         }
     }
 }
