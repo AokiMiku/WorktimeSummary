@@ -8,5 +8,10 @@ namespace WorktimeSummary.utilities
         {
             return DateTime.Parse(s);
         }
+
+        public static string ToCustomString(this DateTime d)
+        {
+            return $"{d.Year:0000}-{d.Month:00}-{d.Day:00}";
+        }
     }
 }

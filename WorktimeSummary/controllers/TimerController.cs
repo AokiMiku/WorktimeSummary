@@ -53,6 +53,7 @@ namespace WorktimeSummary.controllers
             
             issue.FunctionPoints++;
             timerWindow.IssueFunctionPoints.Content = issue.FunctionPoints;
+            
         }
 
         private void ToggleIssueTrackingOnClick(object sender, RoutedEventArgs e)
@@ -72,16 +73,16 @@ namespace WorktimeSummary.controllers
                 issue = new Issues();
             }
 
+            if (issueTracking)
+            {
+                issuesRepository.Save(issue);
+            }
+
             issue.IssueNumber = timerWindow.IssueNumber.Text;
             if (issuesRepository.FindByIssueNumber(issue.IssueNumber) != null)
             {
                 issue = issuesRepository.FindByIssueNumber(issue.IssueNumber);
                 timerWindow.IssueFunctionPoints.Content = issue.FunctionPoints;
-            }
-
-            if (issueTracking)
-            {
-                issuesRepository.Save(issue);
             }
 
             issueTracking = !issueTracking;
@@ -127,7 +128,8 @@ namespace WorktimeSummary.controllers
                 if (issueTracking)
                 {
                     issue.Seconds++;
-                    if (issue.Seconds % 30 * 60 == 0)
+                    timerWindow.IssueTrackingMinutes.Content = (issue.Seconds / 60f).ToString("0.00");
+                    if (issue.Seconds % (30 * 60) == 0)
                     {
                         AddOneFunctionPoint();
                     }

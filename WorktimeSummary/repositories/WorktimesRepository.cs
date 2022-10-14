@@ -5,6 +5,7 @@ namespace WorktimeSummary.repositories
     using System.Linq;
     using data;
     using SQLite;
+    using utilities;
 
     public class WorktimesRepository : Repository
     {
@@ -32,6 +33,26 @@ namespace WorktimeSummary.repositories
         public List<Worktimes> FindAll()
         {
             TableQuery<Worktimes> q = Db?.Table<Worktimes>();
+            List<Worktimes> r = q?.ToList();
+            try
+            {
+                return r;
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
+        public List<Worktimes> FindAllOfYear(string year)
+        {
+            if (string.IsNullOrEmpty(year))
+            {
+                return null;
+            }
+            
+            TableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Day.StartsWith(year));
             List<Worktimes> r = q?.ToList();
             try
             {
@@ -122,7 +143,7 @@ namespace WorktimeSummary.repositories
         public Worktimes FindToday()
         {
             DateTime today = DateTime.Today;
-            return FindByDay($"{today.Year:0000}-{today.Month:00}-{today.Day:00}");
+            return FindByDay(today.ToCustomString());
         }
 
         public Worktimes FindByDay(string day)

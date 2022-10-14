@@ -129,7 +129,7 @@ namespace WorktimeSummary.controllers
             double sumWorktime = 0;
             int sumPause = 0;
             float dailyHoursToWork = Settings.WorkhoursPerWeek / 5;
-            double differencesInDailyHours = 0;
+            double dailyOT = 0;
             const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
@@ -156,7 +156,10 @@ namespace WorktimeSummary.controllers
                         sumPause += wt.Pause;
                     }
 
-                    differencesInDailyHours += differenceToday;
+                    if (!wt.Day.Equals(DateTime.Today.ToCustomString()))
+                    {
+                        dailyOT += differenceToday;
+                    }
 
                     List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
                     {
@@ -189,7 +192,7 @@ namespace WorktimeSummary.controllers
                 "All: ", "", sumWorktime.ToString(format, CultureInfo.CurrentCulture),
                 ((double)sumPause / 3600).ToString(format, CultureInfo.CurrentCulture),
                 "",
-                differencesInDailyHours.ToString(format, CultureInfo.CurrentCulture)
+                dailyOT.ToString(format, CultureInfo.CurrentCulture)
             });
         }
 

@@ -1,7 +1,9 @@
 namespace WorktimeSummary.controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using data;
     using Nager.Date;
     using repositories;
@@ -26,36 +28,23 @@ namespace WorktimeSummary.controllers
 
         private void FillData()
         {
-            List<Worktimes> days = repository.FindAll();
             double minutesOt = 0;
-            string currentYear = "y";
             float dailyHoursToWork = Settings.WorkhoursPerWeek / 5;
-            for (int i = 0; i < days.Count; i++)
+            for (int y = int.Parse(Settings.StartingYear); y <= DateTime.Now.Year; y++)
             {
-                if (days[i].Day.StartsWith(currentYear))
-                {
-                    continue;
-                }
+                List<Worktimes> days = repository.FindAllOfYear($"{y}");
+                int daysSick = repository.CountSickDaysForYear($"{y}");
+                int daysVacation = repository.CountVacationDaysForYear($"{y}");
+                minutesOt += days
+                    .Where(day =>
+                        !day.IsVacation && !day.IsSickLeave &&
+                        !DateSystem.IsPublicHoliday(day.Day.ToDateTime(), CountryCode.DE) &&
+                        !day.Day.Equals(DateTime.Today.ToCustomString())).Sum(day =>
+                        (day.Worktime - day.Pause / 3600d - dailyHoursToWork) * 60d);
 
-                currentYear = days[i].Day.Substring(0, 4);
-                int daysSick = repository.CountSickDaysForYear(currentYear);
-                int daysVacation = repository.CountVacationDaysForYear(currentYear);
-                int index = i;
-                while (i < days.Count && days[i].Day.StartsWith(currentYear))
-                {
-                    if (!days[i].IsVacation && !days[i].IsSickLeave &&
-                        !DateSystem.IsPublicHoliday(days[i].Day.ToDateTime(), CountryCode.DE))
-                    {
-                        minutesOt += (days[i].Worktime - days[i].Pause / 3600d - dailyHoursToWork) * 60d;
-                    }
-
-                    i++;
-                }
-
-                i = index;
                 overviewWindow.AddRow(new[]
                 {
-                    currentYear, daysSick.ToString(), daysVacation.ToString(),
+                    $"{y}", daysSick.ToString(), daysVacation.ToString(),
                     minutesOt.ToString(CultureInfo.CurrentCulture)
                 });
                 minutesOt = 0;
