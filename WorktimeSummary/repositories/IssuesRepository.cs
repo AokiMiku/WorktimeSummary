@@ -1,21 +1,19 @@
 namespace WorktimeSummary.repositories
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
-    using System.Net.Http.Headers;
+    using System.Linq;
     using data;
     using SQLite;
 
     public class IssuesRepository : Repository
     {
-        public static IssuesRepository Instance { get; set; } = new IssuesRepository();
-
         private IssuesRepository()
         {
-            
         }
-        
+
+        public static IssuesRepository Instance { get; set; } = new IssuesRepository();
+
         public Issues FindByIssueNumber(string issueNumber)
         {
             TableQuery<Issues> q = Db?.Table<Issues>().Where(w => w.IssueNumber == issueNumber);
@@ -52,6 +50,5 @@ namespace WorktimeSummary.repositories
                 }
             }
         }
-
     }
 }

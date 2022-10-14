@@ -34,15 +34,18 @@ namespace WorktimeSummary.controllers
             CreateHeader();
             Refresh();
             gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);
-            if (Settings.AutoRefreshEnabled)
+
+            if (!Settings.AutoRefreshEnabled)
             {
-                DispatcherTimer autoRefresh = new DispatcherTimer
-                {
-                    Interval = TimeSpan.FromMinutes(Settings.AutoRefreshEveryXMinutes)
-                };
-                autoRefresh.Tick += AutoRefresh;
-                autoRefresh.Start();
+                return;
             }
+
+            DispatcherTimer autoRefresh = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMinutes(Settings.AutoRefreshEveryXMinutes)
+            };
+            autoRefresh.Tick += AutoRefresh;
+            autoRefresh.Start();
         }
 
         private void AutoRefresh(object sender, EventArgs e)

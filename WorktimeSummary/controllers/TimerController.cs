@@ -13,13 +13,13 @@ namespace WorktimeSummary.controllers
     {
         private const string DefaultStringForTimes = "00:00:00";
         private const string DefaultStringForTimeDecimals = "0.00000";
-        private readonly WorktimesRepository repository = WorktimesRepository.Instance;
         private readonly IssuesRepository issuesRepository = IssuesRepository.Instance;
+        private readonly WorktimesRepository repository = WorktimesRepository.Instance;
         private readonly DispatcherTimer timer = new DispatcherTimer();
         private readonly TimerWindow timerWindow;
-        private Worktimes worktimes;
         private Issues issue;
         private bool issueTracking;
+        private Worktimes worktimes;
 
         public TimerController(TimerWindow timerWindow)
         {
@@ -33,6 +33,12 @@ namespace WorktimeSummary.controllers
             this.timerWindow.ToggleIssueTracking.Click += ToggleIssueTrackingOnClick;
             this.timerWindow.AddOneFunctionPoint.Click += AddOneFunctionPointOnClick;
         }
+
+        private bool IsBreak { get; set; }
+
+        private bool Break30Minutes { get; set; }
+
+        private bool Break45Minutes { get; set; }
 
         private void AddOneFunctionPointOnClick(object sender, RoutedEventArgs e)
         {
@@ -50,10 +56,9 @@ namespace WorktimeSummary.controllers
             {
                 return;
             }
-            
+
             issue.FunctionPoints++;
             timerWindow.IssueFunctionPoints.Content = issue.FunctionPoints;
-            
         }
 
         private void ToggleIssueTrackingOnClick(object sender, RoutedEventArgs e)
@@ -67,7 +72,7 @@ namespace WorktimeSummary.controllers
             {
                 return;
             }
-            
+
             if (issue == null)
             {
                 issue = new Issues();
@@ -87,12 +92,6 @@ namespace WorktimeSummary.controllers
 
             issueTracking = !issueTracking;
         }
-
-        private bool IsBreak { get; set; }
-
-        private bool Break30Minutes { get; set; }
-
-        private bool Break45Minutes { get; set; }
 
         private void TimerWindowOnClosing(object sender, CancelEventArgs e)
         {
@@ -134,7 +133,7 @@ namespace WorktimeSummary.controllers
                         AddOneFunctionPoint();
                     }
                 }
-                
+
                 if (!Break45Minutes && worktimes.WorktimeInSeconds - worktimes.Pause > 9 * 3600)
                 {
                     worktimes.Pause = Math.Max(45 * 60, worktimes.Pause);
@@ -188,6 +187,18 @@ namespace WorktimeSummary.controllers
             {
                 worktimes.StartingTime = Time.Now();
                 worktimes.StartingTime = worktimes.StartingTime.AddMilliseconds(-worktimes.StartingTime.Milliseconds);
+            }
+            else
+            {
+                MessageBoxResult r = MessageBox.Show(
+                    "There is already a worktime for today. Do you want to add a break for the meantime?",
+                    "Workday already exists", MessageBoxButton.YesNoCancel, MessageBoxImage.Question,
+                    MessageBoxResult.No);
+                if (r.Equals(MessageBoxResult.Yes))
+                {
+                    Time diff = Time.Now() - worktimes.StartingTime.AddSeconds((int)(worktimes.Worktime * 3600));
+                    worktimes.Pause += (int)diff.ToSeconds();
+                }
             }
 
             Time end = CalculateEstimatedEndingTime(worktimes.StartingTime);

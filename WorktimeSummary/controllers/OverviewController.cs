@@ -12,8 +12,8 @@ namespace WorktimeSummary.controllers
 
     public class OverviewController
     {
-        private readonly WorktimesRepository repository = WorktimesRepository.Instance;
         private readonly OverviewWindow overviewWindow;
+        private readonly WorktimesRepository repository = WorktimesRepository.Instance;
 
         public OverviewController(OverviewWindow overviewWindow)
         {

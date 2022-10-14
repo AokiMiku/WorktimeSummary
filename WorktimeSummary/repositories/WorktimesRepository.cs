@@ -51,7 +51,7 @@ namespace WorktimeSummary.repositories
             {
                 return null;
             }
-            
+
             TableQuery<Worktimes> q = Db?.Table<Worktimes>().Where(w => w.Day.StartsWith(year));
             List<Worktimes> r = q?.ToList();
             try

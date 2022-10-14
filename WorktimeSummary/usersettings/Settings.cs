@@ -116,7 +116,6 @@ namespace WorktimeSummary.userSettings
             try
             {
                 return float.Parse(get);
-
             }
             catch (Exception e)
             {
@@ -141,7 +140,6 @@ namespace WorktimeSummary.userSettings
             try
             {
                 return bool.Parse(get);
-
             }
             catch (Exception e)
             {

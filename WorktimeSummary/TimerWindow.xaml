@@ -42,12 +42,12 @@
             <Label Name="BreakTime" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center">00:00:00</Label>
             <Label Grid.Row="3" Grid.Column="0">Est. Ending Time :</Label>
             <Label Name="EstEndingTime" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center">00:00:00</Label>
-            
+
             <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
-                <TextBox Name="IssueNumber" 
-                         Width="120" Height="30" 
+                <TextBox Name="IssueNumber"
+                         Width="120" Height="30"
                          VerticalContentAlignment="Center"
-                         HorizontalContentAlignment="Center"/>
+                         HorizontalContentAlignment="Center" />
                 <Label Name="IssueTrackingMinutes"
                        VerticalAlignment="Center"
                        HorizontalContentAlignment="Right"
@@ -55,29 +55,28 @@
                     0.00
                 </Label>
                 <Label
-                       VerticalAlignment="Center"
-                       HorizontalContentAlignment="Left">
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Left">
                     Min
                 </Label>
                 <Button Name="ToggleIssueTracking"
                         VerticalAlignment="Center"
                         Width="80" MinHeight="40"
-                        Margin="5"
-                        >
+                        Margin="5">
                     <TextBlock TextWrapping="WrapWithOverflow">
                         Toggle Issue Tracking
                     </TextBlock>
                 </Button>
-                <Label Name="IssueFunctionPoints" 
-                       VerticalAlignment="Center" 
+                <Label Name="IssueFunctionPoints"
+                       VerticalAlignment="Center"
                        HorizontalContentAlignment="Center"
                        MinWidth="50">
                     0
                 </Label>
                 <Button Name="AddOneFunctionPoint"
-                    VerticalAlignment="Center"
-                    Width="30" MinHeight="40"
-                    Margin="5">
+                        VerticalAlignment="Center"
+                        Width="30" MinHeight="40"
+                        Margin="5">
                     +1
                 </Button>
             </DockPanel>

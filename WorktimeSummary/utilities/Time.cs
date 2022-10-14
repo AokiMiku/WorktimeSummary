@@ -140,10 +140,29 @@ namespace WorktimeSummary.utilities
         public static Time operator -(Time left, Time right)
         {
             Time difference = left;
-            difference.Hours -= right.Hours;
-            difference.Minutes -= right.Minutes;
-            difference.Seconds -= right.Seconds;
             difference.Milliseconds -= right.Milliseconds;
+            difference.Seconds -= right.Seconds;
+            difference.Minutes -= right.Minutes;
+            difference.Hours -= right.Hours;
+
+            if (difference.Milliseconds < 0)
+            {
+                difference.Milliseconds += 1000;
+                difference.Seconds -= 1;
+            }
+
+            if (difference.Seconds < 0)
+            {
+                difference.Seconds += 60;
+                difference.Minutes -= 1;
+            }
+
+            if (difference.Minutes < 0)
+            {
+                difference.Minutes += 60;
+                difference.Hours -= 1;
+            }
+
             return difference;
         }
 
