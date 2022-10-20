@@ -73,9 +73,11 @@ namespace WorktimeSummary.controllers
                 return;
             }
 
-            if (issue == null)
+            if (issue == null || !issue.IssueNumber.Equals(timerWindow.IssueNumber.Text))
             {
                 issue = new Issues();
+                timerWindow.IssueTrackingMinutes.Content = "0.00";
+                timerWindow.IssueFunctionPoints.Content = "0";
             }
 
             if (issueTracking)
@@ -161,7 +163,7 @@ namespace WorktimeSummary.controllers
             repository.Save(worktimes);
         }
 
-        private string HourDecimalToTimeString(double worktimesWorktime)
+        private static string HourDecimalToTimeString(double worktimesWorktime)
         {
             long seconds = (long)(worktimesWorktime * 3600d);
             long minutes = seconds / 60;
@@ -188,7 +190,7 @@ namespace WorktimeSummary.controllers
                 worktimes.StartingTime = Time.Now();
                 worktimes.StartingTime = worktimes.StartingTime.AddMilliseconds(-worktimes.StartingTime.Milliseconds);
             }
-            else
+            else if (!timer.IsEnabled)
             {
                 MessageBoxResult r = MessageBox.Show(
                     "There is already a worktime for today. Do you want to add a break for the meantime?",
@@ -213,8 +215,17 @@ namespace WorktimeSummary.controllers
 
         private Time CalculateEstimatedEndingTime(Time worktimesStartingTime)
         {
-            Time end = worktimesStartingTime.AddHours(8);
-            end = end.AddMinutes(30);
+            float dailyHoursToWork = Settings.WorkhoursPerWeek / Settings.WorkdaysPerWeek;
+            if (dailyHoursToWork > 9)
+            {
+                dailyHoursToWork += 0.75f;
+            }
+            else if (dailyHoursToWork > 6)
+            {
+                dailyHoursToWork += 0.5f;
+            }
+            
+            Time end = worktimesStartingTime.AddHours(dailyHoursToWork);
             return end;
         }
 

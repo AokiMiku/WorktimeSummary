@@ -94,6 +94,17 @@ namespace WorktimeSummary.utilities
             return this;
         }
 
+        public Time AddHours(float hours)
+        {
+            int hour = (int)hours;
+            hours -= hour;
+            int minutes = (int)(hours * 60f);
+            hours -= minutes / 60f;
+            int seconds = (int)(hours * 1000f);
+
+            return AddSeconds(seconds).AddMinutes(minutes).AddHours(hour);
+        }
+
         private void NormalizeTime()
         {
             int s = Seconds;

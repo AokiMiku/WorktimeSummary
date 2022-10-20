@@ -131,8 +131,16 @@ namespace WorktimeSummary.controllers
             string dayStartString = $"{currentlySelectedYear}-{currentlySelectedMonth.PadLeft(2, '0')}";
             double sumWorktime = 0;
             int sumPause = 0;
-            float dailyHoursToWork = Settings.WorkhoursPerWeek / 5;
-            double dailyOT = 0;
+            float dailyHoursToWork = Settings.WorkhoursPerWeek / Settings.WorkdaysPerWeek;
+            if (dailyHoursToWork > 9)
+            {
+                dailyHoursToWork += 0.75f;
+            }
+            else if (dailyHoursToWork > 6)
+            {
+                dailyHoursToWork += 0.5f;
+            }
+            double dailyOt = 0;
             const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
@@ -161,14 +169,15 @@ namespace WorktimeSummary.controllers
 
                     if (!wt.Day.Equals(DateTime.Today.ToCustomString()))
                     {
-                        dailyOT += differenceToday;
+                        dailyOt += differenceToday;
                     }
 
                     List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
                     {
                         wt.Day,
                         wt.StartingTime.ToString(),
-                        wt.Worktime.ToString(format, CultureInfo.CurrentCulture),
+                        wt.Worktime.ToString(format, CultureInfo.CurrentCulture) + " / " +
+                        dailyHoursToWork.ToString(format, CultureInfo.CurrentCulture),
                         (wt.Pause / 60f).ToString(format, CultureInfo.CurrentCulture),
                         wt.StartingTime.AddSeconds((int)(wt.Worktime * 3600)).ToString(),
                         differenceToday.ToString(format, CultureInfo.CurrentCulture),
@@ -195,11 +204,11 @@ namespace WorktimeSummary.controllers
                 "All: ", "", sumWorktime.ToString(format, CultureInfo.CurrentCulture),
                 ((double)sumPause / 3600).ToString(format, CultureInfo.CurrentCulture),
                 "",
-                dailyOT.ToString(format, CultureInfo.CurrentCulture)
+                dailyOt.ToString(format, CultureInfo.CurrentCulture)
             });
         }
 
-        private bool IsDayToday(string day)
+        private static bool IsDayToday(string day)
         {
             return day.ToDateTime().Equals(DateTime.Today);
         }

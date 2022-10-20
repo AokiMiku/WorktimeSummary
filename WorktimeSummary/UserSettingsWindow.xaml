@@ -66,7 +66,21 @@
                                         <Border Background="#FFA2A2" Height="15" Width="15" />
                                     </DockPanel>
                                 </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <DockPanel HorizontalAlignment="Left">
+                                        <Label Content="Green " />
+                                        <Border Background="#78D055" Height="15" Width="15" />
+                                        <Label Content=" / " />
+                                        <Border Background="#BDFEA3" Height="15" Width="15" />
+                                    </DockPanel>
+                                </ComboBoxItem>
                             </ComboBox>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
+                        <DockPanel>
+                            <Label Content="Working days per week:" />
+                            <TextBox Name="DaysPerWeek" HorizontalAlignment="Right" Width="200" Margin="3" />
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">

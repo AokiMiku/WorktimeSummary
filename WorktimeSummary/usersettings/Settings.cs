@@ -75,6 +75,12 @@ namespace WorktimeSummary.userSettings
             set => Save("General", "WorkhoursPerWeek", value.ToString(CultureInfo.CurrentCulture));
         }
 
+        public static int WorkdaysPerWeek
+        {
+            get => GetAsInt("General", "WorkdaysPerWeek");
+            set => Save("General", "WorkdaysPerWeek", value.ToString());
+        }
+
         public static bool ShowWeekends
         {
             get => GetAsBool("General", "ShowWeekends");

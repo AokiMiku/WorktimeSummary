@@ -19,6 +19,7 @@ namespace WorktimeSummary
 
         private void LoadSettings()
         {
+            DaysPerWeek.Text = Settings.WorkdaysPerWeek.ToString(CultureInfo.CurrentCulture);
             HoursPerWeek.Text = Settings.WorkhoursPerWeek.ToString(CultureInfo.CurrentCulture);
             ShowWeekends.IsChecked = Settings.ShowWeekends;
             EnableAutoRefresh.IsChecked = Settings.AutoRefreshEnabled;
@@ -97,6 +98,7 @@ namespace WorktimeSummary
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
+            Settings.WorkdaysPerWeek = int.Parse(DaysPerWeek.Text);
             Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
             Settings.ShowWeekends = ShowWeekends.IsChecked == true;
             Settings.AutoRefreshEnabled = EnableAutoRefresh.IsChecked == true;
