@@ -30,6 +30,7 @@ namespace WorktimeSummary.controllers
             this.gui.YearSelection.SelectionChanged += YearSelectionOnSelectionChanged;
             this.gui.MonthSelection.SelectionChanged += MonthSelectionOnSelectionChanged;
             this.gui.Refresh.Click += (sender, args) => Refresh();
+            this.gui.SettingsSaved += (sender, args) => Refresh();
             FillYearAndMonthSelections();
             CreateHeader();
             Refresh();
@@ -140,6 +141,7 @@ namespace WorktimeSummary.controllers
             {
                 dailyHoursToWork += 0.5f;
             }
+
             double dailyOt = 0;
             const string format = "0.##";
             for (int i = 1; i <= 31; i++)
@@ -167,7 +169,8 @@ namespace WorktimeSummary.controllers
                         sumPause += wt.Pause;
                     }
 
-                    if (!wt.Day.Equals(DateTime.Today.ToCustomString()))
+                    if (!wt.Day.Equals(DateTime.Today.ToCustomString()) ||
+                        !Settings.CurrentDayExcludedFromOvertimeCalculation)
                     {
                         dailyOt += differenceToday;
                     }

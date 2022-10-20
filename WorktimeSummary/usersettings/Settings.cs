@@ -93,6 +93,12 @@ namespace WorktimeSummary.userSettings
             set => Save("General", "CurrentDayBold", value.ToString());
         }
 
+        public static bool CurrentDayExcludedFromOvertimeCalculation
+        {
+            get => GetAsBool("General", "CurrentDayExcludedFromOvertimeCalculation");
+            set => Save("General", "CurrentDayExcludedFromOvertimeCalculation", value.ToString());
+        }
+
         public static bool AutoRefreshEnabled
         {
             get => GetAsBool("Schedules", "AutoRefreshEnabled");

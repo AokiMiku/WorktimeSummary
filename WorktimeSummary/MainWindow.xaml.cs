@@ -21,6 +21,8 @@
 
         private Brush currentlyHoveredRowBackground;
 
+        public event EventHandler<EventArgs> SettingsSaved; 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -186,7 +188,13 @@
         {
             UserSettingsWindow us = new UserSettingsWindow();
             us.TableThemeChanged += RepaintTable;
+            us.SettingsSaved += UsOnSettingsSaved;
             us.ShowDialog();
+        }
+
+        private void UsOnSettingsSaved(object sender, EventArgs e)
+        {
+            SettingsSaved?.Invoke(sender, e);
         }
 
         public void RepaintTable(object sender, EventArgs e)

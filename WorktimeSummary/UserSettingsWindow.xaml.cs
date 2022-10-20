@@ -16,6 +16,7 @@ namespace WorktimeSummary
         }
 
         public event EventHandler<EventArgs> TableThemeChanged;
+        public event EventHandler<EventArgs> SettingsSaved;
 
         private void LoadSettings()
         {
@@ -37,6 +38,7 @@ namespace WorktimeSummary
             }
 
             CurrentDayBold.IsChecked = Settings.CurrentDayBold;
+            CurrentDayExcludedFromOvertimeCalculation.IsChecked = Settings.CurrentDayExcludedFromOvertimeCalculation;
 
             for (int i = 0; i < AutoSave.Items.Count; i++)
             {
@@ -49,6 +51,26 @@ namespace WorktimeSummary
                 AutoSave.SelectedIndex = i;
                 break;
             }
+        }
+
+        private void Save_OnClick(object sender, RoutedEventArgs e)
+        {
+            Settings.WorkdaysPerWeek = int.Parse(DaysPerWeek.Text);
+            Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
+            Settings.ShowWeekends = ShowWeekends.IsChecked == true;
+            Settings.AutoRefreshEnabled = EnableAutoRefresh.IsChecked == true;
+            if (EnableAutoRefresh.IsChecked == true)
+            {
+                Settings.AutoRefreshEveryXMinutes = int.Parse(((Label)AutoRefresh.SelectedItem).Content.ToString());
+            }
+
+            Settings.CurrentDayBold = CurrentDayBold.IsChecked == true;
+            Settings.CurrentDayExcludedFromOvertimeCalculation =
+                CurrentDayExcludedFromOvertimeCalculation.IsChecked == true;
+            Settings.AutoSaveEveryXMinutes = int.Parse(((Label)AutoSave.SelectedItem).Content.ToString());
+            
+            SettingsSaved?.Invoke(this, EventArgs.Empty);
+            Close();
         }
 
         private void SelectCorrectThemeComboBoxItem()
@@ -94,22 +116,6 @@ namespace WorktimeSummary
         private void EnableAutoRefresh_OnUnchecked(object sender, RoutedEventArgs e)
         {
             AutoRefreshPanel.IsEnabled = false;
-        }
-
-        private void Save_OnClick(object sender, RoutedEventArgs e)
-        {
-            Settings.WorkdaysPerWeek = int.Parse(DaysPerWeek.Text);
-            Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
-            Settings.ShowWeekends = ShowWeekends.IsChecked == true;
-            Settings.AutoRefreshEnabled = EnableAutoRefresh.IsChecked == true;
-            if (EnableAutoRefresh.IsChecked == true)
-            {
-                Settings.AutoRefreshEveryXMinutes = int.Parse(((Label)AutoRefresh.SelectedItem).Content.ToString());
-            }
-
-            Settings.CurrentDayBold = CurrentDayBold.IsChecked == true;
-            Settings.AutoSaveEveryXMinutes = int.Parse(((Label)AutoSave.SelectedItem).Content.ToString());
-            Close();
         }
     }
 }

@@ -32,7 +32,8 @@
                         <DockPanel>
                             <Label Content="Table-Themes: " />
                             <ComboBox Margin="3" Name="ThemeSelection"
-                                      SelectionChanged="ThemeSelection_OnSelectionChanged" HorizontalAlignment="Right"
+                                      SelectionChanged="ThemeSelection_OnSelectionChanged" 
+                                      HorizontalAlignment="Right"
                                       Width="200">
                                 <ComboBoxItem>
                                     <DockPanel HorizontalAlignment="Left">
@@ -80,26 +81,43 @@
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Working days per week:" />
-                            <TextBox Name="DaysPerWeek" HorizontalAlignment="Right" Width="200" Margin="3" />
+                            <TextBox Name="DaysPerWeek" HorizontalAlignment="Right" 
+                                     Width="200" Margin="3" />
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Hours per week:" />
-                            <TextBox Name="HoursPerWeek" HorizontalAlignment="Right" Width="200" Margin="3" />
+                            <TextBox Name="HoursPerWeek" HorizontalAlignment="Right" 
+                                     Width="200" Margin="3" />
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Show weekends:" />
-                            <CheckBox Name="ShowWeekends" Margin="0 0 90 0" HorizontalAlignment="Right"
+                            <CheckBox Name="ShowWeekends" Margin="0 0 90 0" 
+                                      HorizontalAlignment="Right"
                                       VerticalAlignment="Center" />
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Current day is printed bold:" />
-                            <CheckBox Name="CurrentDayBold" Margin="0 0 90 0" HorizontalAlignment="Right"
+                            <CheckBox Name="CurrentDayBold" Margin="0 0 90 0" 
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center" />
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
+                        <DockPanel>
+                            <TextBlock>
+                                Should the current day<LineBreak /> 
+                                be excluded from<LineBreak /> 
+                                overtime calculation:
+                            </TextBlock>
+                            <CheckBox Name="CurrentDayExcludedFromOvertimeCalculation" 
+                                      Margin="0 0 90 0"
+                                      HorizontalAlignment="Right"
                                       VerticalAlignment="Center" />
                         </DockPanel>
                     </Border>
@@ -117,7 +135,8 @@
                 <StackPanel>
                     <DockPanel>
                         <Label Content="Disable/Enable Auto-Refresh:" />
-                        <CheckBox Name="EnableAutoRefresh" Margin="0 0 90 0" HorizontalAlignment="Right"
+                        <CheckBox Name="EnableAutoRefresh" Margin="0 0 90 0" 
+                                  HorizontalAlignment="Right"
                                   VerticalAlignment="Center" Checked="EnableAutoRefresh_OnChecked"
                                   Unchecked="EnableAutoRefresh_OnUnchecked" />
                     </DockPanel>
