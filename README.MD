@@ -7,4 +7,4 @@
 - [x] add new setting to set if weekly summaries should be shown
   - [x] add weekly summaries 
 -[x] fix calculation of estimated ending time to use actual working hours per day instead of fixed 8 hours plus 30 minutes break
-                  
+- [ ] add issue overview table

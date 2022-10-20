@@ -158,15 +158,18 @@ namespace WorktimeSummary.controllers
                     bool isPublicHoliday = DateSystem.IsPublicHoliday(wt.Day.ToDateTime(), CountryCode.DE);
                     if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
                     {
-                        differenceToday = (wt.Worktime - wt.Pause / 3600d - dailyHoursToWork) * 60d;
-                        sumWorktime += sumWorktimeWeekly += wt.Worktime;
-                        sumPause += sumPauseWeekly += wt.Pause;
+                        differenceToday = (wt.Worktime - CalculateBreakTime(wt) - dailyHoursToWork) * 60d;
+                        sumWorktime += wt.Worktime;
+                        sumWorktimeWeekly += wt.Worktime;
+                        sumPause += wt.Pause;
+                        sumPauseWeekly += wt.Pause;
                     }
 
                     if (!wt.Day.Equals(DateTime.Today.ToCustomString()) ||
                         !Settings.CurrentDayExcludedFromOvertimeCalculation)
                     {
-                        dailyOt += weeklyOt += differenceToday;
+                        dailyOt += differenceToday;
+                        weeklyOt += differenceToday;
                     }
 
                     List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
@@ -208,8 +211,9 @@ namespace WorktimeSummary.controllers
                     {
                         "Weekly:",
                         "",
-                        sumWorktimeWeekly.ToString(CultureInfo.CurrentCulture),
-                        (sumPauseWeekly / 60f).ToString(CultureInfo.CurrentCulture),
+                        sumWorktimeWeekly.ToString(format, CultureInfo.CurrentCulture) + " / " 
+                        + Settings.WorkhoursPerWeek,
+                        (sumPauseWeekly / 60f).ToString(format, CultureInfo.CurrentCulture),
                         "",
                         weeklyOt.ToString(format, CultureInfo.CurrentCulture)
                     });
@@ -226,6 +230,20 @@ namespace WorktimeSummary.controllers
                 "",
                 dailyOt.ToString(format, CultureInfo.CurrentCulture)
             });
+        }
+
+        private double CalculateBreakTime(Worktimes wt)
+        {
+            if (Settings.WorkhoursPerDay > 9)
+            {
+                return (wt.Pause - 45 * 60) / 3600d;
+            }
+            if (Settings.WorkhoursPerDay > 6)
+            {
+                return (wt.Pause - 30 * 60) / 3600d;
+            }
+
+            return wt.Pause / 3600d;
         }
 
         private static bool IsDayToday(string day)
