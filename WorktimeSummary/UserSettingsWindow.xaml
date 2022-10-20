@@ -102,6 +102,14 @@
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
+                            <Label Content="Show weekly summaries:" />
+                            <CheckBox Name="ShowWeeklySummaries" Margin="0 0 90 0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center" />
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
+                        <DockPanel>
                             <Label Content="Current day is printed bold:" />
                             <CheckBox Name="CurrentDayBold" Margin="0 0 90 0"
                                       HorizontalAlignment="Right"
@@ -110,7 +118,7 @@
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
-                            <TextBlock>
+                            <TextBlock Margin="5 0 0 0">
                                 Should the current day<LineBreak />
                                 be excluded from<LineBreak />
                                 overtime calculation:

@@ -23,6 +23,7 @@ namespace WorktimeSummary
             DaysPerWeek.Text = Settings.WorkdaysPerWeek.ToString(CultureInfo.CurrentCulture);
             HoursPerWeek.Text = Settings.WorkhoursPerWeek.ToString(CultureInfo.CurrentCulture);
             ShowWeekends.IsChecked = Settings.ShowWeekends;
+            ShowWeeklySummaries.IsChecked = Settings.WeeklySummaries;
             EnableAutoRefresh.IsChecked = Settings.AutoRefreshEnabled;
             AutoRefreshPanel.IsEnabled = EnableAutoRefresh.IsChecked == true;
             for (int i = 0; i < AutoRefresh.Items.Count; i++)
@@ -58,6 +59,7 @@ namespace WorktimeSummary
             Settings.WorkdaysPerWeek = int.Parse(DaysPerWeek.Text);
             Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
             Settings.ShowWeekends = ShowWeekends.IsChecked == true;
+            Settings.WeeklySummaries = ShowWeeklySummaries.IsChecked == true;
             Settings.AutoRefreshEnabled = EnableAutoRefresh.IsChecked == true;
             if (EnableAutoRefresh.IsChecked == true)
             {

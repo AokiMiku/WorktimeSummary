@@ -117,6 +117,12 @@ namespace WorktimeSummary.userSettings
             set => Save("General", "CurrentDayExcludedFromOvertimeCalculation", value.ToString());
         }
 
+        public static bool WeeklySummaries
+        {
+            get => GetAsBool("General", "WeeklySummaries");
+            set => Save("General", "WeeklySummaries", value.ToString());
+        }
+
         public static bool AutoRefreshEnabled
         {
             get => GetAsBool("Schedules", "AutoRefreshEnabled");

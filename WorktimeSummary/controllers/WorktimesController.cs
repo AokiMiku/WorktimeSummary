@@ -131,10 +131,12 @@ namespace WorktimeSummary.controllers
 
             string dayStartString = $"{currentlySelectedYear}-{currentlySelectedMonth.PadLeft(2, '0')}";
             double sumWorktime = 0;
+            double sumWorktimeWeekly = 0;
             int sumPause = 0;
+            int sumPauseWeekly = 0; 
             float dailyHoursToWork = Settings.WorkhoursPerDay;
-
             double dailyOt = 0;
+            double weeklyOt = 0;
             const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
@@ -157,14 +159,14 @@ namespace WorktimeSummary.controllers
                     if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
                     {
                         differenceToday = (wt.Worktime - wt.Pause / 3600d - dailyHoursToWork) * 60d;
-                        sumWorktime += wt.Worktime;
-                        sumPause += wt.Pause;
+                        sumWorktime += sumWorktimeWeekly += wt.Worktime;
+                        sumPause += sumPauseWeekly += wt.Pause;
                     }
 
                     if (!wt.Day.Equals(DateTime.Today.ToCustomString()) ||
                         !Settings.CurrentDayExcludedFromOvertimeCalculation)
                     {
-                        dailyOt += differenceToday;
+                        dailyOt += weeklyOt += differenceToday;
                     }
 
                     List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
@@ -191,6 +193,29 @@ namespace WorktimeSummary.controllers
                 else
                 {
                     AddEmptyRow(day);
+                }
+
+                if (Settings.WeeklySummaries &&
+                    ((!Settings.ShowWeekends &&
+                      new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
+                      DayOfWeek.Friday)
+                     ||
+                     (Settings.ShowWeekends &&
+                      new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
+                      DayOfWeek.Sunday)))
+                {
+                    gui.AddRow(true, new[]
+                    {
+                        "Weekly:",
+                        "",
+                        sumWorktimeWeekly.ToString(CultureInfo.CurrentCulture),
+                        (sumPauseWeekly / 60f).ToString(CultureInfo.CurrentCulture),
+                        "",
+                        weeklyOt.ToString(format, CultureInfo.CurrentCulture)
+                    });
+                    sumWorktimeWeekly = 0;
+                    sumPauseWeekly = 0;
+                    weeklyOt = 0;
                 }
             }
 
