@@ -17,6 +17,7 @@ namespace WorktimeSummary.controllers
     {
         private const int IndexSickLeave = 6;
         private const int IndexVacation = 7;
+        private const string Format = "0.##";
         private readonly MainWindow gui;
         private readonly WorktimesRepository repository = WorktimesRepository.Instance;
         private string currentlySelectedMonth = "";
@@ -137,7 +138,6 @@ namespace WorktimeSummary.controllers
             float dailyHoursToWork = Settings.WorkhoursPerDay;
             double dailyOt = 0;
             double weeklyOt = 0;
-            const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
                 if (SkipWeekends(i))
@@ -149,44 +149,7 @@ namespace WorktimeSummary.controllers
                 if (wts.Count(w => w.Day.Equals(day)) != 0)
                 {
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
-                    double differenceToday = 0;
-                    bool isPublicHoliday = DateSystem.IsPublicHoliday(wt.Day.ToDateTime(), CountryCode.DE);
-                    if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
-                    {
-                        differenceToday = Time.HoursToMinutes((float)(wt.Worktime - Settings.CalculateBreakTime(wt) - dailyHoursToWork));
-                        sumWorktime += wt.Worktime - Time.SecondsToHours(wt.Pause);
-                        sumWorktimeWeekly += wt.Worktime - Time.SecondsToHours(wt.Pause);
-                        sumPause += wt.Pause;
-                        sumPauseWeekly += wt.Pause;
-                    }
-
-                    if (!wt.Day.Equals(DateTime.Today.ToCustomString()) ||
-                        !Settings.CurrentDayExcludedFromOvertimeCalculation)
-                    {
-                        dailyOt += differenceToday;
-                        weeklyOt += differenceToday;
-                    }
-
-                    List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
-                    {
-                        wt.Day,
-                        wt.StartingTime.ToString(),
-                        wt.Worktime.ToString(format, CultureInfo.CurrentCulture) + " / " +
-                        dailyHoursToWork.ToString(format, CultureInfo.CurrentCulture),
-                        Time.SecondsToMinutes(wt.Pause).ToString(format, CultureInfo.CurrentCulture),
-                        wt.StartingTime.AddSeconds(Time.HoursToSeconds((float)wt.Worktime)).ToString(),
-                        differenceToday.ToString(format, CultureInfo.CurrentCulture),
-                        wt.IsSickLeave.ToString(),
-                        wt.IsVacation.ToString(),
-                        isPublicHoliday.ToString()
-                    });
-                    foreach (UIElement uiElement in elements)
-                    {
-                        if (uiElement is CheckBox box)
-                        {
-                            box.Click += CheckBoxOnClick;
-                        }
-                    }
+                    sumWorktime += AddDataRow(wt, ref sumWorktimeWeekly, ref sumPause, ref sumPauseWeekly, ref dailyOt, ref weeklyOt);
                 }
                 else
                 {
@@ -208,11 +171,11 @@ namespace WorktimeSummary.controllers
                     {
                         "Weekly:",
                         "",
-                        sumWorktimeWeekly.ToString(format, CultureInfo.CurrentCulture) + " / "
+                        sumWorktimeWeekly.ToString(Format, CultureInfo.CurrentCulture) + " / "
                         + Settings.WorkhoursPerWeek,
-                        Time.SecondsToMinutes(sumPauseWeekly).ToString(format, CultureInfo.CurrentCulture),
+                        Time.SecondsToMinutes(sumPauseWeekly).ToString(Format, CultureInfo.CurrentCulture),
                         "",
-                        weeklyOt.ToString(format, CultureInfo.CurrentCulture)
+                        weeklyOt.ToString(Format, CultureInfo.CurrentCulture)
                     });
                     sumWorktimeWeekly = 0;
                     sumPauseWeekly = 0;
@@ -227,11 +190,58 @@ namespace WorktimeSummary.controllers
 
             gui.AddSumRow(new[]
             {
-                "All: ", "", sumWorktime.ToString(format, CultureInfo.CurrentCulture),
-                Time.SecondsToHours(sumPause).ToString(format, CultureInfo.CurrentCulture),
+                "All: ", "", sumWorktime.ToString(Format, CultureInfo.CurrentCulture),
+                Time.SecondsToHours(sumPause).ToString(Format, CultureInfo.CurrentCulture),
                 "",
-                dailyOt.ToString(format, CultureInfo.CurrentCulture)
+                dailyOt.ToString(Format, CultureInfo.CurrentCulture)
             });
+        }
+
+        private double AddDataRow(Worktimes wt,
+            ref double sumWorktimeWeekly, ref int sumPause, ref int sumPauseWeekly, ref double dailyOt, ref double weeklyOt)
+        {
+            double differenceToday = 0;
+            bool isPublicHoliday = DateSystem.IsPublicHoliday(wt.Day.ToDateTime(), CountryCode.DE);
+            double sumWorktime = 0;
+            if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
+            {
+                differenceToday =
+                    Time.HoursToMinutes((float)(wt.Worktime - Settings.CalculateBreakTime(wt) - Settings.WorkhoursPerDay));
+                sumWorktime = wt.Worktime - Time.SecondsToHours(wt.Pause);
+                sumWorktimeWeekly += wt.Worktime - Time.SecondsToHours(wt.Pause);
+                sumPause += wt.Pause;
+                sumPauseWeekly += wt.Pause;
+            }
+
+            if (!wt.Day.Equals(DateTime.Today.ToCustomString()) ||
+                !Settings.CurrentDayExcludedFromOvertimeCalculation)
+            {
+                dailyOt += differenceToday;
+                weeklyOt += differenceToday;
+            }
+
+            List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(wt.Day), new[]
+            {
+                wt.Day,
+                wt.StartingTime.ToString(),
+                wt.Worktime.ToString(Format, CultureInfo.CurrentCulture) + " / " +
+                Settings.WorkhoursPerDay.ToString(Format, CultureInfo.CurrentCulture),
+                Time.SecondsToMinutes(wt.Pause).ToString(Format, CultureInfo.CurrentCulture),
+                wt.StartingTime.AddSeconds(Time.HoursToSeconds((float)wt.Worktime)).ToString(),
+                differenceToday.ToString(Format, CultureInfo.CurrentCulture),
+                wt.IsSickLeave.ToString(),
+                wt.IsVacation.ToString(),
+                isPublicHoliday.ToString()
+            });
+            foreach (UIElement uiElement in elements)
+            {
+                if (uiElement is CheckBox box)
+                {
+                    box.Click += CheckBoxOnClick;
+                }
+            }
+
+            return sumWorktime;
         }
 
         private static bool IsDayToday(string day)
