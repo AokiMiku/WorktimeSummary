@@ -215,16 +215,8 @@ namespace WorktimeSummary.controllers
 
         private Time CalculateEstimatedEndingTime(Time worktimesStartingTime)
         {
-            float dailyHoursToWork = Settings.WorkhoursPerWeek / Settings.WorkdaysPerWeek;
-            if (dailyHoursToWork > 9)
-            {
-                dailyHoursToWork += 0.75f;
-            }
-            else if (dailyHoursToWork > 6)
-            {
-                dailyHoursToWork += 0.5f;
-            }
-            
+            float dailyHoursToWork = Settings.WorkhoursPerDay;
+
             Time end = worktimesStartingTime.AddHours(dailyHoursToWork);
             return end;
         }

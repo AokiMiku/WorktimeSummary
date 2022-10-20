@@ -68,7 +68,7 @@ namespace WorktimeSummary
             Settings.CurrentDayExcludedFromOvertimeCalculation =
                 CurrentDayExcludedFromOvertimeCalculation.IsChecked == true;
             Settings.AutoSaveEveryXMinutes = int.Parse(((Label)AutoSave.SelectedItem).Content.ToString());
-            
+
             SettingsSaved?.Invoke(this, EventArgs.Empty);
             Close();
         }

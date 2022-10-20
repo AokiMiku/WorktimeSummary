@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="Settings" MinHeight="300" MinWidth="400" Height="0" Width="0">
+        Title="Settings" MinHeight="350" MinWidth="400" Height="0" Width="0">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
@@ -32,7 +32,7 @@
                         <DockPanel>
                             <Label Content="Table-Themes: " />
                             <ComboBox Margin="3" Name="ThemeSelection"
-                                      SelectionChanged="ThemeSelection_OnSelectionChanged" 
+                                      SelectionChanged="ThemeSelection_OnSelectionChanged"
                                       HorizontalAlignment="Right"
                                       Width="200">
                                 <ComboBoxItem>
@@ -81,21 +81,21 @@
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Working days per week:" />
-                            <TextBox Name="DaysPerWeek" HorizontalAlignment="Right" 
+                            <TextBox Name="DaysPerWeek" HorizontalAlignment="Right"
                                      Width="200" Margin="3" />
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Hours per week:" />
-                            <TextBox Name="HoursPerWeek" HorizontalAlignment="Right" 
+                            <TextBox Name="HoursPerWeek" HorizontalAlignment="Right"
                                      Width="200" Margin="3" />
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Show weekends:" />
-                            <CheckBox Name="ShowWeekends" Margin="0 0 90 0" 
+                            <CheckBox Name="ShowWeekends" Margin="0 0 90 0"
                                       HorizontalAlignment="Right"
                                       VerticalAlignment="Center" />
                         </DockPanel>
@@ -103,7 +103,7 @@
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Current day is printed bold:" />
-                            <CheckBox Name="CurrentDayBold" Margin="0 0 90 0" 
+                            <CheckBox Name="CurrentDayBold" Margin="0 0 90 0"
                                       HorizontalAlignment="Right"
                                       VerticalAlignment="Center" />
                         </DockPanel>
@@ -111,11 +111,11 @@
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <TextBlock>
-                                Should the current day<LineBreak /> 
-                                be excluded from<LineBreak /> 
+                                Should the current day<LineBreak />
+                                be excluded from<LineBreak />
                                 overtime calculation:
                             </TextBlock>
-                            <CheckBox Name="CurrentDayExcludedFromOvertimeCalculation" 
+                            <CheckBox Name="CurrentDayExcludedFromOvertimeCalculation"
                                       Margin="0 0 90 0"
                                       HorizontalAlignment="Right"
                                       VerticalAlignment="Center" />
@@ -135,7 +135,7 @@
                 <StackPanel>
                     <DockPanel>
                         <Label Content="Disable/Enable Auto-Refresh:" />
-                        <CheckBox Name="EnableAutoRefresh" Margin="0 0 90 0" 
+                        <CheckBox Name="EnableAutoRefresh" Margin="0 0 90 0"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Center" Checked="EnableAutoRefresh_OnChecked"
                                   Unchecked="EnableAutoRefresh_OnUnchecked" />

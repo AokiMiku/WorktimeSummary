@@ -132,15 +132,7 @@ namespace WorktimeSummary.controllers
             string dayStartString = $"{currentlySelectedYear}-{currentlySelectedMonth.PadLeft(2, '0')}";
             double sumWorktime = 0;
             int sumPause = 0;
-            float dailyHoursToWork = Settings.WorkhoursPerWeek / Settings.WorkdaysPerWeek;
-            if (dailyHoursToWork > 9)
-            {
-                dailyHoursToWork += 0.75f;
-            }
-            else if (dailyHoursToWork > 6)
-            {
-                dailyHoursToWork += 0.5f;
-            }
+            float dailyHoursToWork = Settings.WorkhoursPerDay;
 
             double dailyOt = 0;
             const string format = "0.##";

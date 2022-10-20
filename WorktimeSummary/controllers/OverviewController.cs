@@ -29,7 +29,7 @@ namespace WorktimeSummary.controllers
         private void FillData()
         {
             double minutesOt = 0;
-            float dailyHoursToWork = Settings.WorkhoursPerWeek / 5;
+            float dailyHoursToWork = Settings.WorkhoursPerDay;
             for (int y = int.Parse(Settings.StartingYear); y <= DateTime.Now.Year; y++)
             {
                 List<Worktimes> days = repository.FindAllOfYear($"{y}");
@@ -39,8 +39,9 @@ namespace WorktimeSummary.controllers
                     .Where(day =>
                         !day.IsVacation && !day.IsSickLeave &&
                         !DateSystem.IsPublicHoliday(day.Day.ToDateTime(), CountryCode.DE) &&
-                        !day.Day.Equals(DateTime.Today.ToCustomString())).Sum(day =>
-                        (day.Worktime - day.Pause / 3600d - dailyHoursToWork) * 60d);
+                        (!day.Day.Equals(DateTime.Today.ToCustomString()) ||
+                         !Settings.CurrentDayExcludedFromOvertimeCalculation))
+                    .Sum(day => (day.Worktime - day.Pause / 3600d - dailyHoursToWork) * 60d);
 
                 overviewWindow.AddRow(new[]
                 {

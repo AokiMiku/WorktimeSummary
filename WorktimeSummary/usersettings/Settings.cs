@@ -69,16 +69,34 @@ namespace WorktimeSummary.userSettings
             set => Save("General", "StartingYear", value);
         }
 
+        public static int WorkdaysPerWeek
+        {
+            get => GetAsInt("General", "WorkdaysPerWeek");
+            set => Save("General", "WorkdaysPerWeek", value.ToString());
+        }
+
         public static float WorkhoursPerWeek
         {
             get => GetAsFloat("General", "WorkhoursPerWeek");
             set => Save("General", "WorkhoursPerWeek", value.ToString(CultureInfo.CurrentCulture));
         }
 
-        public static int WorkdaysPerWeek
+        public static float WorkhoursPerDay
         {
-            get => GetAsInt("General", "WorkdaysPerWeek");
-            set => Save("General", "WorkdaysPerWeek", value.ToString());
+            get
+            {
+                float hours = WorkhoursPerWeek / WorkdaysPerWeek;
+                if (hours > 9)
+                {
+                    hours += 0.75f;
+                }
+                else if (hours > 6)
+                {
+                    hours += 0.5f;
+                }
+
+                return hours;
+            }
         }
 
         public static bool ShowWeekends

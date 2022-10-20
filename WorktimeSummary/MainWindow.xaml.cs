@@ -21,8 +21,6 @@
 
         private Brush currentlyHoveredRowBackground;
 
-        public event EventHandler<EventArgs> SettingsSaved; 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -30,6 +28,8 @@
             defaultRowBackgroundZebra2 = Settings.TableTheme2;
             WorktimesController dummy = new WorktimesController(this);
         }
+
+        public event EventHandler<EventArgs> SettingsSaved;
 
         public void AddHeader(string[] values)
         {
