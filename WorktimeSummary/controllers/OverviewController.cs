@@ -41,7 +41,7 @@ namespace WorktimeSummary.controllers
                         !DateSystem.IsPublicHoliday(day.Day.ToDateTime(), CountryCode.DE) &&
                         (!day.Day.Equals(DateTime.Today.ToCustomString()) ||
                          !Settings.CurrentDayExcludedFromOvertimeCalculation))
-                    .Sum(day => (day.Worktime - day.Pause / 3600d - dailyHoursToWork) * 60d);
+                    .Sum(day => (day.Worktime - Settings.CalculateBreakTime(day) - dailyHoursToWork) * 60d);
 
                 overviewWindow.AddRow(new[]
                 {

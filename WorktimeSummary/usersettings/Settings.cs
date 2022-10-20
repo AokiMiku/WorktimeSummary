@@ -216,5 +216,20 @@ namespace WorktimeSummary.userSettings
 
             return false;
         }
+
+        public static double CalculateBreakTime(Worktimes wt)
+        {
+            if (WorkhoursPerDay > 9)
+            {
+                return (wt.Pause - 45 * 60) / 3600d;
+            }
+
+            if (WorkhoursPerDay > 6)
+            {
+                return (wt.Pause - 30 * 60) / 3600d;
+            }
+
+            return wt.Pause / 3600d;
+        }
     }
 }
