@@ -133,7 +133,7 @@ namespace WorktimeSummary.controllers
             double sumWorktime = 0;
             double sumWorktimeWeekly = 0;
             int sumPause = 0;
-            int sumPauseWeekly = 0; 
+            int sumPauseWeekly = 0;
             float dailyHoursToWork = Settings.WorkhoursPerDay;
             double dailyOt = 0;
             double weeklyOt = 0;
