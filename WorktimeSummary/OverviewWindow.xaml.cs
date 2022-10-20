@@ -86,7 +86,7 @@ namespace WorktimeSummary
                     continue;
                 }
 
-                ((Border)DataGrid.Children[i]).Background = Grid.GetRow(DataGrid.Children[i]) % 2 == 0
+                ((Border)DataGrid.Children[i]).Background = (Grid.GetRow(DataGrid.Children[i]) % 2) == 0
                     ? defaultRowBackgroundZebra1
                     : defaultRowBackgroundZebra2;
             }

@@ -158,12 +158,12 @@ namespace WorktimeSummary.controllers
 
                 if (Settings.WeeklySummaries &&
                     ((!Settings.ShowWeekends &&
-                      new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
-                      DayOfWeek.Friday)
+                      (new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
+                       DayOfWeek.Friday))
                      ||
                      (Settings.ShowWeekends &&
-                      new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
-                      DayOfWeek.Sunday)
+                      (new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
+                       DayOfWeek.Sunday))
                      ||
                      IsLastDayOfMonth(i)))
                 {
@@ -259,7 +259,7 @@ namespace WorktimeSummary.controllers
             }
 
             DateTime d = new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i);
-            return d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday;
+            return (d.DayOfWeek == DayOfWeek.Saturday) || (d.DayOfWeek == DayOfWeek.Sunday);
         }
 
         private bool IsLastDayOfMonth(int dayOfMonth)

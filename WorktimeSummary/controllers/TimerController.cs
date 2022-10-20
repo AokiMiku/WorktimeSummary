@@ -52,7 +52,7 @@ namespace WorktimeSummary.controllers
 
         private void AddOneFunctionPoint()
         {
-            if (string.IsNullOrEmpty(timerWindow.IssueNumber.Text) || issue == null)
+            if (string.IsNullOrEmpty(timerWindow.IssueNumber.Text) || (issue == null))
             {
                 return;
             }
@@ -73,7 +73,7 @@ namespace WorktimeSummary.controllers
                 return;
             }
 
-            if (issue == null || !issue.IssueNumber.Equals(timerWindow.IssueNumber.Text))
+            if ((issue == null) || !issue.IssueNumber.Equals(timerWindow.IssueNumber.Text))
             {
                 issue = new Issues();
                 timerWindow.IssueTrackingMinutes.Content = "0.00";
@@ -130,18 +130,18 @@ namespace WorktimeSummary.controllers
                 {
                     issue.Seconds++;
                     timerWindow.IssueTrackingMinutes.Content = (issue.Seconds / 60f).ToString("0.00");
-                    if (issue.Seconds % (30 * 60) == 0)
+                    if ((issue.Seconds % (30 * 60)) == 0)
                     {
                         AddOneFunctionPoint();
                     }
                 }
 
-                if (!Break45Minutes && worktimes.WorktimeInSeconds - worktimes.Pause > 9 * 3600)
+                if (!Break45Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > (9 * 3600)))
                 {
                     worktimes.Pause = Math.Max(45 * 60, worktimes.Pause);
                     Break45Minutes = true;
                 }
-                else if (!Break30Minutes && worktimes.WorktimeInSeconds - worktimes.Pause > 6 * 3600)
+                else if (!Break30Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > (6 * 3600)))
                 {
                     worktimes.Pause = Math.Max(30 * 60, worktimes.Pause);
                     Break30Minutes = true;
@@ -154,8 +154,8 @@ namespace WorktimeSummary.controllers
             timerWindow.BreakDecimal.Content = (worktimes.Pause / 3600d).ToString("0.00000");
             timerWindow.BreakTime.Content = HourDecimalToTimeString(worktimes.Pause / 3600d);
 
-            if (Settings.AutoSaveEveryXMinutes <= 0 ||
-                worktimes.WorktimeInSeconds % (Settings.AutoSaveEveryXMinutes * 60) != 0)
+            if ((Settings.AutoSaveEveryXMinutes <= 0) ||
+                ((worktimes.WorktimeInSeconds % (Settings.AutoSaveEveryXMinutes * 60)) != 0))
             {
                 return;
             }
@@ -185,7 +185,7 @@ namespace WorktimeSummary.controllers
 
             worktimes = repository.FindToday();
 
-            if (worktimes.StartingTime == null || worktimes.StartingTime.ToString().Equals(DefaultStringForTimes))
+            if ((worktimes.StartingTime == null) || worktimes.StartingTime.ToString().Equals(DefaultStringForTimes))
             {
                 worktimes.StartingTime = Time.Now();
                 worktimes.StartingTime = worktimes.StartingTime.AddMilliseconds(-worktimes.StartingTime.Milliseconds);

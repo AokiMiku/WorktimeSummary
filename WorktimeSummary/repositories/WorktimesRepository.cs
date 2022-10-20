@@ -163,7 +163,7 @@ namespace WorktimeSummary.repositories
 
         public void Save(Worktimes worktimes)
         {
-            if (FindByDay(worktimes.Day) == null || FindByDay(worktimes.Day).Id == 0)
+            if ((FindByDay(worktimes.Day) == null) || (FindByDay(worktimes.Day).Id == 0))
             {
                 Db?.Insert(worktimes);
             }

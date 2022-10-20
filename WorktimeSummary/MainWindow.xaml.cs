@@ -209,7 +209,7 @@
                     continue;
                 }
 
-                ((Border)DataGrid.Children[i]).Background = Grid.GetRow(DataGrid.Children[i]) % 2 == 0
+                ((Border)DataGrid.Children[i]).Background = (Grid.GetRow(DataGrid.Children[i]) % 2) == 0
                     ? defaultRowBackgroundZebra1
                     : defaultRowBackgroundZebra2;
             }
@@ -229,7 +229,7 @@
 
         private void ButtonMonthRight_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MonthSelection.SelectedIndex < MonthSelection.Items.Count - 1)
+            if (MonthSelection.SelectedIndex < (MonthSelection.Items.Count - 1))
             {
                 MonthSelection.SelectedIndex++;
             }
@@ -241,12 +241,12 @@
 
         private void SelectNextYear(bool changeYearSelectionForward)
         {
-            if (changeYearSelectionForward && YearSelection.SelectedIndex < YearSelection.Items.Count - 1)
+            if (changeYearSelectionForward && (YearSelection.SelectedIndex < (YearSelection.Items.Count - 1)))
             {
                 YearSelection.SelectedIndex++;
                 MonthSelection.SelectedIndex = 0;
             }
-            else if (!changeYearSelectionForward && YearSelection.SelectedIndex > 0)
+            else if (!changeYearSelectionForward && (YearSelection.SelectedIndex > 0))
             {
                 YearSelection.SelectedIndex--;
                 MonthSelection.SelectedIndex = MonthSelection.Items.Count - 1;

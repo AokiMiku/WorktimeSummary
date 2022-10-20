@@ -26,7 +26,7 @@ namespace WorktimeSummary.repositories
         public UserSettings FindByMajorAndMinorKey(string majorKey, string minorKey)
         {
             TableQuery<UserSettings> q = Db?.Table<UserSettings>()
-                .Where(us => us.SettingKeyMajor == majorKey && us.SettingKeyMinor == minorKey);
+                .Where(us => (us.SettingKeyMajor == majorKey) && (us.SettingKeyMinor == minorKey));
             UserSettings r = q?.ToList().FirstOrDefault();
 
             try
