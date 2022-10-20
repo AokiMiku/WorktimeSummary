@@ -178,7 +178,7 @@ namespace WorktimeSummary.utilities
 
         public double ToSeconds()
         {
-            return HoursToSeconds(Hours) + MinutesToSeconds(Minutes) + Seconds + (Milliseconds / 1000d);
+            return HoursToSeconds(Hours) + MinutesToSeconds(Minutes) + Seconds + Milliseconds / 1000d;
         }
 
         public static float SecondsToMinutes(int seconds)

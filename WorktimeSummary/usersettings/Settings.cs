@@ -219,11 +219,9 @@ namespace WorktimeSummary.userSettings
 
         public static double CalculateBreakTime(Worktimes wt)
         {
-            return WorkhoursPerDay > 9 ? 
-                Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(45))) :
-                WorkhoursPerDay > 6 ? 
-                    Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(30))) :
-                    Time.SecondsToHours(wt.Pause);
+            return WorkhoursPerDay > 9 ? Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(45))) :
+                WorkhoursPerDay > 6 ? Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(30))) :
+                Time.SecondsToHours(wt.Pause);
         }
     }
 }

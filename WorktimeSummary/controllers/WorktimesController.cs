@@ -135,7 +135,6 @@ namespace WorktimeSummary.controllers
             double sumWorktimeWeekly = 0;
             int sumPause = 0;
             int sumPauseWeekly = 0;
-            float dailyHoursToWork = Settings.WorkhoursPerDay;
             double dailyOt = 0;
             double weeklyOt = 0;
             for (int i = 1; i <= 31; i++)
@@ -149,7 +148,8 @@ namespace WorktimeSummary.controllers
                 if (wts.Count(w => w.Day.Equals(day)) != 0)
                 {
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
-                    sumWorktime += AddDataRow(wt, ref sumWorktimeWeekly, ref sumPause, ref sumPauseWeekly, ref dailyOt, ref weeklyOt);
+                    sumWorktime += AddDataRow(wt, ref sumWorktimeWeekly, ref sumPause, ref sumPauseWeekly, ref dailyOt,
+                        ref weeklyOt);
                 }
                 else
                 {
@@ -165,7 +165,7 @@ namespace WorktimeSummary.controllers
                       new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
                       DayOfWeek.Sunday)
                      ||
-                      IsLastDayOfMonth(i)))
+                     IsLastDayOfMonth(i)))
                 {
                     gui.AddRow(true, new[]
                     {
@@ -181,7 +181,7 @@ namespace WorktimeSummary.controllers
                     sumPauseWeekly = 0;
                     weeklyOt = 0;
                 }
-                
+
                 if (IsLastDayOfMonth(i))
                 {
                     break;
@@ -198,7 +198,8 @@ namespace WorktimeSummary.controllers
         }
 
         private double AddDataRow(Worktimes wt,
-            ref double sumWorktimeWeekly, ref int sumPause, ref int sumPauseWeekly, ref double dailyOt, ref double weeklyOt)
+            ref double sumWorktimeWeekly, ref int sumPause, ref int sumPauseWeekly, ref double dailyOt,
+            ref double weeklyOt)
         {
             double differenceToday = 0;
             bool isPublicHoliday = DateSystem.IsPublicHoliday(wt.Day.ToDateTime(), CountryCode.DE);
@@ -206,7 +207,8 @@ namespace WorktimeSummary.controllers
             if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
             {
                 differenceToday =
-                    Time.HoursToMinutes((float)(wt.Worktime - Settings.CalculateBreakTime(wt) - Settings.WorkhoursPerDay));
+                    Time.HoursToMinutes(
+                        (float)(wt.Worktime - Settings.CalculateBreakTime(wt) - Settings.WorkhoursPerDay));
                 sumWorktime = wt.Worktime - Time.SecondsToHours(wt.Pause);
                 sumWorktimeWeekly += wt.Worktime - Time.SecondsToHours(wt.Pause);
                 sumPause += wt.Pause;
@@ -264,16 +266,18 @@ namespace WorktimeSummary.controllers
         {
             switch (dayOfMonth)
             {
-                case 28 when !Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && "2".Equals(currentlySelectedMonth):
-                    
-                case 29 when Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && "2".Equals(currentlySelectedMonth):
-                    
+                case 28 when !Settings.IsLeapYear(int.Parse(currentlySelectedYear)) &&
+                             "2".Equals(currentlySelectedMonth):
+
+                case 29
+                    when Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && "2".Equals(currentlySelectedMonth):
+
                 case 30 when "4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
                              "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth):
-                    
+
                 case 31 when "1".Equals(currentlySelectedMonth) || "3".Equals(currentlySelectedMonth) ||
-                             "5".Equals(currentlySelectedMonth) || "7".Equals(currentlySelectedMonth) || 
-                             "8".Equals(currentlySelectedMonth) || "10".Equals(currentlySelectedMonth) || 
+                             "5".Equals(currentlySelectedMonth) || "7".Equals(currentlySelectedMonth) ||
+                             "8".Equals(currentlySelectedMonth) || "10".Equals(currentlySelectedMonth) ||
                              "12".Equals(currentlySelectedMonth):
                     return true;
                 default:
