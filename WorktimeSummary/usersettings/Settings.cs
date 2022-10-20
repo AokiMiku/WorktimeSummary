@@ -5,6 +5,7 @@ namespace WorktimeSummary.userSettings
     using System.Windows.Media;
     using data;
     using repositories;
+    using utilities;
 
     public static class Settings
     {
@@ -201,7 +202,6 @@ namespace WorktimeSummary.userSettings
             UserSettingsRepository.SaveSetting(us);
         }
 
-
         public static bool IsLeapYear(int year)
         {
             if (year % 4 == 0 && year % 100 != 0)
@@ -219,17 +219,11 @@ namespace WorktimeSummary.userSettings
 
         public static double CalculateBreakTime(Worktimes wt)
         {
-            if (WorkhoursPerDay > 9)
-            {
-                return (wt.Pause - 45 * 60) / 3600d;
-            }
-
-            if (WorkhoursPerDay > 6)
-            {
-                return (wt.Pause - 30 * 60) / 3600d;
-            }
-
-            return wt.Pause / 3600d;
+            return WorkhoursPerDay > 9 ? 
+                Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(45))) :
+                WorkhoursPerDay > 6 ? 
+                    Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(30))) :
+                    Time.SecondsToHours(wt.Pause);
         }
     }
 }

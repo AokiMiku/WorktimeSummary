@@ -140,11 +140,6 @@ namespace WorktimeSummary.controllers
             const string format = "0.##";
             for (int i = 1; i <= 31; i++)
             {
-                if (IsLastDayOfMonth(i))
-                {
-                    break;
-                }
-
                 if (SkipWeekends(i))
                 {
                     continue;
@@ -158,9 +153,9 @@ namespace WorktimeSummary.controllers
                     bool isPublicHoliday = DateSystem.IsPublicHoliday(wt.Day.ToDateTime(), CountryCode.DE);
                     if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
                     {
-                        differenceToday = (wt.Worktime - Settings.CalculateBreakTime(wt) - dailyHoursToWork) * 60d;
-                        sumWorktime += wt.Worktime;
-                        sumWorktimeWeekly += wt.Worktime;
+                        differenceToday = Time.HoursToMinutes((float)(wt.Worktime - Settings.CalculateBreakTime(wt) - dailyHoursToWork));
+                        sumWorktime += wt.Worktime - Time.SecondsToHours(wt.Pause);
+                        sumWorktimeWeekly += wt.Worktime - Time.SecondsToHours(wt.Pause);
                         sumPause += wt.Pause;
                         sumPauseWeekly += wt.Pause;
                     }
@@ -178,8 +173,8 @@ namespace WorktimeSummary.controllers
                         wt.StartingTime.ToString(),
                         wt.Worktime.ToString(format, CultureInfo.CurrentCulture) + " / " +
                         dailyHoursToWork.ToString(format, CultureInfo.CurrentCulture),
-                        (wt.Pause / 60f).ToString(format, CultureInfo.CurrentCulture),
-                        wt.StartingTime.AddSeconds((int)(wt.Worktime * 3600)).ToString(),
+                        Time.SecondsToMinutes(wt.Pause).ToString(format, CultureInfo.CurrentCulture),
+                        wt.StartingTime.AddSeconds(Time.HoursToSeconds((float)wt.Worktime)).ToString(),
                         differenceToday.ToString(format, CultureInfo.CurrentCulture),
                         wt.IsSickLeave.ToString(),
                         wt.IsVacation.ToString(),
@@ -205,7 +200,9 @@ namespace WorktimeSummary.controllers
                      ||
                      (Settings.ShowWeekends &&
                       new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
-                      DayOfWeek.Sunday)))
+                      DayOfWeek.Sunday)
+                     ||
+                      IsLastDayOfMonth(i)))
                 {
                     gui.AddRow(true, new[]
                     {
@@ -213,7 +210,7 @@ namespace WorktimeSummary.controllers
                         "",
                         sumWorktimeWeekly.ToString(format, CultureInfo.CurrentCulture) + " / "
                         + Settings.WorkhoursPerWeek,
-                        (sumPauseWeekly / 60f).ToString(format, CultureInfo.CurrentCulture),
+                        Time.SecondsToMinutes(sumPauseWeekly).ToString(format, CultureInfo.CurrentCulture),
                         "",
                         weeklyOt.ToString(format, CultureInfo.CurrentCulture)
                     });
@@ -221,12 +218,17 @@ namespace WorktimeSummary.controllers
                     sumPauseWeekly = 0;
                     weeklyOt = 0;
                 }
+                
+                if (IsLastDayOfMonth(i))
+                {
+                    break;
+                }
             }
 
             gui.AddSumRow(new[]
             {
                 "All: ", "", sumWorktime.ToString(format, CultureInfo.CurrentCulture),
-                ((double)sumPause / 3600).ToString(format, CultureInfo.CurrentCulture),
+                Time.SecondsToHours(sumPause).ToString(format, CultureInfo.CurrentCulture),
                 "",
                 dailyOt.ToString(format, CultureInfo.CurrentCulture)
             });
@@ -250,15 +252,23 @@ namespace WorktimeSummary.controllers
 
         private bool IsLastDayOfMonth(int dayOfMonth)
         {
-            if ("2".Equals(currentlySelectedMonth) &&
-                ((Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && dayOfMonth == 30) ||
-                 (!Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && dayOfMonth == 29)))
+            switch (dayOfMonth)
             {
-                return true;
+                case 28 when !Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && "2".Equals(currentlySelectedMonth):
+                    
+                case 29 when Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && "2".Equals(currentlySelectedMonth):
+                    
+                case 30 when "4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
+                             "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth):
+                    
+                case 31 when "1".Equals(currentlySelectedMonth) || "3".Equals(currentlySelectedMonth) ||
+                             "5".Equals(currentlySelectedMonth) || "7".Equals(currentlySelectedMonth) || 
+                             "8".Equals(currentlySelectedMonth) || "10".Equals(currentlySelectedMonth) || 
+                             "12".Equals(currentlySelectedMonth):
+                    return true;
+                default:
+                    return false;
             }
-
-            return dayOfMonth == 31 && ("4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
-                                        "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth));
         }
 
         private void CheckBoxOnClick(object sender, RoutedEventArgs e)

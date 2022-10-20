@@ -150,36 +150,65 @@ namespace WorktimeSummary.utilities
 
         public static Time operator -(Time left, Time right)
         {
-            Time difference = left;
-            difference.Milliseconds -= right.Milliseconds;
-            difference.Seconds -= right.Seconds;
-            difference.Minutes -= right.Minutes;
-            difference.Hours -= right.Hours;
+            left.Milliseconds -= right.Milliseconds;
+            left.Seconds -= right.Seconds;
+            left.Minutes -= right.Minutes;
+            left.Hours -= right.Hours;
 
-            if (difference.Milliseconds < 0)
+            if (left.Milliseconds < 0)
             {
-                difference.Milliseconds += 1000;
-                difference.Seconds -= 1;
+                left.Milliseconds += 1000;
+                left.Seconds -= 1;
             }
 
-            if (difference.Seconds < 0)
+            if (left.Seconds < 0)
             {
-                difference.Seconds += 60;
-                difference.Minutes -= 1;
+                left.Seconds += 60;
+                left.Minutes -= 1;
             }
 
-            if (difference.Minutes < 0)
+            if (left.Minutes < 0)
             {
-                difference.Minutes += 60;
-                difference.Hours -= 1;
+                left.Minutes += 60;
+                left.Hours -= 1;
             }
 
-            return difference;
+            return left;
         }
 
         public double ToSeconds()
         {
-            return Hours * 3600d + Minutes * 60d + Seconds + Milliseconds / 1000d;
+            return HoursToSeconds(Hours) + MinutesToSeconds(Minutes) + Seconds + (Milliseconds / 1000d);
+        }
+
+        public static float SecondsToMinutes(int seconds)
+        {
+            return seconds / 60f;
+        }
+
+        public static float MinutesToHours(float minutes)
+        {
+            return minutes / 60f;
+        }
+
+        public static float SecondsToHours(int seconds)
+        {
+            return seconds / 3600f;
+        }
+
+        public static float HoursToMinutes(float hours)
+        {
+            return hours * 60f;
+        }
+
+        public static float MinutesToSeconds(float minutes)
+        {
+            return minutes * 60f;
+        }
+
+        public static int HoursToSeconds(float hours)
+        {
+            return (int)(hours * 3600f);
         }
     }
 }
