@@ -8,3 +8,6 @@
   - [x] add weekly summaries 
 -[x] fix calculation of estimated ending time to use actual working hours per day instead of fixed 8 hours plus 30 minutes break
 - [ ] add issue overview table
+- [ ] add new setting to set the country the user lives in to calculate different public holidays
+- [ ] count days of week at the start and end of month to calculate correct weekly summaries
+  - [ ] subtract holidays, vacations and sick days from weekly summaries
