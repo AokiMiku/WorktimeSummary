@@ -129,21 +129,21 @@ namespace WorktimeSummary.controllers
                 if (issueTracking)
                 {
                     issue.Seconds++;
-                    timerWindow.IssueTrackingMinutes.Content = (issue.Seconds / 60f).ToString("0.00");
-                    if ((issue.Seconds % (30 * 60)) == 0)
+                    timerWindow.IssueTrackingMinutes.Content = Time.SecondsToMinutes(issue.Seconds).ToString("0.00");
+                    if ((issue.Seconds % Time.MinutesToSeconds(30)) == 0)
                     {
                         AddOneFunctionPoint();
                     }
                 }
 
-                if (!Break45Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > (9 * 3600)))
+                if (!Break45Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > Time.HoursToSeconds(9)))
                 {
-                    worktimes.Pause = Math.Max(45 * 60, worktimes.Pause);
+                    worktimes.Pause = Math.Max(Time.MinutesToSeconds(45), worktimes.Pause);
                     Break45Minutes = true;
                 }
-                else if (!Break30Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > (6 * 3600)))
+                else if (!Break30Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > Time.HoursToSeconds(6)))
                 {
-                    worktimes.Pause = Math.Max(30 * 60, worktimes.Pause);
+                    worktimes.Pause = Math.Max(Time.MinutesToSeconds(30), worktimes.Pause);
                     Break30Minutes = true;
                 }
             }
@@ -151,11 +151,13 @@ namespace WorktimeSummary.controllers
             worktimes.WorktimeInSeconds = (long)(Time.Now() - worktimes.StartingTime).ToSeconds();
             timerWindow.WorktimeDecimal.Content = worktimes.Worktime.ToString("0.00000");
             timerWindow.WorktimeTime.Content = HourDecimalToTimeString(worktimes.Worktime);
-            timerWindow.BreakDecimal.Content = (worktimes.Pause / 3600d).ToString("0.00000");
-            timerWindow.BreakTime.Content = HourDecimalToTimeString(worktimes.Pause / 3600d);
+            timerWindow.BreakDecimal.Content = Time.SecondsToHours(worktimes.Pause).ToString("0.00000");
+            timerWindow.BreakTime.Content = HourDecimalToTimeString(Time.SecondsToHours(worktimes.Pause));
+
+            SetEstimatedEndingTime();
 
             if ((Settings.AutoSaveEveryXMinutes <= 0) ||
-                ((worktimes.WorktimeInSeconds % (Settings.AutoSaveEveryXMinutes * 60)) != 0))
+                ((worktimes.WorktimeInSeconds % Time.MinutesToSeconds(Settings.AutoSaveEveryXMinutes)) != 0))
             {
                 return;
             }
@@ -165,11 +167,11 @@ namespace WorktimeSummary.controllers
 
         private static string HourDecimalToTimeString(double worktimesWorktime)
         {
-            long seconds = (long)(worktimesWorktime * 3600d);
-            long minutes = seconds / 60;
-            seconds -= minutes * 60;
-            long hours = minutes / 60;
-            minutes -= hours * 60;
+            int seconds = Time.HoursToSeconds((float)worktimesWorktime);
+            float minutes = Time.SecondsToMinutes(seconds);
+            seconds -= Time.MinutesToSeconds(minutes);
+            float hours = Time.MinutesToHours(minutes);
+            minutes -= Time.HoursToMinutes(hours);
 
             return $"{hours:00}:{minutes:00}:{seconds:00}";
         }
@@ -198,19 +200,24 @@ namespace WorktimeSummary.controllers
                     MessageBoxResult.No);
                 if (r.Equals(MessageBoxResult.Yes))
                 {
-                    Time diff = Time.Now() - worktimes.StartingTime.AddSeconds((int)(worktimes.Worktime * 3600));
+                    Time diff = Time.Now() - worktimes.StartingTime.AddSeconds((Time.HoursToSeconds((float)worktimes.Worktime)));
                     worktimes.Pause += (int)diff.ToSeconds();
                 }
             }
 
+            SetEstimatedEndingTime();
+
+            timerWindow.StartingTime.Content = worktimes.StartingTime;
+            timer.Start();
+        }
+
+        private void SetEstimatedEndingTime()
+        {
             Time end = CalculateEstimatedEndingTime(worktimes.StartingTime);
             if (end.ToString().Length > 5)
             {
                 timerWindow.EstEndingTime.Content = end.ToString();
             }
-
-            timerWindow.StartingTime.Content = worktimes.StartingTime;
-            timer.Start();
         }
 
         private Time CalculateEstimatedEndingTime(Time worktimesStartingTime)
@@ -218,6 +225,14 @@ namespace WorktimeSummary.controllers
             float dailyHoursToWork = Settings.WorkhoursPerDay;
 
             Time end = worktimesStartingTime.AddHours(dailyHoursToWork);
+            if (worktimes.Worktime > 9 && worktimes.Pause > Time.MinutesToSeconds(45))
+            {
+                end = end.AddSeconds(worktimes.Pause - Time.MinutesToSeconds(45));
+            } 
+            else if (worktimes.Worktime > 6 && worktimes.Pause > Time.MinutesToSeconds(30))
+            {
+                end = end.AddSeconds(worktimes.Pause - Time.MinutesToSeconds(30));
+            }
             return end;
         }
 
