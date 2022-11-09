@@ -149,9 +149,10 @@ namespace WorktimeSummary.controllers
             }
 
             worktimes.WorktimeInSeconds = (long)(Time.Now() - worktimes.StartingTime).ToSeconds();
-            timerWindow.WorktimeDecimal.Content = worktimes.Worktime.ToString("0.00000");
+            timerWindow.WorktimeDecimal.Content = worktimes.Worktime.ToString(DefaultStringForTimeDecimals);
             timerWindow.WorktimeTime.Content = HourDecimalToTimeString(worktimes.Worktime);
-            timerWindow.BreakDecimal.Content = Time.SecondsToHours(worktimes.Pause).ToString("0.00000");
+            timerWindow.BreakDecimal.Content =
+                Time.SecondsToHours(worktimes.Pause).ToString(DefaultStringForTimeDecimals);
             timerWindow.BreakTime.Content = HourDecimalToTimeString(Time.SecondsToHours(worktimes.Pause));
 
             SetEstimatedEndingTime();
@@ -200,7 +201,8 @@ namespace WorktimeSummary.controllers
                     MessageBoxResult.No);
                 if (r.Equals(MessageBoxResult.Yes))
                 {
-                    Time diff = Time.Now() - worktimes.StartingTime.AddSeconds((Time.HoursToSeconds((float)worktimes.Worktime)));
+                    Time diff = Time.Now() -
+                                worktimes.StartingTime.AddSeconds(Time.HoursToSeconds((float)worktimes.Worktime));
                     worktimes.Pause += (int)diff.ToSeconds();
                 }
             }
@@ -225,14 +227,15 @@ namespace WorktimeSummary.controllers
             float dailyHoursToWork = Settings.WorkhoursPerDay;
 
             Time end = worktimesStartingTime.AddHours(dailyHoursToWork);
-            if (worktimes.Worktime > 9 && worktimes.Pause > Time.MinutesToSeconds(45))
+            if ((worktimes.Worktime > 9) && (worktimes.Pause > Time.MinutesToSeconds(45)))
             {
                 end = end.AddSeconds(worktimes.Pause - Time.MinutesToSeconds(45));
-            } 
-            else if (worktimes.Worktime > 6 && worktimes.Pause > Time.MinutesToSeconds(30))
+            }
+            else if ((worktimes.Worktime > 6) && (worktimes.Pause > Time.MinutesToSeconds(30)))
             {
                 end = end.AddSeconds(worktimes.Pause - Time.MinutesToSeconds(30));
             }
+
             return end;
         }
 
