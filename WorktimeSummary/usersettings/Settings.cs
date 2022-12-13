@@ -17,7 +17,7 @@ namespace WorktimeSummary.userSettings
             
             ApS.Version.MajorVersion = 1;
             ApS.Version.MinorVersion = 0;
-            ApS.Version.PatchNumber = 0;
+            ApS.Version.PatchNumber = 1;
         }
 
         public static string TableThemeTitle
