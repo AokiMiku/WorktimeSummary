@@ -20,10 +20,15 @@ namespace WorktimeSummary
 
         private void LoadSettings()
         {
+            // General Tab
             DaysPerWeek.Text = Settings.WorkdaysPerWeek.ToString(CultureInfo.CurrentCulture);
             HoursPerWeek.Text = Settings.WorkhoursPerWeek.ToString(CultureInfo.CurrentCulture);
             ShowWeekends.IsChecked = Settings.ShowWeekends;
             ShowWeeklySummaries.IsChecked = Settings.WeeklySummaries;
+            CurrentDayBold.IsChecked = Settings.CurrentDayBold;
+            CurrentDayExcludedFromOvertimeCalculation.IsChecked = Settings.CurrentDayExcludedFromOvertimeCalculation;
+
+            // Schedules Tab
             EnableAutoRefresh.IsChecked = Settings.AutoRefreshEnabled;
             AutoRefreshPanel.IsEnabled = EnableAutoRefresh.IsChecked == true;
             for (int i = 0; i < AutoRefresh.Items.Count; i++)
@@ -37,10 +42,6 @@ namespace WorktimeSummary
                 AutoRefresh.SelectedIndex = i;
                 break;
             }
-
-            CurrentDayBold.IsChecked = Settings.CurrentDayBold;
-            CurrentDayExcludedFromOvertimeCalculation.IsChecked = Settings.CurrentDayExcludedFromOvertimeCalculation;
-
             for (int i = 0; i < AutoSave.Items.Count; i++)
             {
                 if (!int.Parse(((Label)AutoSave.Items[i]).Content.ToString())
@@ -52,10 +53,14 @@ namespace WorktimeSummary
                 AutoSave.SelectedIndex = i;
                 break;
             }
+            
+            // Updates Tab
+            EnableAutoUpdate.IsChecked = Settings.AutoUpdate;
         }
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
+            // General Tab
             Settings.WorkdaysPerWeek = int.Parse(DaysPerWeek.Text);
             Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
             Settings.ShowWeekends = ShowWeekends.IsChecked == true;
@@ -66,10 +71,14 @@ namespace WorktimeSummary
                 Settings.AutoRefreshEveryXMinutes = int.Parse(((Label)AutoRefresh.SelectedItem).Content.ToString());
             }
 
+            // Schedules Tab
             Settings.CurrentDayBold = CurrentDayBold.IsChecked == true;
             Settings.CurrentDayExcludedFromOvertimeCalculation =
                 CurrentDayExcludedFromOvertimeCalculation.IsChecked == true;
             Settings.AutoSaveEveryXMinutes = int.Parse(((Label)AutoSave.SelectedItem).Content.ToString());
+            
+            // Updates Tab
+            Settings.AutoUpdate = EnableAutoUpdate.IsChecked == true;
 
             SettingsSaved?.Invoke(this, EventArgs.Empty);
             Close();

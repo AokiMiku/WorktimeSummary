@@ -14,6 +14,10 @@ namespace WorktimeSummary.userSettings
         static Settings()
         {
             UserSettingsRepository = new UserSettingsRepository();
+            
+            ApS.Version.MajorVersion = 1;
+            ApS.Version.MinorVersion = 0;
+            ApS.Version.PatchNumber = 0;
         }
 
         public static string TableThemeTitle
@@ -142,6 +146,24 @@ namespace WorktimeSummary.userSettings
             set => Save("Schedules", "AutoSaveEveryXMinutes", value.ToString());
         }
 
+        public static bool AutoUpdate
+        {
+            get => GetAsBool("Updates", "AutoUpdate");
+            set => Save("Updates", "AutoUpdate", value.ToString());
+        }
+        
+        public static DateTime LastUpdate
+        {
+            get => GetAsDateTime("Updates", "LastUpdate");
+            set => Save("Updates", "LastUpdate", value.ToString(CultureInfo.CurrentCulture));
+        }
+
+        private static DateTime GetAsDateTime(string majorKey, string minorKey)
+        {
+            string get = Get(majorKey, minorKey);
+            return get.Length > 0 ? DateTime.Parse(get) : DateTime.MinValue;
+        }
+
         private static float GetAsFloat(string majorKey, string minorKey)
         {
             string get = Get(majorKey, minorKey);
@@ -219,8 +241,8 @@ namespace WorktimeSummary.userSettings
 
         public static double CalculateBreakTime(Worktimes wt)
         {
-            return WorkhoursPerDay > 9 ? Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(45))) :
-                WorkhoursPerDay > 6 ? Time.SecondsToHours((int)(wt.Pause - Time.MinutesToSeconds(30))) :
+            return WorkhoursPerDay > 9 ? Time.SecondsToHours(wt.Pause - Time.MinutesToSeconds(45)) :
+                WorkhoursPerDay > 6 ? Time.SecondsToHours(wt.Pause - Time.MinutesToSeconds(30)) :
                 Time.SecondsToHours(wt.Pause);
         }
     }
