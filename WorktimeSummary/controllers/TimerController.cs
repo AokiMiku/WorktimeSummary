@@ -168,11 +168,11 @@ namespace WorktimeSummary.controllers
 
         private static string HourDecimalToTimeString(double worktimesWorktime)
         {
-            int seconds = Time.HoursToSeconds((float)worktimesWorktime);
-            float minutes = Time.SecondsToMinutes(seconds);
-            seconds -= Time.MinutesToSeconds(minutes);
-            float hours = Time.MinutesToHours(minutes);
-            minutes -= Time.HoursToMinutes(hours);
+            int seconds = (int)(worktimesWorktime * 3600);
+            float minutes = seconds / 60;
+            seconds -= (int)(minutes * 60);
+            float hours = (int)(minutes / 60);
+            minutes -= hours * 60;
 
             return $"{hours:00}:{minutes:00}:{seconds:00}";
         }
