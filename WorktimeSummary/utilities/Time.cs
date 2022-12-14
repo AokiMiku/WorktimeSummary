@@ -198,7 +198,7 @@ namespace WorktimeSummary.utilities
 
         public static float HoursToMinutes(float hours)
         {
-            return (int)hours * 60;
+            return hours * 60;
         }
 
         public static int MinutesToSeconds(float minutes)
