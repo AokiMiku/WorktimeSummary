@@ -186,6 +186,10 @@
                 </TabItem.Header>
                 <StackPanel>
                     <DockPanel>
+                        <Label Content="Current Version: "/>
+                        <Label Name="CurrentVersion" />
+                    </DockPanel>
+                    <DockPanel>
                         <Label Content="Disable/Enable Daily Update-Checks:" />
                         <CheckBox Name="EnableAutoUpdate" Margin="0 0 90 0"
                                   HorizontalAlignment="Right"

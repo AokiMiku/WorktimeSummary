@@ -55,6 +55,7 @@ namespace WorktimeSummary
             }
             
             // Updates Tab
+            CurrentVersion.Content = ApS.Version.StringAppVersion;
             EnableAutoUpdate.IsChecked = Settings.AutoUpdate;
         }
 
