@@ -17,7 +17,7 @@ namespace WorktimeSummary.userSettings
             
             ApS.Version.MajorVersion = 1;
             ApS.Version.MinorVersion = 0;
-            ApS.Version.PatchNumber = 2;
+            ApS.Version.PatchNumber = 3;
         }
 
         public static string TableThemeTitle
@@ -241,8 +241,8 @@ namespace WorktimeSummary.userSettings
 
         public static double CalculateBreakTime(Worktimes wt)
         {
-            return WorkhoursPerDay > 9 ? Time.SecondsToHours(wt.Pause - Time.MinutesToSeconds(45)) :
-                WorkhoursPerDay > 6 ? Time.SecondsToHours(wt.Pause - Time.MinutesToSeconds(30)) :
+            return WorkhoursPerDay > 9 ? Time.SecondsToHours(wt.Pause - (int)Time.MinutesToSeconds(45)) :
+                WorkhoursPerDay > 6 ? Time.SecondsToHours(wt.Pause - (int)Time.MinutesToSeconds(30)) :
                 Time.SecondsToHours(wt.Pause);
         }
     }

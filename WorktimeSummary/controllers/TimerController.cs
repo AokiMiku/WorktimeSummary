@@ -138,12 +138,12 @@ namespace WorktimeSummary.controllers
 
                 if (!Break45Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > Time.HoursToSeconds(9)))
                 {
-                    worktimes.Pause = Math.Max(Time.MinutesToSeconds(45), worktimes.Pause);
+                    worktimes.Pause = Math.Max((int)Time.MinutesToSeconds(45), worktimes.Pause);
                     Break45Minutes = true;
                 }
                 else if (!Break30Minutes && ((worktimes.WorktimeInSeconds - worktimes.Pause) > Time.HoursToSeconds(6)))
                 {
-                    worktimes.Pause = Math.Max(Time.MinutesToSeconds(30), worktimes.Pause);
+                    worktimes.Pause = Math.Max((int)Time.MinutesToSeconds(30), worktimes.Pause);
                     Break30Minutes = true;
                 }
             }
@@ -202,7 +202,7 @@ namespace WorktimeSummary.controllers
                 if (r.Equals(MessageBoxResult.Yes))
                 {
                     Time diff = Time.Now() -
-                                worktimes.StartingTime.AddSeconds(Time.HoursToSeconds((float)worktimes.Worktime));
+                                worktimes.StartingTime.AddSeconds((int)Time.HoursToSeconds((float)worktimes.Worktime));
                     worktimes.Pause += (int)diff.ToSeconds();
                 }
             }
@@ -229,11 +229,11 @@ namespace WorktimeSummary.controllers
             Time end = worktimesStartingTime.AddHours(dailyHoursToWork);
             if ((worktimes.Worktime > 9) && (worktimes.Pause > Time.MinutesToSeconds(45)))
             {
-                end = end.AddSeconds(worktimes.Pause - Time.MinutesToSeconds(45));
+                end = end.AddSeconds(worktimes.Pause - (int)Time.MinutesToSeconds(45));
             }
             else if ((worktimes.Worktime > 6) && (worktimes.Pause > Time.MinutesToSeconds(30)))
             {
-                end = end.AddSeconds(worktimes.Pause - Time.MinutesToSeconds(30));
+                end = end.AddSeconds(worktimes.Pause - (int)Time.MinutesToSeconds(30));
             }
 
             return end;

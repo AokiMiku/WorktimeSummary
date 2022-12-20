@@ -201,14 +201,14 @@ namespace WorktimeSummary.utilities
             return hours * 60;
         }
 
-        public static int MinutesToSeconds(float minutes)
+        public static float MinutesToSeconds(float minutes)
         {
-            return (int)minutes * 60;
+            return minutes * 60;
         }
 
-        public static int HoursToSeconds(float hours)
+        public static float HoursToSeconds(float hours)
         {
-            return (int)hours * 3600;
+            return hours * 3600;
         }
     }
 }

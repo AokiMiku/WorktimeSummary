@@ -229,7 +229,7 @@ namespace WorktimeSummary.controllers
                 wt.Worktime.ToString(Format, CultureInfo.CurrentCulture) + " / " +
                 Settings.WorkhoursPerDay.ToString(Format, CultureInfo.CurrentCulture),
                 Time.SecondsToMinutes(wt.Pause).ToString(Format, CultureInfo.CurrentCulture),
-                wt.StartingTime.AddSeconds(Time.HoursToSeconds((float)wt.Worktime)).ToString(),
+                wt.StartingTime.AddSeconds((int)Time.HoursToSeconds((float)wt.Worktime)).ToString(),
                 differenceToday.ToString(Format, CultureInfo.CurrentCulture),
                 wt.IsSickLeave.ToString(),
                 wt.IsVacation.ToString(),
