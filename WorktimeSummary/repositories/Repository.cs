@@ -2,13 +2,14 @@ namespace WorktimeSummary.repositories
 {
     using System;
     using System.IO;
+    using WorktimeSummary.userSettings;
     using data;
     using SQLite;
 
     public class Repository
     {
         protected static readonly SQLiteConnection Db =
-            new SQLiteConnection(Path.Combine(Environment.CurrentDirectory, "data", "wt.db"));
+            new SQLiteConnection(Settings.DatabasePath);
 
         static Repository()
         {

@@ -1,7 +1,9 @@
 namespace WorktimeSummary.userSettings
 {
     using System;
+    using System.Configuration;
     using System.Globalization;
+    using System.IO;
     using System.Windows.Media;
     using data;
     using repositories;
@@ -14,10 +16,11 @@ namespace WorktimeSummary.userSettings
         static Settings()
         {
             UserSettingsRepository = new UserSettingsRepository();
-            
-            ApS.Version.MajorVersion = 1;
-            ApS.Version.MinorVersion = 0;
-            ApS.Version.PatchNumber = 3;
+
+            if (DatabasePath.Length < 5)
+            {
+                DatabasePath = Path.Combine(Environment.CurrentDirectory, "data", "wt.db");
+            }
         }
 
         public static string TableThemeTitle
@@ -156,6 +159,33 @@ namespace WorktimeSummary.userSettings
         {
             get => GetAsDateTime("Updates", "LastUpdate");
             set => Save("Updates", "LastUpdate", value.ToString(CultureInfo.CurrentCulture));
+        }
+
+        public static string DatabasePath
+        {
+            get => ConfigurationManager.ConnectionStrings["SQLite"].ConnectionString.Replace("Data Source=", "").Replace(";", "").Trim();
+
+            set
+            {
+                // Get the connection string settings
+                ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["SQLite"];
+
+                // Update the connection string with the user input
+                string updatedConnectionString = string.Format("Data Source={0};", value);
+
+                // Create a new connection string settings object with the updated connection string
+                ConnectionStringSettings updatedSettings = new ConnectionStringSettings(connectionStringSettings.Name,
+                    updatedConnectionString, connectionStringSettings.ProviderName);
+
+                // Update the connection string in the configuration file
+                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                configuration.ConnectionStrings.ConnectionStrings.Remove(connectionStringSettings.Name);
+                configuration.ConnectionStrings.ConnectionStrings.Add(updatedSettings);
+                configuration.Save(ConfigurationSaveMode.Modified);
+
+                // Refresh the configuration manager
+                ConfigurationManager.RefreshSection("connectionStrings");
+            }
         }
 
         private static DateTime GetAsDateTime(string majorKey, string minorKey)

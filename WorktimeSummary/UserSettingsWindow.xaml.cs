@@ -21,6 +21,7 @@ namespace WorktimeSummary
         private void LoadSettings()
         {
             // General Tab
+            DatabasePath.Text = Settings.DatabasePath;
             DaysPerWeek.Text = Settings.WorkdaysPerWeek.ToString(CultureInfo.CurrentCulture);
             HoursPerWeek.Text = Settings.WorkhoursPerWeek.ToString(CultureInfo.CurrentCulture);
             ShowWeekends.IsChecked = Settings.ShowWeekends;
@@ -62,6 +63,7 @@ namespace WorktimeSummary
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
             // General Tab
+            Settings.DatabasePath = DatabasePath.Text;
             Settings.WorkdaysPerWeek = int.Parse(DaysPerWeek.Text);
             Settings.WorkhoursPerWeek = float.Parse(HoursPerWeek.Text);
             Settings.ShowWeekends = ShowWeekends.IsChecked == true;
