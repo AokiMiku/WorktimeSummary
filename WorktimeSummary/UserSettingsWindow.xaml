@@ -30,6 +30,13 @@
                 <StackPanel>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
+                            <Label Content="Database Path:" />
+                            <TextBox Name="DatabasePath" HorizontalAlignment="Right"
+                                     Width="200" Margin="3" />
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
+                        <DockPanel>
                             <Label Content="Table-Themes: " />
                             <ComboBox Margin="3" Name="ThemeSelection"
                                       SelectionChanged="ThemeSelection_OnSelectionChanged"

@@ -36,7 +36,6 @@ namespace WorktimeSummary.controllers
             FillYearAndMonthSelections();
             CreateHeader();
             Refresh();
-            gui.LastRefresh.Content = DateTime.Now.TimeOfDay.ToString("c").Substring(0, 8);
 
             if (!userSettings.Settings.AutoRefreshEnabled)
             {
