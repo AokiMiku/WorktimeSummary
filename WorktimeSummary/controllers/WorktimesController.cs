@@ -7,6 +7,7 @@ namespace WorktimeSummary.controllers
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Threading;
+    using ApS;
     using data;
     using Nager.Date;
     using repositories;
@@ -36,14 +37,14 @@ namespace WorktimeSummary.controllers
             CreateHeader();
             Refresh();
 
-            if (!Settings.AutoRefreshEnabled)
+            if (!userSettings.Settings.AutoRefreshEnabled)
             {
                 return;
             }
 
             DispatcherTimer autoRefresh = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMinutes(Settings.AutoRefreshEveryXMinutes)
+                Interval = TimeSpan.FromMinutes(userSettings.Settings.AutoRefreshEveryXMinutes)
             };
             autoRefresh.Tick += AutoRefresh;
             autoRefresh.Start();
@@ -64,13 +65,13 @@ namespace WorktimeSummary.controllers
 
         private void FillYearAndMonthSelections()
         {
-            if ("0".Equals(Settings.StartingYear) || string.IsNullOrEmpty(Settings.StartingYear))
+            if ("0".Equals(userSettings.Settings.StartingYear) || string.IsNullOrEmpty(userSettings.Settings.StartingYear))
             {
                 Worktimes w = repository.FindById(1) ?? repository.FindToday();
-                Settings.StartingYear = w.Day.Substring(0, 4);
+                userSettings.Settings.StartingYear = w.Day.Substring(0, 4);
             }
 
-            int year = int.Parse(Settings.StartingYear);
+            int year = int.Parse(userSettings.Settings.StartingYear);
 
             for (int y = year; y <= DateTime.Now.Year; y++)
             {
@@ -86,8 +87,7 @@ namespace WorktimeSummary.controllers
             {
                 Label lblMonth = new Label
                 {
-                    Content = new DateTime(DateTime.Now.Year, m, 1)
-                        .ToString("MMMM", CultureInfo.InvariantCulture),
+                    Content = m.ToMonthName(),
                     Tag = m
                 };
                 gui.MonthSelection.Items.Add(lblMonth);
@@ -155,12 +155,12 @@ namespace WorktimeSummary.controllers
                     AddEmptyRow(day);
                 }
 
-                if (Settings.WeeklySummaries &&
-                    ((!Settings.ShowWeekends &&
+                if (userSettings.Settings.WeeklySummaries &&
+                    ((!userSettings.Settings.ShowWeekends &&
                       (new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
                        DayOfWeek.Friday))
                      ||
-                     (Settings.ShowWeekends &&
+                     (userSettings.Settings.ShowWeekends &&
                       (new DateTime(int.Parse(currentlySelectedYear), int.Parse(currentlySelectedMonth), i).DayOfWeek ==
                        DayOfWeek.Sunday))
                      ||
@@ -171,8 +171,8 @@ namespace WorktimeSummary.controllers
                         "Weekly:",
                         "",
                         sumWorktimeWeekly.ToString(Format, CultureInfo.CurrentCulture) + " / "
-                        + Settings.WorkhoursPerWeek,
-                        Time.SecondsToMinutes(sumPauseWeekly).ToString(Format, CultureInfo.CurrentCulture),
+                        + userSettings.Settings.WorkhoursPerWeek,
+                        utilities.Time.SecondsToMinutes(sumPauseWeekly).ToString(Format, CultureInfo.CurrentCulture),
                         "",
                         weeklyOt.ToString(Format, CultureInfo.CurrentCulture)
                     });
@@ -190,7 +190,7 @@ namespace WorktimeSummary.controllers
             gui.AddSumRow(new[]
             {
                 "All: ", "", sumWorktime.ToString(Format, CultureInfo.CurrentCulture),
-                Time.SecondsToHours(sumPause).ToString(Format, CultureInfo.CurrentCulture),
+                utilities.Time.SecondsToHours(sumPause).ToString(Format, CultureInfo.CurrentCulture),
                 "",
                 dailyOt.ToString(Format, CultureInfo.CurrentCulture)
             });
@@ -206,29 +206,29 @@ namespace WorktimeSummary.controllers
             if (!wt.IsVacation && !wt.IsSickLeave && !isPublicHoliday)
             {
                 differenceToday =
-                    Time.HoursToMinutes(
-                        (float)(wt.Worktime - Settings.CalculateBreakTime(wt) - Settings.WorkhoursPerDay));
-                sumWorktime = wt.Worktime - Time.SecondsToHours(wt.Pause);
-                sumWorktimeWeekly += wt.Worktime - Time.SecondsToHours(wt.Pause);
+                    utilities.Time.HoursToMinutes(
+                        (float)(wt.Worktime - userSettings.Settings.CalculateBreakTime(wt) - userSettings.Settings.WorkhoursPerDay));
+                sumWorktime = wt.Worktime - utilities.Time.SecondsToHours(wt.Pause);
+                sumWorktimeWeekly += wt.Worktime - utilities.Time.SecondsToHours(wt.Pause);
                 sumPause += wt.Pause;
                 sumPauseWeekly += wt.Pause;
             }
 
             if (!wt.Day.Equals(DateTime.Today.ToCustomString()) ||
-                !Settings.CurrentDayExcludedFromOvertimeCalculation)
+                !userSettings.Settings.CurrentDayExcludedFromOvertimeCalculation)
             {
                 dailyOt += differenceToday;
                 weeklyOt += differenceToday;
             }
 
-            List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(wt.Day), new[]
+            List<UIElement> elements = gui.AddRow(userSettings.Settings.CurrentDayBold && IsDayToday(wt.Day), new[]
             {
                 wt.Day,
                 wt.StartingTime.ToString(),
                 wt.Worktime.ToString(Format, CultureInfo.CurrentCulture) + " / " +
-                Settings.WorkhoursPerDay.ToString(Format, CultureInfo.CurrentCulture),
-                Time.SecondsToMinutes(wt.Pause).ToString(Format, CultureInfo.CurrentCulture),
-                wt.StartingTime.AddSeconds((int)Time.HoursToSeconds((float)wt.Worktime)).ToString(),
+                userSettings.Settings.WorkhoursPerDay.ToString(Format, CultureInfo.CurrentCulture),
+                utilities.Time.SecondsToMinutes(wt.Pause).ToString(Format, CultureInfo.CurrentCulture),
+                wt.StartingTime.AddSeconds((int)utilities.Time.HoursToSeconds((float)wt.Worktime)).ToString(),
                 differenceToday.ToString(Format, CultureInfo.CurrentCulture),
                 wt.IsSickLeave.ToString(),
                 wt.IsVacation.ToString(),
@@ -252,7 +252,7 @@ namespace WorktimeSummary.controllers
 
         private bool SkipWeekends(int i)
         {
-            if (Settings.ShowWeekends)
+            if (userSettings.Settings.ShowWeekends)
             {
                 return false;
             }
@@ -265,11 +265,11 @@ namespace WorktimeSummary.controllers
         {
             switch (dayOfMonth)
             {
-                case 28 when !Settings.IsLeapYear(int.Parse(currentlySelectedYear)) &&
+                case 28 when !userSettings.Settings.IsLeapYear(int.Parse(currentlySelectedYear)) &&
                              "2".Equals(currentlySelectedMonth):
 
                 case 29
-                    when Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && "2".Equals(currentlySelectedMonth):
+                    when userSettings.Settings.IsLeapYear(int.Parse(currentlySelectedYear)) && "2".Equals(currentlySelectedMonth):
 
                 case 30 when "4".Equals(currentlySelectedMonth) || "6".Equals(currentlySelectedMonth) ||
                              "9".Equals(currentlySelectedMonth) || "11".Equals(currentlySelectedMonth):
@@ -310,7 +310,7 @@ namespace WorktimeSummary.controllers
 
         private void AddEmptyRow(string day)
         {
-            List<UIElement> elements = gui.AddRow(Settings.CurrentDayBold && IsDayToday(day), new[]
+            List<UIElement> elements = gui.AddRow(userSettings.Settings.CurrentDayBold && IsDayToday(day), new[]
             {
                 day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(),
                 false.ToString(), DateSystem.IsPublicHoliday(day.ToDateTime(), CountryCode.DE).ToString()

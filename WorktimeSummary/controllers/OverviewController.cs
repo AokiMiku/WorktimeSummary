@@ -1,5 +1,6 @@
 namespace WorktimeSummary.controllers
 {
+    using ApS;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -29,8 +30,8 @@ namespace WorktimeSummary.controllers
         private void FillData()
         {
             double minutesOt = 0;
-            float dailyHoursToWork = Settings.WorkhoursPerDay;
-            for (int y = int.Parse(Settings.StartingYear); y <= DateTime.Now.Year; y++)
+            float dailyHoursToWork = userSettings.Settings.WorkhoursPerDay;
+            for (int y = int.Parse(userSettings.Settings.StartingYear); y <= DateTime.Now.Year; y++)
             {
                 List<Worktimes> days = repository.FindAllOfYear($"{y}");
                 int daysSick = repository.CountSickDaysForYear($"{y}");
@@ -40,8 +41,8 @@ namespace WorktimeSummary.controllers
                         !day.IsVacation && !day.IsSickLeave &&
                         !DateSystem.IsPublicHoliday(day.Day.ToDateTime(), CountryCode.DE) &&
                         (!day.Day.Equals(DateTime.Today.ToCustomString()) ||
-                         !Settings.CurrentDayExcludedFromOvertimeCalculation))
-                    .Sum(day => (day.Worktime - Settings.CalculateBreakTime(day) - dailyHoursToWork) * 60d);
+                         !userSettings.Settings.CurrentDayExcludedFromOvertimeCalculation))
+                    .Sum(day => (day.Worktime - userSettings.Settings.CalculateBreakTime(day) - dailyHoursToWork) * 60d);
 
                 overviewWindow.AddRow(new[]
                 {
