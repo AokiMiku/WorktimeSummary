@@ -28,7 +28,10 @@ namespace WorktimeSummary
             if (updater.CheckForUpdate(Settings.LastUpdate, "AWT"))
             {
                 updater.UpdateProgressChanged += UpdaterOnUpdateProgressChanged;
-                updater.DownloadCompleted += (sender, args) => RedirectToMainWindow(); 
+                updater.DownloadCompleted += (sender, args) => 
+                {
+                    updater.InstallUpdate();
+                };
                 updater.DownloadUpdateAsync();
             }
             else
