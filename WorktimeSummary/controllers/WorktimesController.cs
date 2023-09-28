@@ -138,9 +138,16 @@ namespace WorktimeSummary.controllers
             double weeklyOt = 0;
             for (int i = 1; i <= 31; i++)
             {
-                if (SkipWeekends(i))
+                try
                 {
-                    continue;
+                    if (SkipWeekends(i))
+                    {
+                        continue;
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    break;
                 }
 
                 string day = dayStartString + $"-{i.ToString().PadLeft(2, '0')}";
