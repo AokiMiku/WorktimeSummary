@@ -32,6 +32,13 @@ namespace WorktimeSummary.controllers
             this.timerWindow.Closing += TimerWindowOnClosing;
             this.timerWindow.ToggleIssueTracking.Click += ToggleIssueTrackingOnClick;
             this.timerWindow.AddOneFunctionPoint.Click += AddOneFunctionPointOnClick;
+            this.timerWindow.MinusOneMinute.Click += MinusOneMinute_Click;
+        }
+
+        private void MinusOneMinute_Click(object sender, RoutedEventArgs e)
+        {
+            worktimes.StartingTime = worktimes.StartingTime.AddMinutes(-1);
+            timerWindow.StartingTime.Content = worktimes.StartingTime;
         }
 
         private bool IsBreak { get; set; }

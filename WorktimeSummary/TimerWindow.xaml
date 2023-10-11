@@ -33,7 +33,15 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Starting Time:</Label>
-            <Label Name="StartingTime" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center">00:00:00</Label>
+            <Label Name="StartingTime" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">00:00:00</Label>
+            <Button 
+                Grid.Row="0" Grid.Column="2"
+                Name="MinusOneMinute"
+                VerticalAlignment="Center"
+                Width="40" MinHeight="20"
+                Margin="5"> 
+                -1 Min
+            </Button>
             <Label Grid.Row="1" Grid.Column="0">Current Working Time:</Label>
             <Label Name="WorktimeDecimal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">0.00000</Label>
             <Label Name="WorktimeTime" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">00:00:00</Label>
