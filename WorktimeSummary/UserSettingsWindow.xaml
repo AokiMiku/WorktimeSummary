@@ -89,14 +89,20 @@
                         <DockPanel>
                             <Label Content="Working days per week:" />
                             <TextBox Name="DaysPerWeek" HorizontalAlignment="Right"
-                                     Width="200" Margin="3" />
+                                     Width="200" Margin="3"
+                                     GotKeyboardFocus="MarkOnFocus_GotKeyboardFocus"
+                                     LostMouseCapture="MarkOnFocus_LostMouseCapture"
+                                     LostKeyboardFocus="MarkOnFocus_LostKeyboardFocus"/>
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">
                         <DockPanel>
                             <Label Content="Hours per week:" />
                             <TextBox Name="HoursPerWeek" HorizontalAlignment="Right"
-                                     Width="200" Margin="3" />
+                                     Width="200" Margin="3" 
+                                     GotKeyboardFocus="MarkOnFocus_GotKeyboardFocus"
+                                     LostMouseCapture="MarkOnFocus_LostMouseCapture"
+                                     LostKeyboardFocus="MarkOnFocus_LostKeyboardFocus"/>
                         </DockPanel>
                     </Border>
                     <Border BorderThickness="0 0 0 1" BorderBrush="LightGray">

@@ -4,6 +4,7 @@ namespace WorktimeSummary
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using userSettings;
 
     public partial class UserSettingsWindow : Window
@@ -130,6 +131,48 @@ namespace WorktimeSummary
         private void EnableAutoRefresh_OnUnchecked(object sender, RoutedEventArgs e)
         {
             AutoRefreshPanel.IsEnabled = false;
+        }
+
+        private void MarkOnFocus_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        {
+            if (!(sender is TextBox))
+            {
+                return;
+            }
+
+            var textBox = (TextBox)sender;
+            if (textBox.SelectionLength == 0)
+            {
+                textBox.SelectAll();
+            }
+        }
+
+        private void MarkOnFocus_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (!(sender is TextBox))
+            {
+                return;
+            }
+
+            var textBox = (TextBox)sender;
+            // If user highlights some text, don't override it
+            if (textBox.SelectionLength == 0)
+            {
+                textBox.SelectAll();
+            }
+
+            textBox.LostMouseCapture -= MarkOnFocus_LostMouseCapture;
+        }
+
+        private void MarkOnFocus_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!(sender is TextBox))
+            {
+                return;
+            }
+
+            var textBox = (TextBox)sender;
+            textBox.LostMouseCapture += MarkOnFocus_LostMouseCapture;
         }
     }
 }
