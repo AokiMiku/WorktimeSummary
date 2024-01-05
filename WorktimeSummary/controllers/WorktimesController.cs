@@ -136,6 +136,7 @@ namespace WorktimeSummary.controllers
             int sumPauseWeekly = 0;
             double dailyOt = 0;
             double weeklyOt = 0;
+            int daysThisWeek = 0;
             for (int i = 1; i <= 31; i++)
             {
                 try
@@ -156,10 +157,18 @@ namespace WorktimeSummary.controllers
                     Worktimes wt = wts.First(w => w.Day.Equals(day));
                     sumWorktime += AddDataRow(wt, ref sumWorktimeWeekly, ref sumPause, ref sumPauseWeekly, ref dailyOt,
                         ref weeklyOt);
+                    if (!wt.IsVacation && !wt.IsSickLeave)
+                    {
+                        daysThisWeek++;
+                    }
                 }
                 else
                 {
                     AddEmptyRow(day);
+                    if (!DateSystem.IsPublicHoliday(day.ToDateTime(), CountryCode.DE))
+                    {
+                        daysThisWeek++;
+                    }
                 }
 
                 if (userSettings.Settings.WeeklySummaries &&
@@ -178,7 +187,7 @@ namespace WorktimeSummary.controllers
                         "Weekly:",
                         "",
                         sumWorktimeWeekly.ToString(Format, CultureInfo.CurrentCulture) + " / "
-                        + userSettings.Settings.WorkhoursPerWeek,
+                        + userSettings.Settings.WorkhoursPerWeek / userSettings.Settings.WorkdaysPerWeek * daysThisWeek,
                         utilities.Time.SecondsToMinutes(sumPauseWeekly).ToString(Format, CultureInfo.CurrentCulture),
                         "",
                         weeklyOt.ToString(Format, CultureInfo.CurrentCulture)
@@ -186,6 +195,7 @@ namespace WorktimeSummary.controllers
                     sumWorktimeWeekly = 0;
                     sumPauseWeekly = 0;
                     weeklyOt = 0;
+                    daysThisWeek = 0;
                 }
 
                 if (IsLastDayOfMonth(i))
@@ -297,19 +307,19 @@ namespace WorktimeSummary.controllers
             switch (int.Parse(box.Tag.ToString().Substring(0, 1)))
             {
                 case IndexSickLeave:
-                {
-                    Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
-                    wt.IsSickLeave = box.IsChecked == true;
-                    repository.Save(wt);
-                    break;
-                }
+                    {
+                        Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
+                        wt.IsSickLeave = box.IsChecked == true;
+                        repository.Save(wt);
+                        break;
+                    }
                 case IndexVacation:
-                {
-                    Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
-                    wt.IsVacation = box.IsChecked == true;
-                    repository.Save(wt);
-                    break;
-                }
+                    {
+                        Worktimes wt = repository.FindByDay(box.Tag.ToString().Substring(2));
+                        wt.IsVacation = box.IsChecked == true;
+                        repository.Save(wt);
+                        break;
+                    }
             }
 
             Refresh();
