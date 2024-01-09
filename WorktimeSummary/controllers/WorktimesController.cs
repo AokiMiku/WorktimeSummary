@@ -182,7 +182,7 @@ namespace WorktimeSummary.controllers
                      ||
                      IsLastDayOfMonth(i)))
                 {
-                    gui.AddRow(true, new[]
+                    gui.AddRow(new[]
                     {
                         "Weekly:",
                         "",
@@ -191,7 +191,7 @@ namespace WorktimeSummary.controllers
                         utilities.Time.SecondsToMinutes(sumPauseWeekly).ToString(Format, CultureInfo.CurrentCulture),
                         "",
                         weeklyOt.ToString(Format, CultureInfo.CurrentCulture)
-                    });
+                    }, true);
                     sumWorktimeWeekly = 0;
                     sumPauseWeekly = 0;
                     weeklyOt = 0;
@@ -238,7 +238,7 @@ namespace WorktimeSummary.controllers
                 weeklyOt += differenceToday;
             }
 
-            List<UIElement> elements = gui.AddRow(userSettings.Settings.CurrentDayBold && IsDayToday(wt.Day), new[]
+            List<UIElement> elements = gui.AddRow(new[]
             {
                 wt.Day,
                 wt.StartingTime.ToString(),
@@ -250,7 +250,7 @@ namespace WorktimeSummary.controllers
                 wt.IsSickLeave.ToString(),
                 wt.IsVacation.ToString(),
                 isPublicHoliday.ToString()
-            });
+            }, userSettings.Settings.CurrentDayBold && IsDayToday(wt.Day));
             foreach (UIElement uiElement in elements)
             {
                 if (uiElement is CheckBox box)
@@ -327,11 +327,11 @@ namespace WorktimeSummary.controllers
 
         private void AddEmptyRow(string day)
         {
-            List<UIElement> elements = gui.AddRow(userSettings.Settings.CurrentDayBold && IsDayToday(day), new[]
+            List<UIElement> elements = gui.AddRow(new[]
             {
                 day, 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), 0.ToString(), false.ToString(),
                 false.ToString(), DateSystem.IsPublicHoliday(day.ToDateTime(), CountryCode.DE).ToString()
-            });
+            }, userSettings.Settings.CurrentDayBold && IsDayToday(day));
             foreach (UIElement uiElement in elements)
             {
                 if (uiElement is CheckBox box)

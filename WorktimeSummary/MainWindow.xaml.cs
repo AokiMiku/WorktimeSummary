@@ -55,7 +55,7 @@
         /// <param name="bold">If the texts of the current row should be bold.</param>
         /// <param name="values"></param>
         /// <returns>List of created UIElements</returns>
-        public List<UIElement> AddRow(bool bold, string[] values)
+        public List<UIElement> AddRow(string[] values, bool bold = false)
         {
             List<UIElement> elements = new List<UIElement>();
             RowDefinition row;
