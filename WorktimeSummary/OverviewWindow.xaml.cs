@@ -39,7 +39,7 @@ namespace WorktimeSummary
             }
         }
 
-        public void AddRow(string[] values)
+        public void AddRow(string[] values, bool bold = false)
         {
             RowDefinition row;
             DataGrid.RowDefinitions.Add(row = new RowDefinition());
@@ -63,6 +63,10 @@ namespace WorktimeSummary
                     VerticalAlignment = VerticalAlignment.Center,
                     Tag = background
                 };
+                if (bold)
+                {
+                    lbl.FontWeight = FontWeights.Bold;
+                }
 
                 UIElement addToRow = lbl;
 

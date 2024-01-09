@@ -31,6 +31,9 @@ namespace WorktimeSummary.controllers
         {
             double minutesOt = 0;
             float dailyHoursToWork = userSettings.Settings.WorkhoursPerDay;
+            double sumMinutesOt = 0;
+            int sumDaysSick = 0;
+            int sumDaysVacation = 0;
             for (int y = int.Parse(userSettings.Settings.StartingYear); y <= DateTime.Now.Year; y++)
             {
                 List<Worktimes> days = repository.FindAllOfYear($"{y}");
@@ -46,11 +49,15 @@ namespace WorktimeSummary.controllers
 
                 overviewWindow.AddRow(new[]
                 {
-                    $"{y}", daysSick.ToString(), daysVacation.ToString(),
-                    minutesOt.ToString(CultureInfo.CurrentCulture)
+                    $"{y}", daysSick.ToString("0"), daysVacation.ToString("0"),
+                    minutesOt.ToString("0.00", CultureInfo.CurrentCulture)
                 });
+                sumMinutesOt += minutesOt;
+                sumDaysSick += daysSick;
+                sumDaysVacation += daysVacation;
                 minutesOt = 0;
             }
+            overviewWindow.AddRow(new[] { "Sum", sumDaysSick.ToString("0"), sumDaysVacation.ToString("0"), sumMinutesOt.ToString("0.00") }, true);
         }
     }
 }
