@@ -118,6 +118,18 @@ namespace WorktimeSummary.utilities
             int h = Hours;
             Hours += Minutes / 60;
             Minutes -= (Hours - h) * 60;
+
+            if (Seconds < 0)
+            {
+                Seconds = 60 - Seconds;
+                Minutes -= Seconds / 60;
+                Hours -= Minutes / 60;
+            }
+            if (Minutes < 0)
+            {
+                Minutes = 60 + Minutes;
+                Hours -= (Minutes / 60) + 1;
+            }
         }
 
         public override string ToString()
